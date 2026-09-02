@@ -14,20 +14,20 @@ export function SiteFooter() {
               çevre mevzuatı
             </span>
           </div>
-          <p className="mt-5 max-w-md text-sm leading-6 text-background/65">
+          <p className="mt-5 max-w-md text-sm leading-6 text-background/74">
             Sanayi tesislerinin çevre mevzuatındaki yerini bulmasına yardımcı
             olan, resmî kaynağa dayalı mevzuat navigasyonu.
           </p>
-          <p className="mt-4 text-xs leading-5 text-background/50">
+          <p className="mt-4 text-xs leading-5 text-background/64">
             Bu site hukuki görüş üretmez; düzenleme, madde, ek ve resmî kaynak
             ilişkisini gösterir.
           </p>
         </div>
         <div>
-          <p className="meta-type mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-background/45">
+          <p className="meta-type mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-background/58">
             İçerik
           </p>
-          <div className="grid gap-3 text-sm text-background/75">
+          <div className="grid gap-3 text-sm text-background/82">
             <Link className="hover:text-background" href="/kapsam">
               Kapsam haritası
             </Link>
@@ -46,7 +46,7 @@ export function SiteFooter() {
           </div>
         </div>
         <div>
-          <p className="meta-type mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-background/45">
+          <p className="meta-type mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-background/58">
             Uzmanlık siteleri
           </p>
           <a
@@ -56,13 +56,13 @@ export function SiteFooter() {
             karbonmevzuati.com
             <ArrowUpRight className="size-4" aria-hidden="true" />
           </a>
-          <p className="mt-3 text-xs leading-5 text-background/50">
+          <p className="mt-3 text-xs leading-5 text-background/64">
             Karbon, iklim ve emisyon ticaret sistemi düzenlemeleri için.
           </p>
         </div>
       </div>
       <div className="border-t border-background/10">
-        <div className="site-frame meta-type flex flex-col gap-2 py-5 text-[11px] text-background/45 sm:flex-row sm:items-center sm:justify-between">
+        <div className="site-frame meta-type flex flex-col gap-2 py-5 text-[11px] text-background/58 sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 Çevre Mevzuatı</span>
           <span>Son kaynak kontrolü: 2 Eylül 2026</span>
         </div>

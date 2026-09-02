@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Archive,
   ArrowRight,
   CheckCircle2,
   ExternalLink,
@@ -294,12 +295,16 @@ export function LegislationBrowser({
                     variant="outline"
                     className={`gap-1 ${
                       item.status === 'Yürürlükte'
-                        ? 'text-primary'
-                        : 'text-muted-foreground'
+                        ? 'border-primary/25 bg-primary/5 text-primary'
+                        : item.status === 'Yürürlükten kaldırıldı'
+                          ? 'border-destructive/30 bg-destructive/8 text-destructive'
+                          : 'border-accent/30 bg-accent/8 text-accent-foreground dark:text-accent'
                     }`}
                   >
                     {item.status === 'Yürürlükte' ? (
                       <CheckCircle2 className="size-3" aria-hidden="true" />
+                    ) : item.status === 'Yürürlükten kaldırıldı' ? (
+                      <Archive className="size-3" aria-hidden="true" />
                     ) : (
                       <FileText className="size-3" aria-hidden="true" />
                     )}
@@ -330,7 +335,7 @@ export function LegislationBrowser({
                   </span>
                 </div>
               </div>
-              <div className="flex gap-2 sm:flex-col sm:items-end">
+              <div className="grid gap-2 sm:flex sm:flex-col sm:items-end">
                 <Button
                   nativeButton={false}
                   render={
@@ -339,7 +344,7 @@ export function LegislationBrowser({
                       aria-label={`${item.title} kayıt sayfası`}
                     />
                   }
-                  className="h-10 rounded-[10px] px-3.5"
+                  className="h-10 w-full justify-between rounded-[10px] px-3.5 sm:w-auto"
                 >
                   Kayıt sayfası
                   <ArrowRight className="size-4" aria-hidden="true" />
@@ -355,7 +360,7 @@ export function LegislationBrowser({
                     />
                   }
                   variant="ghost"
-                  className="h-9 rounded-[10px] px-3 text-muted-foreground"
+                  className="h-9 w-full justify-between rounded-[10px] px-3 text-muted-foreground sm:w-auto"
                 >
                   Resmî kaynak
                   <ExternalLink className="size-3.5" aria-hidden="true" />

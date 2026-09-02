@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
+  Archive,
   ArrowLeft,
   CheckCircle2,
   ExternalLink,
@@ -85,12 +86,16 @@ export default async function LegislationDetailPage({
                   variant="outline"
                   className={`gap-1 ${
                     item.status === 'Yürürlükte'
-                      ? 'text-primary'
-                      : 'text-muted-foreground'
+                      ? 'border-primary/25 bg-primary/5 text-primary'
+                      : item.status === 'Yürürlükten kaldırıldı'
+                        ? 'border-destructive/30 bg-destructive/8 text-destructive'
+                        : 'border-accent/30 bg-accent/8 text-accent-foreground dark:text-accent'
                   }`}
                 >
                   {item.status === 'Yürürlükte' ? (
                     <CheckCircle2 className="size-3" aria-hidden="true" />
+                  ) : item.status === 'Yürürlükten kaldırıldı' ? (
+                    <Archive className="size-3" aria-hidden="true" />
                   ) : (
                     <FileText className="size-3" aria-hidden="true" />
                   )}{' '}

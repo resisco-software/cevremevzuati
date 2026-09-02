@@ -88,23 +88,23 @@
 }
 
 .dark {
-  --background: oklch(0.17 0.016 158);
-  --foreground: oklch(0.94 0.008 145);
-  --card: oklch(0.205 0.018 158);
-  --card-foreground: oklch(0.94 0.008 145);
-  --popover: oklch(0.215 0.019 158);
-  --popover-foreground: oklch(0.94 0.008 145);
+  --background: oklch(0.155 0.016 158);
+  --foreground: oklch(0.955 0.007 145);
+  --card: oklch(0.205 0.019 158);
+  --card-foreground: oklch(0.955 0.007 145);
+  --popover: oklch(0.22 0.02 158);
+  --popover-foreground: oklch(0.955 0.007 145);
   --primary: oklch(0.74 0.115 154);
   --primary-foreground: oklch(0.16 0.02 158);
-  --secondary: oklch(0.255 0.021 158);
+  --secondary: oklch(0.265 0.022 158);
   --secondary-foreground: oklch(0.91 0.01 145);
-  --muted: oklch(0.245 0.017 158);
-  --muted-foreground: oklch(0.7 0.022 150);
+  --muted: oklch(0.25 0.018 158);
+  --muted-foreground: oklch(0.745 0.02 150);
   --accent: oklch(0.76 0.1 96);
   --accent-foreground: oklch(0.18 0.025 82);
   --destructive: oklch(0.68 0.17 28);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 18%);
+  --border: oklch(1 0 0 / 15%);
+  --input: oklch(1 0 0 / 22%);
   --ring: oklch(0.74 0.105 154);
   --chart-1: oklch(0.7 0.1 158);
   --chart-2: oklch(0.74 0.1 91);
@@ -155,6 +155,11 @@
   button {
     -webkit-tap-highlight-color: transparent;
   }
+
+  ::selection {
+    background: color-mix(in oklch, var(--primary), transparent 72%);
+    color: var(--foreground);
+  }
 }
 
 .document-grid {
@@ -192,12 +197,12 @@
   background:
     radial-gradient(
       circle at 5% 14%,
-      color-mix(in oklch, var(--primary), transparent 89%),
+      color-mix(in oklch, var(--primary), transparent 86%),
       transparent 28rem
     ),
     radial-gradient(
       circle at 92% 8%,
-      color-mix(in oklch, var(--accent), transparent 91%),
+      color-mix(in oklch, var(--accent), transparent 89%),
       transparent 24rem
     ),
     var(--background);
@@ -217,6 +222,19 @@
   border-color: color-mix(in oklch, var(--primary), transparent 30%);
   background: color-mix(in oklch, var(--primary), transparent 91%);
   box-shadow: inset 2px 0 0 var(--primary);
+}
+
+.topic-option:focus-visible,
+.category-index a:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid color-mix(in oklch, var(--ring), transparent 52%);
+  outline-offset: 2px;
+}
+
+.choice-row:has([data-checked]) {
+  border-color: color-mix(in oklch, var(--primary), transparent 45%);
+  background: color-mix(in oklch, var(--primary), transparent 92%);
 }
 
 .filter-chip {
@@ -282,6 +300,21 @@
   box-shadow:
     0 1px 0 oklch(1 0 0 / 4%) inset,
     0 18px 54px -42px oklch(0 0 0 / 72%);
+}
+
+.option-scroll {
+  scrollbar-color: color-mix(in oklch, var(--primary), transparent 45%)
+    transparent;
+  scrollbar-width: thin;
+}
+
+.option-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.option-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--primary), transparent 45%);
 }
 
 .inverse-panel {

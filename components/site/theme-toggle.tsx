@@ -23,13 +23,17 @@ export function ThemeToggle() {
       type="button"
       variant="outline"
       size="icon"
-      className="relative size-9 rounded-[10px] bg-card shadow-none"
+      className="relative h-9 w-9 gap-2 rounded-[10px] bg-card shadow-none xl:w-auto xl:px-3"
       onClick={toggleTheme}
       aria-label="Renk temasını değiştir"
       title="Açık veya koyu temaya geç"
     >
       <Sun className="hidden size-4 dark:block" aria-hidden="true" />
       <Moon className="size-4 dark:hidden" aria-hidden="true" />
+      <span className="hidden text-xs font-semibold xl:inline dark:xl:hidden">
+        Koyu
+      </span>
+      <span className="hidden text-xs font-semibold dark:xl:inline">Açık</span>
     </Button>
   );
 }

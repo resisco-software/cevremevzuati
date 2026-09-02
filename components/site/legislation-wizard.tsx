@@ -455,7 +455,7 @@ export function LegislationWizard() {
       </div>
 
       <div
-        className="min-h-[470px] px-5 py-6 sm:px-7 sm:py-7"
+        className="px-5 py-6 sm:px-7 sm:py-7 lg:min-h-[470px]"
         aria-live="polite"
       >
         {step === 1 && (
@@ -693,11 +693,16 @@ export function LegislationWizard() {
               açıkça gösterilir.
             </p>
             <div className="mt-7 grid gap-7 lg:grid-cols-2">
-              <fieldset>
-                <legend className="mb-3 text-sm font-semibold">
-                  Proses ve çevresel çıkışlar
+              <fieldset className="min-w-0">
+                <legend className="mb-3 w-full text-sm font-semibold">
+                  <span className="flex items-center justify-between gap-3">
+                    <span>Proses ve çevresel çıkışlar</span>
+                    <span className="meta-type text-[10px] font-medium text-muted-foreground">
+                      {visibleFeatureOptions.length} seçenek
+                    </span>
+                  </span>
                 </legend>
-                <div className="grid gap-2.5">
+                <div className="option-scroll grid gap-2.5 lg:max-h-[500px] lg:overflow-y-auto lg:pr-2">
                   {visibleFeatureOptions.map((option) => (
                     <label
                       key={option.id}
@@ -716,11 +721,16 @@ export function LegislationWizard() {
                   ))}
                 </div>
               </fieldset>
-              <fieldset>
-                <legend className="mb-3 text-sm font-semibold">
-                  Konum bilgileri
+              <fieldset className="min-w-0">
+                <legend className="mb-3 w-full text-sm font-semibold">
+                  <span className="flex items-center justify-between gap-3">
+                    <span>Konum bilgileri</span>
+                    <span className="meta-type text-[10px] font-medium text-muted-foreground">
+                      {locationOptions.length} seçenek
+                    </span>
+                  </span>
                 </legend>
-                <div className="grid gap-2.5">
+                <div className="option-scroll grid gap-2.5 lg:max-h-[500px] lg:overflow-y-auto lg:pr-2">
                   {locationOptions.map((option) => (
                     <label
                       key={option.id}
@@ -784,7 +794,7 @@ export function LegislationWizard() {
               </AlertDescription>
             </Alert>
 
-            <div className="mt-5 grid max-h-[370px] gap-2.5 overflow-y-auto pr-1">
+            <div className="option-scroll mt-5 grid gap-2.5 lg:max-h-[370px] lg:overflow-y-auto lg:pr-1">
               {results.map((item, index) => (
                 <article
                   key={item.slug}

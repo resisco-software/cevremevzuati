@@ -61,7 +61,7 @@ export default function LibraryPage() {
             <h1 className="mt-4 max-w-4xl font-heading text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl">
               Aradığınız mevzuatı bulun; resmî metnine ve kayıt zincirine geçin.
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-7 text-background/60">
+            <p className="mt-6 max-w-2xl text-base leading-7 text-background/72">
               Düzenleme adıyla arayın veya çevre alanını seçin. Her kayıtta
               resmî kaynak bağlantısı; varsa değişiklikler ve bağlı belgeler
               birlikte gösterilir.

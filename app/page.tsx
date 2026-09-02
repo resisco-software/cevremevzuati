@@ -278,7 +278,7 @@ export default function Home() {
             <h2 className="mt-4 max-w-md font-heading text-4xl font-semibold leading-[1.05] tracking-[-0.045em]">
               Değişiklik metni kaybolmaz; ana düzenlemeye bağlanır.
             </h2>
-            <p className="mt-5 max-w-md text-sm leading-7 text-background/60">
+            <p className="mt-5 max-w-md text-sm leading-7 text-background/72">
               İlk yayım, değişiklikler, yürürlük tarihleri ve güncel metin aynı
               kayıt üzerinde izlenir.
             </p>
@@ -301,14 +301,14 @@ export default function Home() {
               <div>
                 <Badge
                   variant="outline"
-                  className="mb-2 border-background/15 text-background/60"
+                  className="mb-2 border-background/20 text-background/72"
                 >
                   Değişiklik
                 </Badge>
                 <h3 className="font-semibold leading-6">
                   Çevresel Etki Değerlendirmesi Yönetmeliğinde Değişiklik
                 </h3>
-                <p className="mt-1 text-xs text-background/50">
+                <p className="mt-1 text-xs text-background/64">
                   Resmî Gazete · Ana düzenleme kaydına bağlı
                 </p>
               </div>
@@ -325,14 +325,14 @@ export default function Home() {
               <div>
                 <Badge
                   variant="outline"
-                  className="mb-2 border-background/15 text-background/60"
+                  className="mb-2 border-background/20 text-background/72"
                 >
                   İlk yayım
                 </Badge>
                 <h3 className="font-semibold leading-6">
                   Endüstriyel Emisyonların Yönetimi Yönetmeliği
                 </h3>
-                <p className="mt-1 text-xs text-background/50">
+                <p className="mt-1 text-xs text-background/64">
                   32782 sayılı Resmî Gazete
                 </p>
               </div>
@@ -349,19 +349,19 @@ export default function Home() {
               <div>
                 <Badge
                   variant="outline"
-                  className="mb-2 border-background/15 text-background/60"
+                  className="mb-2 border-background/20 text-background/72"
                 >
                   Kaynak izi
                 </Badge>
                 <h3 className="font-semibold leading-6">
                   Her kayıt üzerinde son kontrol tarihi
                 </h3>
-                <p className="mt-1 text-xs text-background/50">
+                <p className="mt-1 text-xs text-background/64">
                   Kaynak bağlantısı ve kontrol tarihi birlikte gösterilir
                 </p>
               </div>
               <FileClock
-                className="size-5 text-background/55"
+                className="size-5 text-background/68"
                 aria-hidden="true"
               />
             </article>

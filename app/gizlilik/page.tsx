@@ -24,17 +24,17 @@ export default function PrivacyPage() {
   return (
     <>
       <SiteHeader />
-      <main id="icerik" className="min-h-screen bg-background">
-        <section className="border-b border-border bg-card">
-          <div className="site-frame max-w-[900px] py-12 lg:py-16">
+      <main id="icerik">
+        <section>
+          <div className="site-frame py-10 lg:py-14">
             <Breadcrumbs
               items={[
                 { label: 'Ana sayfa', href: '/' },
                 { label: 'Gizlilik ve KVKK' },
               ]}
             />
-            <p className="section-kicker mt-8">Çevre Mevzuatı</p>
-            <h1 className="mt-3 font-heading text-[clamp(2.5rem,4.4vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+            <p className="label mt-8">Çevre Mevzuatı</p>
+            <h1 className="display-xl measure mt-4">
               Gizlilik ve KVKK
             </h1>
             <p className="mt-6 text-base leading-7 text-muted-foreground">
@@ -48,8 +48,8 @@ export default function PrivacyPage() {
         <section className="site-frame max-w-[900px] py-12 lg:py-16">
           <div className="grid gap-10">
             <div>
-              <h2 className="flex items-center gap-2.5 font-heading text-[1.75rem] font-semibold tracking-[-0.02em]">
-                <Database className="size-5 text-primary" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 display-md">
+                <Database className="size-5 text-seal" aria-hidden="true" />
                 Toplanan kişisel veri
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -61,8 +61,8 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 font-heading text-[1.75rem] font-semibold tracking-[-0.02em]">
-                <Cookie className="size-5 text-primary" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 display-md">
+                <Cookie className="size-5 text-seal" aria-hidden="true" />
                 Çerez ve tarayıcı depolaması
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -75,8 +75,8 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 font-heading text-[1.75rem] font-semibold tracking-[-0.02em]">
-                <Shield className="size-5 text-primary" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 display-md">
+                <Shield className="size-5 text-seal" aria-hidden="true" />
                 Sunucu kayıtları
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -90,8 +90,8 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 font-heading text-[1.75rem] font-semibold tracking-[-0.02em]">
-                <ExternalLinkIcon className="size-5 text-primary" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 display-md">
+                <ExternalLinkIcon className="size-5 text-seal" aria-hidden="true" />
                 Dış bağlantılar
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -104,7 +104,7 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h2 className="font-heading text-[1.75rem] font-semibold tracking-[-0.02em]">
+              <h2 className="display-md">
                 KVKK kapsamındaki haklarınız
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -117,7 +117,7 @@ export default function PrivacyPage() {
                 bakımından gündeme gelebilir.
               </p>
               {/* YAYIN ÖNCESİ: veri sorumlusu kimliği ve başvuru adresi eklenmeli. */}
-              <div className="mt-5 rounded-lg border border-dashed border-input bg-card p-5">
+              <div className="mt-5 border border-dashed border-rule-strong p-5">
                 <p className="text-base font-semibold">
                   Veri sorumlusu bilgisi eklenmedi
                 </p>
@@ -126,7 +126,7 @@ export default function PrivacyPage() {
                   açıkça belirtilmesini gerektirir. Bu bilgi ve başvuru adresi{' '}
                   <Link
                     href="/kunye"
-                    className="rounded font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+                    className="rounded font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
                   >
                     künye sayfasında
                   </Link>{' '}
@@ -135,7 +135,7 @@ export default function PrivacyPage() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-border bg-card p-6">
+            <div className="ruled pt-6">
               <h2 className="text-lg font-semibold">Bu metnin durumu</h2>
               <p className="mt-3 text-base leading-7 text-muted-foreground">
                 Metin, sitenin mevcut teknik davranışını doğru biçimde anlatır.

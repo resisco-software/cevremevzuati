@@ -78,12 +78,12 @@ export function GlossaryBrowser({
             id="glossary-search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="h-12 rounded-lg border-input bg-card pl-12 text-base shadow-none"
+            className="h-12 rounded-none border-x-0 border-t-0 border-b-2 border-ink bg-transparent pl-12 text-md shadow-none"
             placeholder="Terim, mevzuat veya konu ara…"
           />
         </label>
         <fieldset className="chip-scroller">
-          <legend className="sr-only">Konuya göre filtrele</legend>
+          <legend className="label mb-2.5">Konu</legend>
           <button
             type="button"
             onClick={() => setTag('all')}
@@ -106,7 +106,7 @@ export function GlossaryBrowser({
         </fieldset>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4 text-sm text-muted-foreground">
+      <div className="ruled mt-8 flex flex-wrap items-baseline justify-between gap-3 pt-4 text-sm text-muted-foreground">
         <span>
           <strong className="text-foreground">{filtered.length}</strong> tanım
         </span>
@@ -117,14 +117,14 @@ export function GlossaryBrowser({
       </p>
 
       {filtered.length > 0 ? (
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-rule">
           {filtered.map((entry) => (
             <article
               key={`${entry.term}-${entry.source}`}
-              className="grid gap-5 py-7 lg:grid-cols-[220px_1fr_250px] lg:gap-8"
+              className="grid gap-5 py-8 lg:grid-cols-[15rem_1fr] lg:gap-10"
             >
               <div>
-                <h3 className="font-heading text-lg font-semibold tracking-[-0.02em]">
+                <h3 className="font-display text-lg font-semibold">
                   {entry.term}
                 </h3>
                 {definitionCount[entry.term] > 1 && (
@@ -144,7 +144,7 @@ export function GlossaryBrowser({
               <div>
                 <blockquote
                   cite={entry.sourceUrl}
-                  className="text-base leading-7 text-foreground/90"
+                  className="quote"
                 >
                   {entry.verbatim ? `“${entry.definition}”` : entry.definition}
                 </blockquote>
@@ -154,33 +154,33 @@ export function GlossaryBrowser({
                     : 'Mevzuat tanımının sadeleştirilmiş özeti; bağlayıcı metin kaynaktadır.'}
                 </p>
               </div>
-              <div className="rounded-lg border border-border bg-secondary/55 p-4 text-sm leading-6">
-                <p className="font-semibold">{entry.source}</p>
-                <p className="mt-1 text-muted-foreground">{entry.article}</p>
-                <div className="mt-3 grid gap-2">
+              <div className="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-1 text-sm">
+                <p className="record text-xs text-muted-foreground">{entry.source}</p>
+                <p className="record text-xs text-muted-foreground">{entry.article}</p>
+                <>
                   {entry.sourceSlug && (
                     <Link
                       href={`/mevzuat/${entry.sourceSlug}`}
-                      className="rounded font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+                      className="text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
                     >
                       Kayıt sayfası
                     </Link>
                   )}
                   <ExternalLink
                     href={entry.sourceUrl}
-                    className="inline-flex items-center gap-1.5 rounded font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+                    className="inline-flex items-center gap-1.5 text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
                     iconClassName="size-3"
                   >
                     Resmî kaynak
                   </ExternalLink>
-                </div>
+                </>
               </div>
             </article>
           ))}
         </div>
       ) : (
         <div className="py-16 text-center">
-          <h3 className="font-heading text-lg font-semibold">
+          <h3 className="font-display text-lg font-semibold">
             Eşleşen tanım bulunamadı
           </h3>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -189,7 +189,7 @@ export function GlossaryBrowser({
           <Button
             type="button"
             variant="outline"
-            className="mt-5 h-10 rounded-md px-4"
+            className="mt-5 h-11 border border-rule-strong px-4"
             onClick={() => {
               setQuery('');
               setTag('all');

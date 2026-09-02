@@ -740,12 +740,12 @@ export function LegislationWizard({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-[0_24px_64px_-40px_oklch(0.18_0.03_166/0.45)]">
-      <div className="border-b border-border px-5 py-5 sm:px-7 sm:py-6">
+    <div>
+      <div className="pb-6">
         <div className="flex items-start justify-between gap-6">
           <div>
-            <p className="section-kicker mb-2">Şimdi başlayın</p>
-            <h2 className="font-heading text-[28px] font-semibold tracking-[-0.02em]">
+            <p className="label mb-3">Şimdi başlayın</p>
+            <h2 className="display-md">
               Tesisinize göre okuma rotası
             </h2>
             <p className="mt-2 max-w-lg text-sm leading-6 text-muted-foreground">
@@ -767,15 +767,15 @@ export function LegislationWizard({
               <li
                 key={label}
                 aria-current={current ? 'step' : undefined}
-                className={`rounded-md border px-2.5 py-2.5 transition-colors ${
+                className={`border-t-2 pt-2.5 pb-1 transition-colors ${
                   current
-                    ? 'border-primary bg-primary/8'
+                    ? 'border-seal'
                     : complete
-                      ? 'border-primary/30 bg-primary/4'
-                      : 'border-border'
+                      ? 'border-ink'
+                      : 'border-rule'
                 }`}
               >
-                <span className="meta-type flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="record flex items-center gap-1.5 text-xs text-muted-foreground">
                   {complete ? (
                     <>
                       <Check className="size-3 text-primary" aria-hidden="true" />
@@ -797,27 +797,27 @@ export function LegislationWizard({
           })}
         </ol>
         <div
-          className="mt-4 h-1 overflow-hidden rounded-full bg-muted"
+          className="mt-4 h-px bg-rule"
           aria-hidden="true"
         >
           <span
-            className="block h-full rounded-full bg-primary transition-[width] duration-300"
+            className="block h-full bg-seal transition-[width] duration-300"
             style={{ width: `${((step - 1) / (wizardSteps.length - 1)) * 100}%` }}
           />
         </div>
       </div>
 
-      <div className="px-5 py-6 sm:px-7 sm:py-7">
+      <div className="ruled-strong pt-8">
         <p className="sr-only" aria-live="polite">
           {`Adım ${step} / ${wizardSteps.length}: ${wizardSteps[step - 1]}`}
         </p>
 
         {step === 1 && (
           <section aria-labelledby="wizard-step-one">
-            <p className="section-kicker mb-2">1. adım</p>
+            <p className="label mb-3">1. adım</p>
             <h3
               id="wizard-step-one"
-              className="font-heading text-[28px] font-semibold tracking-[-0.02em]"
+              className="display-md"
             >
               Tüm kapsamı mı, belirli bir alanı mı tarayalım?
             </h3>
@@ -828,9 +828,9 @@ export function LegislationWizard({
               type="button"
               onClick={() => selectTopic('all')}
               aria-pressed={topic === 'all'}
-              className="topic-option mt-6 flex w-full items-center gap-4 rounded-lg border px-4 py-4 text-left"
+              className="topic-option mt-6 flex w-full items-center gap-4 px-4 py-4 text-left"
             >
-              <span className="grid size-10 shrink-0 place-items-center rounded-md bg-primary/10 text-primary">
+              <span className="grid size-10 shrink-0 place-items-center border border-rule text-seal">
                 <ScanSearch className="size-5" aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
@@ -847,7 +847,7 @@ export function LegislationWizard({
               )}
             </button>
 
-            <p className="section-kicker mt-7 mb-3">Ya da tek alanla başlayın</p>
+            <p className="label mt-8 mb-3">Ya da tek alanla başlayın</p>
             <ul className="grid gap-2 sm:grid-cols-2">
               {visibleTopics.map((category) => {
                 const Icon = icons[category.id as keyof typeof icons] ?? Layers3;
@@ -857,7 +857,7 @@ export function LegislationWizard({
                       type="button"
                       onClick={() => selectTopic(category.id)}
                       aria-pressed={topic === category.id}
-                      className="topic-option flex items-center gap-3 rounded-lg border px-3.5 py-3.5 text-left"
+                      className="topic-option flex items-center gap-3 px-3.5 py-3.5 text-left"
                     >
                       <Icon className="size-4 shrink-0 text-primary" aria-hidden="true" />
                       <span className="min-w-0 flex-1 text-sm font-medium">
@@ -876,7 +876,7 @@ export function LegislationWizard({
               type="button"
               onClick={() => setShowAllTopics((current) => !current)}
               aria-expanded={showAllTopics}
-              className="mt-3 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
             >
               {showAllTopics
                 ? 'Daha az alan göster'
@@ -887,7 +887,7 @@ export function LegislationWizard({
               />
             </button>
 
-            <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
+            <div className="ruled mt-8 flex flex-wrap items-center justify-between gap-4 pt-6">
               <p className="text-sm">
                 <span className="text-muted-foreground">Seçiminiz: </span>
                 <strong className="font-semibold">{selectedCategory.label}</strong>
@@ -895,7 +895,7 @@ export function LegislationWizard({
               <Button
                 type="button"
                 onClick={() => setStep(2)}
-                className="h-11 gap-2 rounded-md px-4"
+                className="h-11 gap-2 px-4"
               >
                 Devam et
                 <ArrowRight className="size-4" aria-hidden="true" />
@@ -906,10 +906,10 @@ export function LegislationWizard({
 
         {step === 2 && (
           <section aria-labelledby="wizard-step-two">
-            <p className="section-kicker mb-2">2. adım</p>
+            <p className="label mb-3">2. adım</p>
             <h3
               id="wizard-step-two"
-              className="font-heading text-[28px] font-semibold tracking-[-0.02em]"
+              className="display-md"
             >
               Tesisin temel profilini seçin
             </h3>
@@ -928,7 +928,7 @@ export function LegislationWizard({
                   id="facility-stage"
                   value={stage}
                   onChange={(event) => setStage(event.target.value)}
-                  className="w-full [&>select]:h-11 [&>select]:rounded-md [&>select]:bg-background"
+                  className="w-full [&>select]:h-12 [&>select]:rounded-none [&>select]:border-rule-strong [&>select]:bg-transparent"
                 >
                   {stageOptions.map((option) => (
                     <NativeSelectOption key={option.id} value={option.id}>
@@ -946,7 +946,7 @@ export function LegislationWizard({
                   id="facility-sector"
                   value={sector}
                   onChange={(event) => setSector(event.target.value)}
-                  className="w-full [&>select]:h-11 [&>select]:rounded-md [&>select]:bg-background"
+                  className="w-full [&>select]:h-12 [&>select]:rounded-none [&>select]:border-rule-strong [&>select]:bg-transparent"
                 >
                   {sectorOptions.map((option) => (
                     <NativeSelectOption key={option.id} value={option.id}>
@@ -956,7 +956,7 @@ export function LegislationWizard({
                 </NativeSelect>
               </label>
             </div>
-            <div className="mt-7 flex items-start gap-3 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3.5">
+            <div className="mt-7 border-l-2 border-seal pl-5">
               <Info className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
               <div>
                 <p className="text-sm font-semibold">
@@ -969,12 +969,12 @@ export function LegislationWizard({
                 </p>
               </div>
             </div>
-            <div className="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
+            <div className="ruled mt-8 flex flex-wrap items-center justify-between gap-3 pt-6">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => setStep(1)}
-                className="h-11 gap-2 rounded-md px-3"
+                className="h-11 gap-2 px-3"
               >
                 <ArrowLeft className="size-4" aria-hidden="true" />
                 Geri
@@ -982,7 +982,7 @@ export function LegislationWizard({
               <Button
                 type="button"
                 onClick={() => setStep(3)}
-                className="h-11 gap-2 rounded-md px-4"
+                className="h-11 gap-2 px-4"
               >
                 Koşullara geç
                 <ArrowRight className="size-4" aria-hidden="true" />
@@ -993,10 +993,10 @@ export function LegislationWizard({
 
         {step === 3 && (
           <section aria-labelledby="wizard-step-three">
-            <p className="section-kicker mb-2">3. adım</p>
+            <p className="label mb-3">3. adım</p>
             <h3
               id="wizard-step-three"
-              className="font-heading text-[28px] font-semibold tracking-[-0.02em]"
+              className="display-md"
             >
               Tesiste hangi koşullar var?
             </h3>
@@ -1009,7 +1009,7 @@ export function LegislationWizard({
                 <legend className="mb-3 w-full text-sm font-semibold">
                   <span className="flex items-center justify-between gap-3">
                     <span>Proses ve çevresel çıkışlar</span>
-                    <span className="meta-type text-xs font-medium text-muted-foreground">
+                    <span className="record text-xs text-muted-foreground">
                       {visibleFeatureOptions.length} seçenek
                     </span>
                   </span>
@@ -1019,7 +1019,7 @@ export function LegislationWizard({
                     {visibleFeatureOptions.map((option) => (
                       <label
                         key={option.id}
-                        className="choice-row flex cursor-pointer items-start gap-3 rounded-lg border border-border px-3.5 py-3 text-sm leading-6 transition-colors hover:bg-muted/50"
+                        className="choice-row flex cursor-pointer items-start gap-3 px-3.5 py-3 text-sm leading-7"
                       >
                         <Checkbox
                           checked={features.includes(option.id)}
@@ -1033,7 +1033,7 @@ export function LegislationWizard({
                     ))}
                   </div>
                 ) : (
-                  <p className="rounded-lg border border-dashed border-input px-4 py-6 text-sm leading-6 text-muted-foreground">
+                  <p className="border border-dashed border-rule-strong px-4 py-6 text-sm leading-7 text-muted-foreground">
                     Bu alanda proses koşulu sorulmuyor. Kapsam, aşağıdaki konum
                     bilgileri ve tesis profiliyle belirlenir.
                   </p>
@@ -1043,7 +1043,7 @@ export function LegislationWizard({
                 <legend className="mb-3 w-full text-sm font-semibold">
                   <span className="flex items-center justify-between gap-3">
                     <span>Konum bilgileri</span>
-                    <span className="meta-type text-xs font-medium text-muted-foreground">
+                    <span className="record text-xs text-muted-foreground">
                       {locationOptions.length} seçenek
                     </span>
                   </span>
@@ -1052,7 +1052,7 @@ export function LegislationWizard({
                   {locationOptions.map((option) => (
                     <label
                       key={option.id}
-                      className="choice-row flex cursor-pointer items-start gap-3 rounded-lg border border-border px-3.5 py-3 text-sm leading-6 transition-colors hover:bg-muted/50"
+                      className="choice-row flex cursor-pointer items-start gap-3 px-3.5 py-3 text-sm leading-7"
                     >
                       <Checkbox
                         checked={locations.includes(option.id)}
@@ -1071,12 +1071,12 @@ export function LegislationWizard({
                 </p>
               </fieldset>
             </div>
-            <div className="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
+            <div className="ruled mt-8 flex flex-wrap items-center justify-between gap-3 pt-6">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => setStep(2)}
-                className="h-11 gap-2 rounded-md px-3"
+                className="h-11 gap-2 px-3"
               >
                 <ArrowLeft className="size-4" aria-hidden="true" />
                 Geri
@@ -1084,7 +1084,7 @@ export function LegislationWizard({
               <Button
                 type="button"
                 onClick={() => setStep(4)}
-                className="h-11 gap-2 rounded-md px-4"
+                className="h-11 gap-2 px-4"
               >
                 Okuma listesini oluştur
                 <ArrowRight className="size-4" aria-hidden="true" />
@@ -1097,10 +1097,10 @@ export function LegislationWizard({
           <section aria-labelledby="wizard-step-four">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="section-kicker mb-2">4. adım · ön okuma listesi</p>
+                <p className="label mb-3">4. adım · ön okuma listesi</p>
                 <h3
                   id="wizard-step-four"
-                  className="font-heading text-[28px] font-semibold tracking-[-0.02em]"
+                  className="display-md"
                 >
                   {selectedCategory.label} için başlangıç rotası
                 </h3>
@@ -1116,7 +1116,7 @@ export function LegislationWizard({
             </div>
 
             {missingAnswers.length > 0 ? (
-              <div className="mt-6 flex items-start gap-3 rounded-lg border border-accent/40 bg-accent/10 px-4 py-3.5">
+              <div className="mt-6 border-l-2 border-ochre pl-5">
                 <TriangleAlert
                   className="mt-0.5 size-4 shrink-0 text-accent-foreground dark:text-accent"
                   aria-hidden="true"
@@ -1134,7 +1134,7 @@ export function LegislationWizard({
                 </div>
               </div>
             ) : (
-              <div className="mt-6 flex items-start gap-3 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3.5">
+              <div className="mt-6 border-l-2 border-seal pl-5">
                 <Info className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
                 <div>
                   <p className="text-sm font-semibold">
@@ -1154,7 +1154,7 @@ export function LegislationWizard({
                 <section key={group.key} aria-labelledby={`group-${group.key}`}>
                   <h4
                     id={`group-${group.key}`}
-                    className="font-heading text-lg font-semibold tracking-[-0.02em]"
+                    className="font-display text-lg font-semibold"
                   >
                     {group.title}
                     <span className="ml-2 text-sm font-normal text-muted-foreground">
@@ -1169,16 +1169,13 @@ export function LegislationWizard({
                       const item = getLegislation(slug);
                       if (!item) return null;
                       return (
-                        <li
-                          key={slug}
-                          className="rounded-lg border border-border bg-background px-4 py-4"
-                        >
+                        <li key={slug} className="ruled py-4">
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div className="min-w-0 flex-1">
                               <h5 className="text-base font-semibold leading-6">
                                 <Link
                                   href={`/mevzuat/${item.slug}`}
-                                  className="rounded hover:text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+                                  className="hover:text-seal hover:underline hover:decoration-seal decoration-rule underline-offset-4"
                                 >
                                   {item.title}
                                 </Link>
@@ -1214,7 +1211,7 @@ export function LegislationWizard({
                               )}
                               <ExternalLink
                                 href={item.consolidatedUrl ?? item.sourceUrl}
-                                className="inline-flex items-center gap-1.5 rounded text-sm font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+                                className="inline-flex items-center gap-1.5 text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
                                 iconClassName="size-3"
                               >
                                 {item.consolidatedUrl
@@ -1231,12 +1228,12 @@ export function LegislationWizard({
               ))}
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-border pt-6">
+            <div className="ruled mt-8 flex flex-wrap items-center gap-3 pt-6">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => setStep(3)}
-                className="h-11 gap-2 rounded-md px-3"
+                className="h-11 gap-2 px-3"
               >
                 <ArrowLeft className="size-4" aria-hidden="true" />
                 Geri
@@ -1245,7 +1242,7 @@ export function LegislationWizard({
                 type="button"
                 variant="outline"
                 onClick={copyLink}
-                className="h-11 gap-2 rounded-md bg-card px-4"
+                className="h-11 gap-2 border border-rule-strong px-4"
               >
                 <Copy className="size-4" aria-hidden="true" />
                 {copied ? 'Bağlantı kopyalandı' : 'Bağlantıyı kopyala'}
@@ -1254,7 +1251,7 @@ export function LegislationWizard({
                 type="button"
                 variant="outline"
                 onClick={() => window.print()}
-                className="h-11 gap-2 rounded-md bg-card px-4"
+                className="h-11 gap-2 border border-rule-strong px-4"
               >
                 <Printer className="size-4" aria-hidden="true" />
                 Yazdır
@@ -1263,7 +1260,7 @@ export function LegislationWizard({
                 type="button"
                 variant="ghost"
                 onClick={reset}
-                className="h-11 gap-2 rounded-md px-3"
+                className="h-11 gap-2 px-3"
               >
                 <RotateCcw className="size-4" aria-hidden="true" />
                 Yeni rota
@@ -1275,7 +1272,7 @@ export function LegislationWizard({
                     href={topic === 'all' ? '/mevzuat' : `/mevzuat?alan=${topic}`}
                   />
                 }
-                className="h-11 gap-2 rounded-md px-4"
+                className="h-11 gap-2 px-4"
               >
                 Mevzuat dizininde aç
                 <ArrowRight className="size-4" aria-hidden="true" />

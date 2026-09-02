@@ -9,17 +9,13 @@ type ThemeChoice = 'light' | 'dark' | 'system';
 
 const order: ThemeChoice[] = ['system', 'light', 'dark'];
 
-const meta: Record<ThemeChoice, { label: string; description: string }> = {
-  system: { label: 'Sistem', description: 'sistem temasını izliyor' },
-  light: { label: 'Açık', description: 'açık tema' },
-  dark: { label: 'Koyu', description: 'koyu tema' },
+const meta: Record<ThemeChoice, { short: string; long: string }> = {
+  system: { short: 'Sistem', long: 'sistem temasını izliyor' },
+  light: { short: 'Açık', long: 'açık tema' },
+  dark: { short: 'Koyu', long: 'koyu tema' },
 };
 
 const listeners = new Set<() => void>();
-
-function emit() {
-  for (const listener of listeners) listener();
-}
 
 function subscribe(listener: () => void) {
   listeners.add(listener);
@@ -39,7 +35,6 @@ function readChoice(): ThemeChoice {
   }
 }
 
-/** Sunucuda ve ilk boyamada "sistem" varsayılır; head'deki betik temayı zaten uygular. */
 function serverChoice(): ThemeChoice {
   return 'system';
 }
@@ -53,6 +48,11 @@ function applyTheme(choice: ThemeChoice) {
   document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
 }
 
+/**
+ * Tema anahtarı. Önceki sürümde yalnızca mevcut durumun adı yazıyordu
+ * ("Sistem") ve bunun bir tema anahtarı olduğu anlaşılmıyordu; artık
+ * "Tema" sözcüğü görünür etikette yer alıyor.
+ */
 export function ThemeToggle() {
   const choice = useSyncExternalStore(subscribe, readChoice, serverChoice);
 
@@ -65,7 +65,7 @@ export function ThemeToggle() {
       /* depolama kapalıysa tema yalnızca bu sekmede geçerli olur */
     }
     applyTheme(next);
-    emit();
+    for (const listener of listeners) listener();
   }, [choice]);
 
   const current = meta[choice];
@@ -76,13 +76,13 @@ export function ThemeToggle() {
       type="button"
       onClick={selectNext}
       suppressHydrationWarning
-      className="inline-flex h-10 items-center gap-2 rounded-md border border-input bg-card px-2.5 text-sm font-medium hover:bg-muted focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60 xl:px-3"
-      aria-label={`Tema: ${current.description}. Değiştirmek için tıklayın.`}
-      title={`Tema: ${current.description}`}
+      className="inline-flex h-10 items-center gap-2 border border-rule-strong px-2.5 text-sm text-lead hover:border-ink hover:text-ink sm:px-3"
+      aria-label={`Tema: ${current.long}. Değiştirmek için tıklayın.`}
+      title={`Tema: ${current.long}`}
     >
       <Icon className="size-4 shrink-0" aria-hidden="true" />
-      <span className="hidden text-sm xl:inline" aria-hidden="true">
-        {current.label}
+      <span className="hidden sm:inline" aria-hidden="true">
+        Tema: <span className="text-ink">{current.short}</span>
       </span>
     </button>
   );

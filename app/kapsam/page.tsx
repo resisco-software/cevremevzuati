@@ -34,13 +34,9 @@ export default function ScopePage() {
   return (
     <>
       <SiteHeader />
-      <main id="icerik" className="min-h-screen bg-background">
-        <section className="hero-surface relative overflow-hidden border-b border-border">
-          <div
-            className="document-grid pointer-events-none absolute inset-0"
-            aria-hidden="true"
-          />
-          <div className="site-frame relative py-12 lg:py-16">
+      <main id="icerik">
+        <section>
+          <div className="site-frame py-10 lg:py-14">
             <Breadcrumbs
               items={[
                 { label: 'Ana sayfa', href: '/' },
@@ -49,8 +45,8 @@ export default function ScopePage() {
             />
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                <p className="section-kicker">Çevre mevzuatı</p>
-                <h1 className="mt-3 max-w-3xl font-heading text-[clamp(2.5rem,4.4vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+                <p className="label">Çevre mevzuatı</p>
+                <h1 className="display-xl measure mt-4">
                   Kapsam haritası
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
@@ -62,7 +58,7 @@ export default function ScopePage() {
                   <Button
                     nativeButton={false}
                     render={<Link href="/#alanlar" />}
-                    className="h-12 gap-2 rounded-md px-5 text-base"
+                    className="inline-flex h-12 items-center gap-2 bg-seal px-5 text-base font-medium text-primary-foreground hover:bg-ink"
                   >
                     <ScanSearch className="size-4" aria-hidden="true" />
                     Tesisimin kapsamını tara
@@ -71,32 +67,32 @@ export default function ScopePage() {
                     nativeButton={false}
                     render={<Link href="/mevzuat" />}
                     variant="outline"
-                    className="h-12 gap-2 rounded-md bg-card px-5 text-base"
+                    className="inline-flex h-12 items-center gap-2 border border-rule-strong px-5 text-base hover:border-ink"
                   >
                     Tüm mevzuatı aç
                     <ArrowRight className="size-4" aria-hidden="true" />
                   </Button>
                 </div>
               </div>
-              <dl className="precision-card grid gap-px overflow-hidden bg-border p-0 sm:grid-cols-3 lg:w-[380px]">
-                <div className="bg-card px-5 py-4">
-                  <dd className="font-heading text-[1.75rem] font-semibold">
+              <dl className="kunye lg:w-[20rem]">
+                <div>
+                  <dd className="display-md">
                     {categories.length}
                   </dd>
                   <dt className="mt-1 text-sm text-muted-foreground">
                     ana çevre alanı
                   </dt>
                 </div>
-                <div className="bg-card px-5 py-4">
-                  <dd className="font-heading text-[1.75rem] font-semibold">
+                <div>
+                  <dd className="display-md">
                     {subtopicCount()}
                   </dd>
                   <dt className="mt-1 text-sm text-muted-foreground">
                     alt konu başlığı
                   </dt>
                 </div>
-                <div className="bg-card px-5 py-4">
-                  <dd className="font-heading text-[1.75rem] font-semibold">
+                <div>
+                  <dd className="display-md">
                     {legislation.length}
                   </dd>
                   <dt className="mt-1 text-sm text-muted-foreground">
@@ -109,8 +105,8 @@ export default function ScopePage() {
         </section>
 
         <section className="site-frame py-12 lg:py-16">
-          <p className="section-kicker">{categories.length} ana alan</p>
-          <h2 className="mt-3 font-heading text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.03em]">
+          <p className="label">{categories.length} ana alan</p>
+          <h2 className="display-lg mt-4">
             Önce alanı seçin.
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground">
@@ -125,22 +121,22 @@ export default function ScopePage() {
               return (
                 <li
                   key={category.id}
-                  className="area-tile precision-card flex flex-col gap-4 p-6"
+                  className="hanging py-6"
                 >
                   <div className="flex items-baseline justify-between gap-4">
-                    <span className="meta-type text-sm text-muted-foreground">
+                    <span className="record text-sm text-muted-foreground">
                       {String(index + 1).padStart(2, '0')} /{' '}
                       {categories.length}
                     </span>
-                    <span className="meta-type text-sm font-semibold text-primary">
+                    <span className="record text-sm font-semibold text-seal">
                       {count} kayıt
                     </span>
                   </div>
                   <div>
-                    <h3 className="font-heading text-lg font-semibold leading-7 tracking-[-0.02em]">
+                    <h3 className="font-display text-md font-semibold leading-snug">
                       {category.label}
                     </h3>
-                    <div className="weight-bar mt-3" aria-hidden="true">
+                    <div className="measure-bar mt-3 max-w-sm" aria-hidden="true">
                       <span
                         style={{
                           width: `${Math.max(6, (count / maxCount) * 100)}%`,
@@ -155,7 +151,7 @@ export default function ScopePage() {
                     {category.subtopics.map((subtopic) => (
                       <li
                         key={subtopic}
-                        className="rounded-full border border-border px-3 py-1.5 text-sm text-muted-foreground"
+                        className="border border-rule px-2.5 py-1 text-sm text-muted-foreground"
                       >
                         {subtopic}
                       </li>
@@ -163,7 +159,7 @@ export default function ScopePage() {
                   </ul>
                   <Link
                     href={`/mevzuat?alan=${category.id}`}
-                    className="mt-auto inline-flex items-center gap-2 rounded text-sm font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+                    className="mt-auto inline-flex items-center gap-2 rounded text-sm font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
                   >
                     Bu alandaki {count} kaydı aç
                     <ArrowRight className="size-4" aria-hidden="true" />

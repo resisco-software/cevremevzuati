@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-/** Masaüstü ana menü. Bulunulan sayfa aria-current ile işaretlenir. */
+/** Etkin sayfa mühür rengiyle altı çizilir; dolgu kullanılmaz. */
 export function NavLinks({
   items,
 }: {
@@ -13,11 +13,10 @@ export function NavLinks({
 
   return (
     <nav
-      className="hidden h-full min-w-0 items-center gap-0.5 text-sm text-muted-foreground lg:flex"
+      className="hidden min-w-0 items-center gap-6 text-sm lg:flex"
       aria-label="Ana menü"
     >
       {items.map((item) => {
-        // '/#alanlar' gibi çapa bağlantıları yalnızca ana sayfada aktiftir.
         const path = item.href.split('#')[0] || '/';
         const active =
           path === '/'
@@ -28,8 +27,10 @@ export function NavLinks({
             key={item.href}
             href={item.href}
             aria-current={active ? 'page' : undefined}
-            className={`rounded-md px-2.5 py-2 whitespace-nowrap transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60 ${
-              active ? 'bg-muted font-semibold text-foreground' : ''
+            className={`whitespace-nowrap border-b-2 py-1 transition-colors ${
+              active
+                ? 'border-seal font-medium text-ink'
+                : 'border-transparent text-lead hover:border-rule-strong hover:text-ink'
             }`}
           >
             {item.label}

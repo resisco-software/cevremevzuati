@@ -48,9 +48,9 @@ export default async function GlossaryPage({
           })),
         }}
       />
-      <main id="icerik" className="min-h-screen bg-background">
-        <section className="border-b border-border bg-card">
-          <div className="site-frame py-12 lg:py-16">
+      <main id="icerik">
+        <section>
+          <div className="site-frame py-10 lg:py-14">
             <Breadcrumbs
               items={[
                 { label: 'Ana sayfa', href: '/' },
@@ -59,8 +59,8 @@ export default async function GlossaryPage({
             />
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_320px] lg:items-end">
               <div>
-                <p className="section-kicker">Çevre mevzuatı</p>
-                <h1 className="mt-3 max-w-3xl font-heading text-[clamp(2.5rem,4.4vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+                <p className="label">Çevre mevzuatı</p>
+                <h1 className="display-xl measure mt-4">
                   Mevzuat sözlüğü
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
@@ -69,8 +69,8 @@ export default async function GlossaryPage({
                   düzenlemelerde farklı tanımlanıyorsa kayıtlar ayrılır.
                 </p>
               </div>
-              <div className="precision-card bg-primary/5 p-5">
-                <Quote className="size-5 text-primary" aria-hidden="true" />
+              <div className="border-l-2 border-seal pl-5">
+                <Quote className="size-5 text-seal" aria-hidden="true" />
                 <p className="mt-4 text-base font-semibold">
                   Tanım + düzenleme + madde
                 </p>

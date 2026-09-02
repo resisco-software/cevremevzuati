@@ -1,21 +1,8 @@
 import type { Metadata } from 'next';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import {
-  Archive,
-  ArrowLeft,
-  CheckCircle2,
-  ClipboardList,
-  FileClock,
-  Info,
-  Link2,
-  ListChecks,
-  Newspaper,
-  ShieldCheck,
-} from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/site/breadcrumbs';
 import { ExternalLink } from '@/components/site/external-link';
 import { JsonLd } from '@/components/site/json-ld';
@@ -94,352 +81,290 @@ export default async function LegislationDetailPage({
           publisher: { '@type': 'Organization', name: siteName },
         }}
       />
-      <main id="icerik" className="min-h-screen bg-background">
-        <section className="border-b border-border bg-card">
-          <div className="site-frame max-w-[1200px] py-10 lg:py-14">
-            <Breadcrumbs
-              items={[
-                { label: 'Ana sayfa', href: '/' },
-                { label: 'Mevzuat', href: '/mevzuat' },
-                ...(primaryCategory
-                  ? [
-                      {
-                        label: primaryCategory.shortLabel,
-                        href: `/mevzuat?alan=${primaryCategory.id}`,
-                      },
-                    ]
-                  : []),
-                { label: item.title },
-              ]}
-            />
-            <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_300px] lg:items-start">
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary">{item.type}</Badge>
-                  <Badge
-                    variant="outline"
-                    className={`gap-1 ${
-                      item.status === 'Yürürlükte'
-                        ? 'border-primary/25 bg-primary/5 text-primary'
-                        : 'border-destructive/30 bg-destructive/8 text-destructive'
-                    }`}
-                  >
-                    {item.status === 'Yürürlükte' ? (
-                      <CheckCircle2 className="size-3" aria-hidden="true" />
-                    ) : (
-                      <Archive className="size-3" aria-hidden="true" />
-                    )}{' '}
-                    {item.status}
-                  </Badge>
-                </div>
-                <h1 className="mt-5 max-w-4xl font-heading text-[clamp(2rem,3.4vw,2.75rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
-                  {item.title}
-                </h1>
-                {item.originalTitle && (
-                  <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
-                    İlk yayımdaki adı: {item.originalTitle}
-                  </p>
-                )}
-                {item.aliases.length > 0 && (
-                  <p className="meta-type mt-3 text-sm text-muted-foreground">
-                    Ayrıca bilinen adlar: {item.aliases.join(', ')}
-                  </p>
-                )}
-                <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground">
-                  {item.summary}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {itemCategories.map((category) => (
-                    <Link
-                      key={category.id}
-                      href={`/mevzuat?alan=${category.id}`}
-                      className="rounded-full border border-border px-3 py-1.5 text-sm font-medium hover:border-primary/40 hover:text-primary focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
-                    >
-                      {category.shortLabel}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              <aside className="precision-card bg-background p-5">
-                <h2 className="section-kicker">Resmî Gazete</h2>
-                <dl className="mt-4 grid gap-3 text-sm">
-                  <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
-                    <dt className="text-muted-foreground">Tarih</dt>
-                    <dd className="meta-type text-right font-medium">
-                      {item.publicationLabel}
-                    </dd>
-                  </div>
-                  <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
-                    <dt className="text-muted-foreground">Sayı</dt>
-                    <dd className="meta-type text-right font-medium">
-                      {item.gazetteNumber}
-                    </dd>
-                  </div>
-                  <div className="flex items-baseline justify-between gap-4">
-                    <dt className="text-muted-foreground">Son kontrol</dt>
-                    <dd className="meta-type text-right font-medium">
-                      {item.checkedAt}
-                    </dd>
-                  </div>
-                </dl>
-                <ExternalLink
-                  href={item.consolidatedUrl ?? item.sourceUrl}
-                  className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
-                  iconClassName="size-4"
-                >
-                  {item.consolidatedUrl ? 'Güncel metni aç' : 'Resmî kaynağı aç'}
-                </ExternalLink>
-                {item.consolidatedUrl && (
-                  <ExternalLink
-                    href={item.sourceUrl}
-                    className="mt-3 flex items-center justify-center gap-1.5 rounded text-sm font-medium text-muted-foreground hover:text-foreground focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
-                    iconClassName="size-3"
-                  >
-                    İlk yayım kaynağı
-                  </ExternalLink>
-                )}
-                {item.sourceNote && (
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    {item.sourceNote}
-                  </p>
-                )}
-              </aside>
-            </div>
-          </div>
-        </section>
+      <main id="icerik">
+        <div className="site-frame pt-8 pb-14 lg:pb-20">
+          <Breadcrumbs
+            items={[
+              { label: 'Ana sayfa', href: '/' },
+              { label: 'Mevzuat', href: '/mevzuat' },
+              ...(primaryCategory
+                ? [
+                    {
+                      label: primaryCategory.shortLabel,
+                      href: `/mevzuat?alan=${primaryCategory.id}`,
+                    },
+                  ]
+                : []),
+              { label: item.title },
+            ]}
+          />
 
-        <section className="site-frame grid max-w-[1200px] gap-10 py-12 lg:grid-cols-[1fr_320px] lg:py-16">
-          <div>
-            <section aria-labelledby="scope-title">
-              <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-lg bg-secondary text-primary">
-                  <ListChecks className="size-4.5" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="section-kicker">Kapsam</p>
-                  <h2
-                    id="scope-title"
-                    className="font-heading text-[1.75rem] font-semibold tracking-[-0.02em]"
-                  >
-                    Bu düzenleme kimi kapsar?
-                  </h2>
-                </div>
-              </div>
-              <p className="mt-5 max-w-3xl text-base leading-7">
-                {item.appliesTo}
+          <div className="ledger mt-10">
+            {/* ---- okuma sütunu ---- */}
+            <article>
+              <p className="label">
+                {item.type}
+                {item.foundation && ' · Temel düzenleme'}
               </p>
-              {item.primaryAnnex && (
-                <div className="mt-6 rounded-lg border border-border bg-card p-5">
-                  <h3 className="text-base font-semibold">
-                    Önce bakılacak ek veya madde
-                  </h3>
-                  <p className="mt-2 text-base leading-7 text-muted-foreground">
-                    {item.primaryAnnex}
-                  </p>
-                </div>
+              <h1 className="display-lg mt-4 max-w-4xl">{item.title}</h1>
+
+              {item.originalTitle && (
+                <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                  İlk yayımdaki adı:{' '}
+                  <span className="text-ink">{item.originalTitle}</span>
+                </p>
               )}
-              {item.obligations.length > 0 && (
-                <div className="mt-4 rounded-lg border border-border bg-card p-5">
-                  <h3 className="flex items-center gap-2 text-base font-semibold">
-                    <ClipboardList
-                      className="size-4 text-primary"
-                      aria-hidden="true"
-                    />
-                    Tipik yükümlülükler
-                  </h3>
-                  <ul className="mt-3 grid gap-2">
-                    {item.obligations.map((obligation) => (
-                      <li
-                        key={obligation}
-                        className="flex items-start gap-2.5 text-base leading-7 text-muted-foreground"
-                      >
-                        <CheckCircle2
-                          className="mt-1.5 size-3.5 shrink-0 text-primary"
-                          aria-hidden="true"
-                        />
-                        {obligation}
+              {item.aliases.length > 0 && (
+                <p className="record mt-3 text-xs text-muted-foreground">
+                  {item.aliases.join(' · ')}
+                </p>
+              )}
+
+              <p className="measure mt-6 text-md leading-8">{item.summary}</p>
+
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+                <span
+                  className={
+                    item.status === 'Yürürlükte'
+                      ? 'status'
+                      : 'status status-repealed'
+                  }
+                >
+                  {item.status}
+                </span>
+                {itemCategories.map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/mevzuat?alan=${category.id}`}
+                    className="text-sm text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
+                  >
+                    {category.shortLabel}
+                  </Link>
+                ))}
+              </div>
+
+              {/* kapsam */}
+              <section className="ruled-strong mt-12 pt-8">
+                <h2 className="display-md">Bu düzenleme kimi kapsar?</h2>
+                <p className="measure mt-5 text-md leading-8">
+                  {item.appliesTo}
+                </p>
+
+                {item.primaryAnnex && (
+                  <div className="ruled mt-8 pt-5">
+                    <h3 className="label">Önce bakılacak ek veya madde</h3>
+                    <p className="measure font-display mt-3 text-md leading-8">
+                      {item.primaryAnnex}
+                    </p>
+                  </div>
+                )}
+
+                {item.obligations.length > 0 && (
+                  <div className="ruled mt-8 pt-5">
+                    <h3 className="label">Tipik yükümlülükler</h3>
+                    <ol className="record-list mt-3">
+                      {item.obligations.map((obligation, index) => (
+                        <li key={obligation}>
+                          <div className="hanging py-3">
+                            <span className="hanging-num">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                            <span className="text-md leading-8">
+                              {obligation}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                    <p className="measure mt-4 text-sm leading-7 text-muted-foreground">
+                      Bu başlıklar yönlendirme amaçlıdır. Hangi yükümlülüğün
+                      tesisinize düştüğü, yukarıdaki ek ve eşik değerlerle
+                      doğrulanmalıdır.
+                    </p>
+                  </div>
+                )}
+              </section>
+
+              {/* sürüm zinciri */}
+              <section className="ruled-strong mt-12 pt-8">
+                <h2 className="display-md">Sürüm ve değişiklikler</h2>
+                {hasChanges ? (
+                  <ol className="record-list mt-6">
+                    <li>
+                      <div className="hanging py-4">
+                        <time
+                          dateTime={item.publicationDate}
+                          className="hanging-num"
+                        >
+                          {item.publicationDate.slice(0, 4)}
+                        </time>
+                        <p className="font-display text-md font-semibold">
+                          İlk yayım
+                        </p>
+                        <p className="record mt-1 text-xs text-muted-foreground">
+                          {item.publicationLabel} · {item.gazetteNumber} sayılı
+                          Resmî Gazete
+                        </p>
+                      </div>
+                    </li>
+                    {item.changes?.map((change) => (
+                      <li key={change.sourceUrl}>
+                        <div className="hanging py-4">
+                          <span className="hanging-num">
+                            {change.date.slice(-4)}
+                          </span>
+                          <p className="font-display text-md font-semibold leading-snug">
+                            {change.label}
+                          </p>
+                          <p className="record mt-1 text-xs text-muted-foreground">
+                            {change.date}
+                          </p>
+                          <ExternalLink
+                            href={change.sourceUrl}
+                            className="mt-2 inline-flex items-center gap-1.5 text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                            iconClassName="size-3"
+                          >
+                            Değişiklik kaynağı
+                          </ExternalLink>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  <div className="mt-6 border-l-2 border-ochre pl-5">
+                    <p className="font-display text-md font-semibold">
+                      Bu kayıtta değişiklik zinciri henüz işlenmedi
+                    </p>
+                    <p className="measure mt-2 leading-8 text-muted-foreground">
+                      Kayıtta yalnızca ilk yayım künyesi bulunuyor:{' '}
+                      {item.publicationLabel}, {item.gazetteNumber} sayılı
+                      Resmî Gazete. Düzenlemenin sonradan değişmiş olabileceğini
+                      varsayın ve güncel metni resmî kaynağından kontrol edin.
+                    </p>
+                  </div>
+                )}
+              </section>
+
+              {/* aynı nüsha */}
+              {sameGazette.length > 0 && (
+                <section className="ruled-strong mt-12 pt-8">
+                  <h2 className="display-md">Aynı nüshadaki diğer kayıtlar</h2>
+                  <p className="measure mt-4 leading-8 text-muted-foreground">
+                    {item.gazetteNumber} sayılı Resmî Gazete&apos;de bu
+                    düzenlemeyle birlikte {sameGazette.length} düzenleme daha
+                    yayımlandı. Aynı nüsha, ayrı kayıtlardır.
+                  </p>
+                  <ul className="record-list mt-5">
+                    {sameGazette.map((other) => (
+                      <li key={other.slug}>
+                        <Link
+                          href={`/mevzuat/${other.slug}`}
+                          className="record-row flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-4"
+                        >
+                          <span className="font-display max-w-2xl text-base font-semibold">
+                            {other.title}
+                          </span>
+                          <span className="record text-xs text-muted-foreground">
+                            {other.type}
+                          </span>
+                        </Link>
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                    Bu başlıklar yönlendirme amaçlıdır; hangi yükümlülüğün
-                    tesisinize düştüğü ilgili ek ve eşik değerlerle
-                    doğrulanmalıdır.
-                  </p>
-                </div>
+                </section>
               )}
-            </section>
+            </article>
 
-            <section
-              className="mt-12 border-t border-border pt-10"
-              aria-labelledby="version-title"
-            >
-              <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-lg bg-secondary text-primary">
-                  <FileClock className="size-4.5" aria-hidden="true" />
-                </span>
+            {/* ---- künye sütunu ---- */}
+            <aside>
+              <h2 className="label">Resmî Gazete</h2>
+              <dl className="kunye mt-4">
                 <div>
-                  <p className="section-kicker">Kayıt zinciri</p>
-                  <h2
-                    id="version-title"
-                    className="font-heading text-[1.75rem] font-semibold tracking-[-0.02em]"
-                  >
-                    Sürüm ve değişiklikler
-                  </h2>
+                  <dt>Tarih</dt>
+                  <dd>{item.publicationLabel}</dd>
                 </div>
+                <div>
+                  <dt>Sayı</dt>
+                  <dd>{item.gazetteNumber}</dd>
+                </div>
+                <div>
+                  <dt>Tür</dt>
+                  <dd>{item.type}</dd>
+                </div>
+                <div>
+                  <dt>Yürürlük</dt>
+                  <dd>{item.status}</dd>
+                </div>
+                <div>
+                  <dt>Son kontrol</dt>
+                  <dd>{item.checkedAt}</dd>
+                </div>
+              </dl>
+
+              <ExternalLink
+                href={item.consolidatedUrl ?? item.sourceUrl}
+                className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 bg-seal px-4 text-sm font-medium text-primary-foreground hover:bg-ink"
+                iconClassName="size-3.5"
+              >
+                {item.consolidatedUrl ? 'Güncel metni aç' : 'Resmî kaynağı aç'}
+              </ExternalLink>
+              {item.consolidatedUrl && (
+                <ExternalLink
+                  href={item.sourceUrl}
+                  className="mt-3 flex items-center justify-center gap-1.5 text-sm text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
+                  iconClassName="size-3"
+                >
+                  İlk yayım kaynağı
+                </ExternalLink>
+              )}
+              {item.sourceNote && (
+                <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                  {item.sourceNote}
+                </p>
+              )}
+
+              <div className="ruled mt-8 pt-5">
+                <h2 className="label">Kaynak niteliği</h2>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  {item.status === 'Yürürlükten kaldırıldı'
+                    ? 'Bu kayıt tarihsel iz için tutulur ve güncel okuma rotasına eklenmez.'
+                    : item.verification === 'doğrulandı'
+                      ? 'Yayım tarihi ve resmî ad, Resmî Gazete kaydıyla karşılaştırıldı. Kaynak bağlantısı madde düzeyinde açılıyor.'
+                      : 'Kayıt eklendi, künye doğrulaması sürüyor. Yükümlülük sonucu olarak kullanmadan önce resmî kaynaktan teyit edin.'}
+                </p>
+                <Link
+                  href="/metodoloji"
+                  className="mt-3 inline-block text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                >
+                  Kaynak ve yöntem
+                </Link>
               </div>
 
-              {hasChanges ? (
-                <div className="mt-6 border-l border-primary/30 pl-6">
-                  <article className="relative pb-7">
-                    <span className="absolute top-1.5 -left-[29px] size-2 rounded-full bg-primary ring-4 ring-background" />
-                    <time
-                      dateTime={item.publicationDate}
-                      className="meta-type text-sm font-medium text-primary"
-                    >
-                      {item.publicationLabel}
-                    </time>
-                    <h3 className="mt-1 text-base font-semibold">İlk yayım</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {item.gazetteNumber} sayılı Resmî Gazete
-                    </p>
-                  </article>
-                  {item.changes?.map((change) => (
-                    <article key={change.sourceUrl} className="relative pb-7">
-                      <span className="absolute top-1.5 -left-[29px] size-2 rounded-full bg-accent-foreground ring-4 ring-background dark:bg-accent" />
-                      <time className="meta-type text-sm font-medium text-primary">
-                        {change.date}
-                      </time>
-                      <h3 className="mt-1 text-base font-semibold leading-6">
-                        {change.label}
-                      </h3>
-                      <ExternalLink
-                        href={change.sourceUrl}
-                        className="mt-2 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
-                        iconClassName="size-3"
-                      >
-                        Değişiklik kaynağı
-                      </ExternalLink>
-                    </article>
-                  ))}
-                </div>
-              ) : (
-                <div className="mt-6 rounded-lg border border-dashed border-input bg-card p-5">
-                  <p className="text-base font-semibold">
-                    Bu kayıtta değişiklik zinciri henüz işlenmedi
-                  </p>
-                  <p className="mt-2 max-w-2xl text-base leading-7 text-muted-foreground">
-                    Kayıtta yalnızca ilk yayım künyesi bulunuyor:{' '}
-                    {item.publicationLabel}, {item.gazetteNumber} sayılı Resmî
-                    Gazete. Düzenlemenin sonradan değişmiş olabileceğini
-                    varsayın ve güncel metni{' '}
-                    {item.consolidatedUrl
-                      ? 'konsolide kaynaktan'
-                      : 'resmî kaynaktan'}{' '}
-                    kontrol edin.
-                  </p>
-                  <ExternalLink
-                    href={item.consolidatedUrl ?? item.sourceUrl}
-                    className="mt-4 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
-                    iconClassName="size-3"
-                  >
-                    Güncel metni kontrol et
-                  </ExternalLink>
-                </div>
-              )}
-            </section>
-
-            {sameGazette.length > 0 && (
-              <section
-                className="mt-12 border-t border-border pt-10"
-                aria-labelledby="same-gazette-title"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-lg bg-secondary text-primary">
-                    <Newspaper className="size-4.5" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="section-kicker">Aynı nüsha</p>
-                    <h2
-                      id="same-gazette-title"
-                      className="font-heading text-[1.75rem] font-semibold tracking-[-0.02em]"
-                    >
-                      Aynı Resmî Gazete sayısındaki diğer kayıtlar
-                    </h2>
-                  </div>
-                </div>
-                <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground">
-                  {item.gazetteNumber} sayılı Resmî Gazete&apos;de bu düzenlemeyle
-                  birlikte {sameGazette.length} düzenleme daha yayımlandı. Aynı
-                  nüsha, ayrı kayıtlardır.
+              <div className="ruled mt-8 pt-5">
+                <h2 className="label">Kapsam kararı</h2>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  Faaliyet adı, proses, kapasite ve konum bilgileri ilgili madde
+                  veya ekle karşılaştırılmadan yükümlülük sonucu verilmez.
                 </p>
-                <ul className="mt-4 grid gap-2">
-                  {sameGazette.map((other) => (
-                    <li key={other.slug}>
-                      <Link
-                        href={`/mevzuat/${other.slug}`}
-                        className="flex items-center justify-between gap-4 rounded-lg border border-border bg-card px-4 py-3.5 text-base transition-colors hover:border-primary/40 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
-                      >
-                        <span className="font-medium">{other.title}</span>
-                        <span className="meta-type shrink-0 text-sm text-muted-foreground">
-                          {other.type}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-          </div>
+                <Link
+                  href="/#alanlar"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                >
+                  Tesisime göre rota oluştur
+                  <ArrowRight className="size-3.5" aria-hidden="true" />
+                </Link>
+              </div>
 
-          <aside className="grid gap-4">
-            <div className="rounded-lg border border-primary/20 bg-primary/5 p-5">
-              <h2 className="flex items-center gap-2 text-base font-semibold">
-                <Info className="size-4 text-primary" aria-hidden="true" />
-                Kapsam sonucu için tesis verisi gerekir
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Faaliyet adı, proses, kapasite ve konum bilgileri ilgili madde
-                veya ekle karşılaştırılmadan yükümlülük sonucu verilmez.
-              </p>
               <Link
-                href="/#alanlar"
-                className="mt-4 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+                href="/mevzuat"
+                className="ruled mt-8 flex items-center gap-2 pt-5 text-sm text-muted-foreground hover:text-ink"
               >
-                Tesisime göre rota oluştur
+                <ArrowLeft className="size-4" aria-hidden="true" />
+                Mevzuat dizinine dön
               </Link>
-            </div>
-            <div className="precision-card p-5">
-              <h2 className="flex items-center gap-2 text-base font-semibold">
-                <ShieldCheck className="size-4 text-primary" aria-hidden="true" />
-                Kaynak niteliği
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                {item.status === 'Yürürlükten kaldırıldı'
-                  ? 'Bu kayıt tarihsel iz için tutulur ve güncel okuma rotasına eklenmez.'
-                  : item.verification === 'doğrulandı'
-                    ? 'Yayım tarihi ve resmî ad, Resmî Gazete kaydıyla karşılaştırıldı; kaynak bağlantısı madde düzeyinde açılıyor.'
-                    : 'Kayıt eklendi, künye doğrulaması sürüyor. Yükümlülük sonucu olarak kullanmadan önce resmî kaynaktan teyit edin.'}
-              </p>
-              <Link
-                href="/metodoloji"
-                className="mt-4 inline-flex items-center gap-1.5 rounded text-sm font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
-              >
-                Kaynak yöntemini incele{' '}
-                <Link2 className="size-3" aria-hidden="true" />
-              </Link>
-            </div>
-            <Button
-              nativeButton={false}
-              render={<Link href="/mevzuat" />}
-              variant="outline"
-              className="h-11 gap-2 rounded-md bg-card px-4"
-            >
-              <ArrowLeft className="size-4" aria-hidden="true" />
-              Mevzuat dizinine dön
-            </Button>
-          </aside>
-        </section>
+            </aside>
+          </div>
+        </div>
       </main>
       <SiteFooter />
     </>

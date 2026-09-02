@@ -30,17 +30,17 @@ export default function ImprintPage() {
   return (
     <>
       <SiteHeader />
-      <main id="icerik" className="min-h-screen bg-background">
-        <section className="border-b border-border bg-card">
-          <div className="site-frame max-w-[900px] py-12 lg:py-16">
+      <main id="icerik">
+        <section>
+          <div className="site-frame py-10 lg:py-14">
             <Breadcrumbs
               items={[
                 { label: 'Ana sayfa', href: '/' },
                 { label: 'Künye ve iletişim' },
               ]}
             />
-            <p className="section-kicker mt-8">Çevre Mevzuatı</p>
-            <h1 className="mt-3 font-heading text-[clamp(2.5rem,4.4vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+            <p className="label mt-8">Çevre Mevzuatı</p>
+            <h1 className="display-xl measure mt-4">
               Künye ve iletişim
             </h1>
             <p className="mt-6 text-base leading-7 text-muted-foreground">
@@ -54,8 +54,8 @@ export default function ImprintPage() {
         <section className="site-frame max-w-[900px] py-12 lg:py-16">
           <div className="grid gap-10">
             <div>
-              <h2 className="flex items-center gap-2.5 font-heading text-[1.75rem] font-semibold tracking-[-0.02em]">
-                <FileCheck2 className="size-5 text-primary" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 display-md">
+                <FileCheck2 className="size-5 text-seal" aria-hidden="true" />
                 Sitenin amacı
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -71,7 +71,7 @@ export default function ImprintPage() {
               </p>
             </div>
 
-            <div className="rounded-lg border border-accent/40 bg-accent/10 p-6">
+            <div className="border-l-2 border-ochre pl-5">
               <h2 className="flex items-center gap-2.5 text-lg font-semibold">
                 <AlertTriangle
                   className="size-5 text-accent-foreground dark:text-accent"
@@ -89,8 +89,8 @@ export default function ImprintPage() {
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 font-heading text-[1.75rem] font-semibold tracking-[-0.02em]">
-                <ScrollText className="size-5 text-primary" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 display-md">
+                <ScrollText className="size-5 text-seal" aria-hidden="true" />
                 İçerik politikası
               </h2>
               <ul className="mt-4 grid gap-3 text-base leading-7 text-muted-foreground">
@@ -117,15 +117,15 @@ export default function ImprintPage() {
               </ul>
               <Link
                 href="/metodoloji"
-                className="mt-5 inline-flex rounded text-sm font-semibold text-primary hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+                className="mt-5 inline-flex rounded text-sm font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
               >
                 Kaynak ve yöntemin ayrıntısı
               </Link>
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 font-heading text-[1.75rem] font-semibold tracking-[-0.02em]">
-                <Mail className="size-5 text-primary" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 display-md">
+                <Mail className="size-5 text-seal" aria-hidden="true" />
                 Düzeltme talebi ve iletişim
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -134,8 +134,8 @@ export default function ImprintPage() {
                 bilgiyi ve varsa doğru kaynağı belirtmeniz düzeltmeyi hızlandırır.
               </p>
               {/* YAYIN ÖNCESİ: aşağıdaki iki satırı gerçek bilgilerle doldurun. */}
-              <dl className="mt-5 grid gap-3 rounded-lg border border-dashed border-input bg-card p-5 text-base">
-                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-border pb-3">
+              <dl className="mt-5 grid gap-3 border border-dashed border-rule-strong p-5 text-base">
+                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-rule pb-3">
                   <dt className="font-medium">Yayıncı</dt>
                   <dd className="text-muted-foreground">
                     Yayın öncesi eklenecek

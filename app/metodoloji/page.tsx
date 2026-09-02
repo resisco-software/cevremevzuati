@@ -80,24 +80,20 @@ export default function MethodologyPage() {
   return (
     <>
       <SiteHeader />
-      <main id="icerik" className="min-h-screen bg-background">
-        <section className="hero-surface relative overflow-hidden border-b border-border">
-          <div
-            className="document-grid pointer-events-none absolute inset-0"
-            aria-hidden="true"
-          />
-          <div className="site-frame relative max-w-[1180px] py-12 lg:py-16">
+      <main id="icerik">
+        <section>
+          <div className="site-frame py-10 lg:py-14">
             <Breadcrumbs
               items={[
                 { label: 'Ana sayfa', href: '/' },
                 { label: 'Kaynak ve yöntem' },
               ]}
             />
-            <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-3 py-1.5 text-sm font-medium text-primary">
+            <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-3 py-1.5 text-sm font-medium text-seal">
               <ShieldCheck className="size-3.5" aria-hidden="true" />
               Yorum değil, kaynak ilişkisi
             </span>
-            <h1 className="mt-6 max-w-3xl font-heading text-[clamp(2.5rem,4.4vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+            <h1 className="display-xl measure mt-6">
               Kaynak ve yöntem
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground">
@@ -109,23 +105,23 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        <section className="border-b border-border bg-card py-12 lg:py-16">
-          <div className="site-frame max-w-[1180px]">
-            <h2 className="font-heading text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.03em]">
+        <section className="ruled-strong py-12 lg:py-16">
+          <div className="site-frame">
+            <h2 className="display-lg">
               Kaydın kuruluşu
             </h2>
             <ol className="mt-10 grid gap-4 sm:grid-cols-2">
               {steps.map((step, index) => (
-                <li key={step.title} className="precision-card bg-background p-6">
+                <li key={step.title} className="ruled pt-6">
                   <div className="flex items-center justify-between gap-4">
-                    <span className="grid size-10 place-items-center rounded-lg bg-secondary text-primary">
+                    <span className="grid size-10 place-items-center rounded-lg bg-secondary text-seal">
                       <step.icon className="size-4.5" aria-hidden="true" />
                     </span>
-                    <span className="meta-type text-sm text-muted-foreground">
+                    <span className="record text-sm text-muted-foreground">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>
-                  <h3 className="mt-5 font-heading text-lg font-semibold leading-7 tracking-[-0.02em]">
+                  <h3 className="mt-5 font-display text-md font-semibold leading-snug">
                     {step.title}
                   </h3>
                   <p className="mt-3 text-base leading-7 text-muted-foreground">
@@ -137,9 +133,9 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        <section className="border-b border-border py-12 lg:py-16">
-          <div className="site-frame max-w-[1180px]">
-            <h2 className="font-heading text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.03em]">
+        <section className="ruled-strong py-12 lg:py-16">
+          <div className="site-frame">
+            <h2 className="display-lg">
               Şu anda ne doğrulanmış durumda?
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground">
@@ -147,33 +143,33 @@ export default function MethodologyPage() {
               Bir kaydın doğrulama durumu yürürlük bilgisi değildir ve liste
               rozetinde gösterilmez.
             </p>
-            <dl className="mt-8 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-              <div className="bg-card p-5">
-                <dd className="font-heading text-[1.75rem] font-semibold">
+            <dl className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+              <div>
+                <dd className="display-md">
                   {summary.total}
                 </dd>
                 <dt className="mt-1 text-sm text-muted-foreground">
                   toplam mevzuat kaydı
                 </dt>
               </div>
-              <div className="bg-card p-5">
-                <dd className="font-heading text-[1.75rem] font-semibold text-primary">
+              <div>
+                <dd className="display-md text-seal">
                   {summary.verified}
                 </dd>
                 <dt className="mt-1 text-sm text-muted-foreground">
                   künyesi doğrulanmış kayıt
                 </dt>
               </div>
-              <div className="bg-card p-5">
-                <dd className="font-heading text-[1.75rem] font-semibold">
+              <div>
+                <dd className="display-md">
                   {withChanges}
                 </dd>
                 <dt className="mt-1 text-sm text-muted-foreground">
                   değişiklik zinciri işlenmiş kayıt
                 </dt>
               </div>
-              <div className="bg-card p-5">
-                <dd className="font-heading text-[1.75rem] font-semibold">
+              <div>
+                <dd className="display-md">
                   {withConsolidated}
                 </dd>
                 <dt className="mt-1 text-sm text-muted-foreground">
@@ -181,7 +177,7 @@ export default function MethodologyPage() {
                 </dt>
               </div>
             </dl>
-            <div className="mt-6 rounded-lg border border-accent/40 bg-accent/10 p-5">
+            <div className="mt-6 border-l-2 border-ochre pl-5">
               <h3 className="text-base font-semibold">Bilinen sınırlar</h3>
               <ul className="mt-3 grid gap-2 text-base leading-7 text-muted-foreground">
                 <li>
@@ -205,9 +201,9 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16">
-          <div className="site-frame max-w-[1180px]">
-            <h2 className="font-heading text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.03em]">
+        <section className="ruled-strong py-12 lg:py-16">
+          <div className="site-frame">
+            <h2 className="display-lg">
               Sonuç dili
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground">
@@ -216,8 +212,8 @@ export default function MethodologyPage() {
             </p>
             <ul className="mt-8 grid gap-4 lg:grid-cols-3">
               {resultLanguage.map((entry) => (
-                <li key={entry.title} className="precision-card p-6">
-                  <h3 className="font-heading text-lg font-semibold tracking-[-0.02em]">
+                <li key={entry.title} className="ruled pt-6">
+                  <h3 className="font-display text-lg font-semibold">
                     {entry.title}
                   </h3>
                   <p className="mt-3 text-base leading-7 text-muted-foreground">

@@ -1,9 +1,30 @@
 import type { Metadata } from 'next';
-import { GeistMono } from 'geist/font/mono';
+import { IBM_Plex_Mono, Source_Serif_4 } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
-import './globals.css';
 
 import { siteDescription, siteName, siteUrl } from '@/lib/site';
+import './globals.css';
+
+/**
+ * Resmî sicil tipografisi.
+ * Başlıklarda metin serifi: uzun yönetmelik adları ekranda okunur kalsın.
+ * Künye ve sayılarda daktilo hissi veren monospace.
+ * Gövde Geist Sans olarak kalır; yerelden servis edilir, ek yük getirmez.
+ */
+const displaySerif = Source_Serif_4({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const recordMono = IBM_Plex_Mono({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600'],
+  variable: '--font-record',
+  display: 'swap',
+});
 
 const themeScript = `try{var s=localStorage.getItem('cevremevzuati-theme');var d=(s==='dark'||s==='light')?s==='dark':matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);document.documentElement.style.colorScheme=d?'dark':'light'}catch(e){}`;
 
@@ -45,7 +66,7 @@ export default function RootLayout({
   return (
     <html
       lang="tr"
-      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      className={`${GeistSans.variable} ${displaySerif.variable} ${recordMono.variable}`}
       suppressHydrationWarning
     >
       <head>

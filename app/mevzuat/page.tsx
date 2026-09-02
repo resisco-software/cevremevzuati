@@ -31,9 +31,9 @@ export default async function LegislationPage({
   return (
     <>
       <SiteHeader />
-      <main id="icerik" className="min-h-screen bg-background">
-        <section className="border-b border-border bg-card">
-          <div className="site-frame py-12 lg:py-16">
+      <main id="icerik">
+        <section>
+          <div className="site-frame py-10 lg:py-14">
             <Breadcrumbs
               items={[
                 { label: 'Ana sayfa', href: '/' },
@@ -42,8 +42,8 @@ export default async function LegislationPage({
             />
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                <p className="section-kicker">Çevre mevzuatı</p>
-                <h1 className="mt-3 max-w-3xl font-heading text-[clamp(2.5rem,4.4vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+                <p className="label">Çevre mevzuatı</p>
+                <h1 className="display-xl measure mt-4">
                   Mevzuat dizini
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
@@ -55,21 +55,21 @@ export default async function LegislationPage({
               <ul className="grid gap-2.5 text-sm text-muted-foreground sm:grid-cols-2 lg:grid-cols-1">
                 <li className="flex items-center gap-2">
                   <ShieldCheck
-                    className="size-4 shrink-0 text-primary"
+                    className="size-4 shrink-0 text-seal"
                     aria-hidden="true"
                   />
                   Madde düzeyinde resmî kaynak
                 </li>
                 <li className="flex items-center gap-2">
                   <BookOpenCheck
-                    className="size-4 shrink-0 text-primary"
+                    className="size-4 shrink-0 text-seal"
                     aria-hidden="true"
                   />
                   Yorum içermeyen kayıt yapısı
                 </li>
                 <li className="flex items-center gap-2">
                   <BookOpenCheck
-                    className="size-4 shrink-0 text-primary"
+                    className="size-4 shrink-0 text-seal"
                     aria-hidden="true"
                   />
                   {categories.length} alan · {legislation.length} kayıt

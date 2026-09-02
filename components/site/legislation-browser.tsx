@@ -13,10 +13,6 @@ import { useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  NativeSelect,
-  NativeSelectOption,
-} from '@/components/ui/native-select';
 import { categories, legislation } from '@/lib/legislation-data';
 
 export function LegislationBrowser({
@@ -38,9 +34,17 @@ export function LegislationBrowser({
     return legislation.filter((item) => {
       const matchesCategory =
         category === 'all' || item.categories.includes(category);
+      const categoryTerms = item.categories
+        .flatMap((id) => {
+          const entry = categories.find((candidate) => candidate.id === id);
+          return entry
+            ? [entry.label, entry.shortLabel, entry.description]
+            : [];
+        })
+        .join(' ');
       const matchesQuery =
         normalized.length === 0 ||
-        [item.title, item.summary, item.type, item.gazetteNumber]
+        [item.title, item.summary, item.type, item.gazetteNumber, categoryTerms]
           .join(' ')
           .toLocaleLowerCase('tr-TR')
           .includes(normalized);
@@ -49,42 +53,76 @@ export function LegislationBrowser({
   }, [category, query]);
 
   const shown = compact ? filtered.slice(0, 9) : filtered;
+  const hasFilters = query.length > 0 || category !== 'all';
 
   return (
     <div>
-      <div className="precision-card grid gap-3 p-3 sm:grid-cols-[1fr_250px] sm:p-4">
-        <label className="relative" htmlFor="legislation-search">
-          <span className="sr-only">Mevzuat ara</span>
-          <Search
-            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <Input
-            id="legislation-search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            className="h-11 rounded-[10px] bg-background pl-10 shadow-none"
-            placeholder="Başlık, Resmî Gazete sayısı veya konu ara…"
-          />
-        </label>
-        <label htmlFor="legislation-category">
-          <span className="sr-only">Mevzuat alanı</span>
-          <NativeSelect
-            id="legislation-category"
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            className="w-full [&>select]:h-11 [&>select]:rounded-[10px] [&>select]:bg-background"
-          >
-            <NativeSelectOption value="all">
-              Tüm çevre mevzuatı alanları
-            </NativeSelectOption>
+      <div className="precision-card overflow-hidden">
+        <div className="grid gap-5 border-b border-border/80 p-5 sm:grid-cols-[0.68fr_1.32fr] sm:items-end sm:p-6">
+          <div>
+            <p className="section-kicker">Mevzuat araması</p>
+            <h2 className="mt-2 font-heading text-2xl font-semibold tracking-[-0.035em]">
+              Ne arıyorsunuz?
+            </h2>
+            <p className="mt-2 max-w-sm text-xs leading-5 text-muted-foreground">
+              Adını biliyorsanız yazın; bilmiyorsanız çevre alanını seçin.
+            </p>
+          </div>
+          <label className="relative" htmlFor="legislation-search">
+            <span className="sr-only">Mevzuat ara</span>
+            <Search
+              className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-primary"
+              aria-hidden="true"
+            />
+            <Input
+              id="legislation-search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              className="h-13 rounded-xl border-input bg-background pr-4 pl-12 text-[15px] shadow-none focus-visible:border-primary"
+              placeholder="Örn. çevre izni, atık, 32029…"
+            />
+          </label>
+        </div>
+
+        <div className="p-5 sm:p-6">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-xs font-semibold">Konuya göre daraltın</p>
+            {hasFilters && (
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery('');
+                  setCategory('all');
+                }}
+                className="text-xs font-semibold text-primary hover:underline"
+              >
+                Aramayı temizle
+              </button>
+            )}
+          </div>
+          <fieldset className="flex flex-wrap gap-2">
+            <legend className="sr-only">Mevzuat alanına göre filtrele</legend>
+            <button
+              type="button"
+              onClick={() => setCategory('all')}
+              aria-pressed={category === 'all'}
+              className="filter-chip"
+            >
+              Tümü
+            </button>
             {categories.map((item) => (
-              <NativeSelectOption key={item.id} value={item.id}>
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setCategory(item.id)}
+                aria-pressed={category === item.id}
+                className="filter-chip"
+              >
                 {item.shortLabel}
-              </NativeSelectOption>
+              </button>
             ))}
-          </NativeSelect>
-        </label>
+          </fieldset>
+        </div>
       </div>
 
       <div className="mt-5 flex items-center justify-between gap-4">
@@ -117,9 +155,9 @@ export function LegislationBrowser({
                     {item.status}
                   </Badge>
                 </div>
-                <h2 className="mt-3 font-heading text-xl font-semibold leading-6 tracking-[-0.03em] sm:text-[22px] sm:leading-7">
+                <h3 className="mt-3 font-heading text-xl font-semibold leading-6 tracking-[-0.03em] sm:text-[22px] sm:leading-7">
                   {item.title}
-                </h2>
+                </h3>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
                   {item.summary}
                 </p>

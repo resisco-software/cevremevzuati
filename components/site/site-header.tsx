@@ -1,11 +1,11 @@
-import { FileCheck2, Menu, Search } from 'lucide-react';
+import { ArrowRight, FileCheck2, Menu, Search } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/site/theme-toggle';
 
 const nav = [
-  { href: '/#alanlar', label: 'Mevzuat alanları' },
+  { href: '/#konu-dizini', label: 'Konu dizini' },
   { href: '/mevzuat', label: 'Mevzuat' },
   { href: '/kutuphane', label: 'Kütüphane' },
   { href: '/sozluk', label: 'Sözlük' },
@@ -54,11 +54,24 @@ export function SiteHeader() {
             nativeButton={false}
             render={<Link href="/mevzuat" aria-label="Mevzuatta ara" />}
             variant="outline"
-            className="h-9 gap-2 rounded-[10px] bg-card px-3.5 text-[13px] shadow-none"
+            className="hidden h-9 gap-2 rounded-[10px] bg-card px-3.5 text-[13px] shadow-none sm:inline-flex"
           >
             <Search className="size-4" aria-hidden="true" />
-            <span className="hidden sm:inline">Mevzuatta ara</span>
-            <span className="sm:hidden">Ara</span>
+            Mevzuatta ara
+          </Button>
+          <Button
+            nativeButton={false}
+            render={
+              <Link
+                href="/#alanlar"
+                aria-label="Tesisime göre mevzuat rotasını başlat"
+              />
+            }
+            className="h-9 gap-2 rounded-[10px] px-3.5 text-[13px] shadow-none"
+          >
+            <span className="sm:hidden">Başla</span>
+            <span className="hidden sm:inline">Tesisime göre</span>
+            <ArrowRight className="size-3.5" aria-hidden="true" />
           </Button>
           <details className="mobile-menu relative lg:hidden">
             <summary className="grid size-9 cursor-pointer list-none place-items-center rounded-[10px] border border-border bg-card [&::-webkit-details-marker]:hidden">

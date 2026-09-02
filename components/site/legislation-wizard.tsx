@@ -6,6 +6,7 @@ import {
   Building2,
   Check,
   CheckCircle2,
+  ChevronDown,
   Cloud,
   Droplets,
   ExternalLink,
@@ -85,6 +86,8 @@ const basis: Record<string, string> = {
   'endustriyel-emisyonlarin-yonetimi': 'Kapsamdaki faaliyetler ve ilgili ekler',
 };
 
+const wizardSteps = ['Konu', 'Tesis', 'Koşullar', 'Okuma listesi'];
+
 export function LegislationWizard() {
   const [step, setStep] = useState(1);
   const [topic, setTopic] = useState('hava');
@@ -92,11 +95,13 @@ export function LegislationWizard() {
   const [sector, setSector] = useState('genel');
   const [features, setFeatures] = useState<string[]>(['stack']);
   const [locations, setLocations] = useState<string[]>(['osb']);
+  const [showAllTopics, setShowAllTopics] = useState(false);
 
   const selectedCategory = categories.find(
     (category) => category.id === topic,
   )!;
   const SelectedIcon = icons[topic as keyof typeof icons];
+  const visibleTopics = showAllTopics ? wizardTopics : wizardTopics.slice(0, 6);
 
   const results = useMemo(() => {
     const direct = legislation.filter((item) =>
@@ -133,6 +138,7 @@ export function LegislationWizard() {
     setSector('genel');
     setFeatures(['stack']);
     setLocations(['osb']);
+    setShowAllTopics(false);
   }
 
   return (
@@ -140,27 +146,61 @@ export function LegislationWizard() {
       <div className="border-b border-border/80 px-5 py-5 sm:px-7 sm:py-6">
         <div className="flex items-start justify-between gap-6">
           <div>
-            <p className="section-kicker mb-2">Mevzuat pusulası</p>
+            <p className="section-kicker mb-2">Şimdi başlayın</p>
             <h2 className="font-heading text-[22px] font-semibold tracking-[-0.035em]">
-              Tesisiniz için okuma rotası
+              Önce çevre alanını seçin
             </h2>
             <p className="mt-2 max-w-lg text-sm leading-6 text-muted-foreground">
-              Dört kısa adımda, önce okunması gereken düzenlemeleri daraltın.
+              Dört kısa adım sonunda okunacak mevzuat listeniz hazır olsun.
             </p>
           </div>
           <span className="meta-type hidden rounded-full border border-border bg-background px-3 py-1.5 text-[10px] font-medium text-muted-foreground sm:inline-flex">
             03–04 dk.
           </span>
         </div>
-        <Progress value={step * 25} locale="tr-TR" className="mt-5 gap-2">
-          <ProgressLabel className="text-xs font-medium">
-            {step === 1
-              ? 'Konu'
-              : step === 2
-                ? 'Tesis'
-                : step === 3
-                  ? 'Koşullar'
-                  : 'Okuma listesi'}
+        <ol
+          className="mt-5 grid grid-cols-4 gap-1.5"
+          aria-label="Mevzuat pusulası adımları"
+        >
+          {wizardSteps.map((label, index) => {
+            const number = index + 1;
+            const current = number === step;
+            const complete = number < step;
+            return (
+              <li
+                key={label}
+                aria-current={current ? 'step' : undefined}
+                className={`rounded-[10px] border px-2.5 py-2.5 transition-colors ${
+                  current
+                    ? 'border-primary/35 bg-primary/8'
+                    : complete
+                      ? 'border-primary/20 bg-primary/4'
+                      : 'border-border/75 bg-background/55'
+                }`}
+              >
+                <span
+                  className={`meta-type block text-[9px] font-semibold ${
+                    current || complete
+                      ? 'text-primary'
+                      : 'text-muted-foreground'
+                  }`}
+                >
+                  {complete ? '✓' : `0${number}`}
+                </span>
+                <strong
+                  className={`mt-1 block truncate text-[10px] font-semibold sm:text-xs ${
+                    current ? 'text-foreground' : 'text-muted-foreground'
+                  }`}
+                >
+                  {label}
+                </strong>
+              </li>
+            );
+          })}
+        </ol>
+        <Progress value={step * 25} locale="tr-TR" className="mt-3 gap-2">
+          <ProgressLabel className="sr-only">
+            {wizardSteps[step - 1]}
           </ProgressLabel>
           <span className="meta-type ml-auto text-[11px] text-muted-foreground">
             0{step} / 04
@@ -174,22 +214,23 @@ export function LegislationWizard() {
       >
         {step === 1 && (
           <section aria-labelledby="wizard-step-one">
-            <div className="mb-5 flex items-center justify-between gap-4">
+            <div className="mb-5">
+              <p className="section-kicker mb-2">1. adım · Birini seçin</p>
               <h3
                 id="wizard-step-one"
-                className="font-heading text-[17px] font-semibold tracking-[-0.02em]"
+                className="font-heading text-[19px] font-semibold tracking-[-0.025em]"
               >
-                Hangi alanla başlayalım?
+                İlk olarak hangi çevre alanıyla ilgileniyorsunuz?
               </h3>
-              <span className="meta-type text-[10px] text-muted-foreground">
-                Bir alan seçin
-              </span>
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                Seçiminiz sonraki tesis sorularını daraltır.
+              </p>
             </div>
             <ul
               className="grid gap-2.5 sm:grid-cols-2"
               aria-label="Çevre mevzuatı alanları"
             >
-              {wizardTopics.map((item) => {
+              {visibleTopics.map((item) => {
                 const Icon = icons[item.id as keyof typeof icons];
                 const active = topic === item.id;
                 return (
@@ -225,6 +266,18 @@ export function LegislationWizard() {
                 );
               })}
             </ul>
+            {!showAllTopics && (
+              <Button
+                type="button"
+                variant="ghost"
+                className="mt-3 h-9 w-full gap-2 rounded-[10px] border border-dashed border-border text-xs text-muted-foreground"
+                onClick={() => setShowAllTopics(true)}
+                aria-expanded={showAllTopics}
+              >
+                Diğer 3 çevre alanını göster
+                <ChevronDown className="size-3.5" aria-hidden="true" />
+              </Button>
+            )}
           </section>
         )}
 
@@ -504,18 +557,27 @@ export function LegislationWizard() {
         )}
 
         {step < 4 ? (
-          <Button
-            type="button"
-            className="h-10 gap-2 rounded-[10px] px-5"
-            onClick={() => setStep((value) => Math.min(4, value + 1))}
-          >
-            {step === 1
-              ? 'Tesis bilgilerine geç'
-              : step === 2
-                ? 'Koşullara geç'
-                : 'Okuma listesini oluştur'}
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Button>
+          <div className="sm:text-right">
+            <Button
+              type="button"
+              className="h-11 w-full gap-2 rounded-[10px] px-5 sm:w-auto"
+              onClick={() => setStep((value) => Math.min(4, value + 1))}
+            >
+              {step === 1
+                ? 'Seçimimi kullan ve devam et'
+                : step === 2
+                  ? 'Koşullara geç'
+                  : 'Okuma listesini oluştur'}
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </Button>
+            <span className="mt-1.5 hidden text-[10px] text-muted-foreground sm:block">
+              {step === 1
+                ? 'Sonraki adım: tesis profili'
+                : step === 2
+                  ? 'Sonraki adım: proses ve konum'
+                  : 'Sonraki adım: resmî kaynaklı liste'}
+            </span>
+          </div>
         ) : (
           <Button
             type="button"

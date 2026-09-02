@@ -13,6 +13,7 @@ import {
   Map,
   MapPinned,
   Recycle,
+  Search,
   ShieldCheck,
   Volume2,
 } from 'lucide-react';
@@ -55,14 +56,14 @@ export default function Home() {
 
       <section
         id="baslangic"
-        className="relative isolate overflow-hidden border-b border-border/70"
+        className="hero-surface relative isolate overflow-hidden border-b border-border/70"
       >
         <div
           className="document-grid absolute inset-0 -z-10 opacity-55"
           aria-hidden="true"
         />
-        <div className="site-frame grid gap-9 py-9 lg:grid-cols-[minmax(0,0.82fr)_minmax(560px,1.18fr)] lg:gap-12 lg:py-12">
-          <div className="flex flex-col justify-between gap-10 py-2 lg:min-h-[630px] lg:py-4">
+        <div className="site-frame grid gap-9 py-9 lg:grid-cols-[minmax(0,0.8fr)_minmax(560px,1.2fr)] lg:gap-10 lg:py-12">
+          <div className="flex flex-col justify-between gap-9 py-2 lg:min-h-[630px] lg:py-4">
             <div>
               <Badge
                 variant="outline"
@@ -72,42 +73,81 @@ export default function Home() {
                 Resmî kaynağa dayalı
               </Badge>
               <p className="section-kicker mb-4">
-                Nereden başlayacağınızı bulun
+                Tesisiniz için hızlı başlangıç
               </p>
               <h1 className="max-w-xl font-heading text-[clamp(2.65rem,4.8vw,4.75rem)] leading-[0.96] font-semibold tracking-[-0.06em] text-balance">
-                Mevzuatı değil,{' '}
-                <span className="text-primary">sizin yerinizi</span> bulun.
+                Hangi çevre mevzuatını{' '}
+                <span className="text-primary">okumanız gerektiğini</span>{' '}
+                bulun.
               </h1>
               <p className="mt-7 max-w-lg text-base leading-7 tracking-[-0.012em] text-muted-foreground sm:text-[17px] sm:leading-7">
-                Tesis bilgilerinizi seçin. İlgili çevre mevzuatını, okunması
-                gereken madde ve ekleriyle birlikte tek bir doğrulanabilir
-                listede görün.
+                Alanı seçin, tesisinizi kısaca tanımlayın ve önce okunması
+                gereken düzenlemeleri resmî kaynaklarıyla birlikte görün.
               </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  nativeButton={false}
+                  render={
+                    <a
+                      href="#alanlar"
+                      aria-label="Tesisime göre mevzuat rotasını başlat"
+                    />
+                  }
+                  className="h-12 justify-between rounded-xl px-5 text-sm sm:min-w-56"
+                >
+                  Tesisim için başla
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Button>
+                <Button
+                  nativeButton={false}
+                  render={
+                    <Link href="/mevzuat" aria-label="Mevzuat dizininde ara" />
+                  }
+                  variant="outline"
+                  className="h-12 justify-between rounded-xl bg-card/70 px-5 text-sm sm:min-w-44"
+                >
+                  Mevzuat ara
+                  <Search className="size-4" aria-hidden="true" />
+                </Button>
+              </div>
             </div>
 
-            <div className="grid max-w-lg grid-cols-3 border-y border-border/90 py-5">
+            <div
+              className="grid max-w-lg grid-cols-3 border-y border-border/90 py-5"
+              aria-label="Üç adımlı kullanım akışı"
+            >
               <div className="pr-4">
-                <strong className="meta-type block text-xl font-semibold">
-                  11
+                <span className="meta-type block text-[10px] font-semibold text-primary">
+                  01
+                </span>
+                <strong className="mt-1 block text-sm font-semibold tracking-[-0.02em]">
+                  Alanı seçin
                 </strong>
                 <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                  çevre mevzuatı alanı
+                  Hava, su, atık veya diğer konu
                 </span>
               </div>
               <div className="border-x border-border/80 px-4">
-                <strong className="block text-lg font-semibold tracking-[-0.025em]">
-                  Madde
+                <span className="meta-type block text-[10px] font-semibold text-primary">
+                  02
+                </span>
+                <strong className="mt-1 block text-sm font-semibold tracking-[-0.02em]">
+                  Tesisi tanımlayın
                 </strong>
                 <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                  ve ek dayanağı
+                  Faaliyet, proses ve konum
                 </span>
               </div>
               <div className="pl-4">
-                <strong className="block text-lg font-semibold tracking-[-0.025em]">
-                  Sürüm
+                <span className="meta-type block text-[10px] font-semibold text-primary">
+                  03
+                </span>
+                <strong className="mt-1 block text-sm font-semibold tracking-[-0.02em]">
+                  Rotayı alın
                 </strong>
                 <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                  ve değişiklik izi
+                  Madde, ek ve resmî kaynak
                 </span>
               </div>
             </div>
@@ -119,7 +159,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="site-frame py-20 lg:py-24">
+      <section
+        id="konu-dizini"
+        className="site-frame scroll-mt-20 py-20 lg:py-24"
+      >
         <div className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr] lg:gap-12">
           <div>
             <p className="section-kicker">Konu dizini</p>

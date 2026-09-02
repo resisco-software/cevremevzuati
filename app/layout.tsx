@@ -1,0 +1,49 @@
+import type { Metadata } from 'next';
+import './globals.css';
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://cevremevzuati.com'),
+  title: 'Çevre Mevzuatı | Tesisiniz için mevzuat navigasyonu',
+  description:
+    'Sanayi tesisleri için resmî kaynağa dayalı çevre mevzuatı navigasyonu, mevzuat kütüphanesi ve sözlük.',
+  alternates: {
+    canonical: '/',
+  },
+  icons: {
+    icon: '/favicon.svg',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'tr_TR',
+    url: '/',
+    siteName: 'Çevre Mevzuatı',
+    title: 'Çevre Mevzuatı',
+    description: 'Tesisiniz için doğrulanabilir mevzuat navigasyonu',
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'Çevre Mevzuatı — Tesisiniz için doğrulanabilir mevzuat navigasyonu',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Çevre Mevzuatı',
+    description: 'Tesisiniz için doğrulanabilir mevzuat navigasyonu',
+    images: ['/og.png'],
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="tr">
+      <body>{children}</body>
+    </html>
+  );
+}

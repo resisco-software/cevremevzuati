@@ -12,12 +12,17 @@ import {
   ExternalLink,
   FileSearch,
   FlaskConical,
+  Gauge,
   Info,
   Layers3,
   MapPinned,
+  Package,
+  Pickaxe,
   Recycle,
   RotateCcw,
+  ScanSearch,
   Volume2,
+  Waves,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
@@ -33,47 +38,231 @@ import {
 import { Progress, ProgressLabel } from '@/components/ui/progress';
 import { categories, legislation } from '@/lib/legislation-data';
 
-const wizardTopics = categories.filter((category) =>
-  [
-    'kurulus',
-    'izin',
-    'hava',
-    'su',
-    'atik',
-    'kimyasal',
-    'toprak',
-    'gurultu',
-    'entegre',
-  ].includes(category.id),
-);
+const wizardTopics = categories;
 
 const icons = {
   kurulus: Building2,
   izin: CheckCircle2,
   hava: Cloud,
   su: Droplets,
+  atiksu: Waves,
   atik: Recycle,
+  urun: Package,
   kimyasal: FlaskConical,
   toprak: MapPinned,
   gurultu: Volume2,
+  deniz: Waves,
+  doga: MapPinned,
+  maden: Pickaxe,
   entegre: Layers3,
+  olcum: Gauge,
 } as const;
 
 const featureOptions = [
-  { id: 'combustion', label: 'Yakma tesisi veya ısıl güç kaynağı var' },
-  { id: 'stack', label: 'Proses bacası, toz, VOC veya koku kaynağı var' },
-  { id: 'wastewater', label: 'Proses atıksuyu oluşuyor' },
-  { id: 'direct-discharge', label: 'Alıcı ortama doğrudan deşarj var' },
-  { id: 'waste-treatment', label: 'Tesiste atık işleme faaliyeti var' },
-  { id: 'chemicals', label: 'Kimyasal imalatı, ithalatı veya depolaması var' },
+  {
+    id: 'air-source',
+    label: 'Yakma, proses bacası, toz, VOC veya koku kaynağı var',
+    topics: ['hava', 'izin', 'entegre', 'olcum'],
+  },
+  {
+    id: 'wastewater',
+    label: 'Proses atıksuyu oluşuyor veya arıtma tesisi var',
+    topics: ['su', 'atiksu', 'izin', 'entegre', 'olcum'],
+  },
+  {
+    id: 'direct-discharge',
+    label: 'Kanalizasyona, alıcı ortama veya denize deşarj var',
+    topics: ['su', 'atiksu', 'deniz', 'izin'],
+  },
+  {
+    id: 'waste-storage',
+    label: 'Tesiste atık oluşuyor veya geçici depolanıyor',
+    topics: ['atik', 'urun', 'izin'],
+  },
+  {
+    id: 'waste-treatment',
+    label: 'Atık toplama, geri kazanım, yakma veya bertaraf faaliyeti var',
+    topics: ['atik', 'izin', 'entegre'],
+  },
+  {
+    id: 'product-role',
+    label:
+      'Ambalajlı ürün, yağ, lastik, araç, pil veya elektronik eşya piyasaya arz ediliyor',
+    topics: ['urun', 'atik'],
+  },
+  {
+    id: 'chemicals',
+    label: 'Kimyasal imalatı, ithalatı, kullanımı veya depolaması var',
+    topics: ['kimyasal', 'toprak'],
+  },
+  {
+    id: 'hazardous-inventory',
+    label: 'Tehlikeli madde envanteri veya büyük kaza riski var',
+    topics: ['kimyasal'],
+  },
+  {
+    id: 'land-risk',
+    label: 'Yeraltı tankı, dökülme/sızıntı veya geçmiş saha kullanımı var',
+    topics: ['toprak', 'kimyasal', 'kurulus'],
+  },
+  {
+    id: 'noise-source',
+    label: 'Endüstriyel gürültü veya titreşim kaynağı var',
+    topics: ['gurultu', 'izin'],
+  },
+  {
+    id: 'mining',
+    label: 'Maden, taş ocağı, cevher hazırlama veya pasa faaliyeti var',
+    topics: ['maden', 'atik', 'toprak', 'kurulus'],
+  },
+  {
+    id: 'coastal-activity',
+    label: 'Liman, gemi, dip tarama veya deniz tesisi faaliyeti var',
+    topics: ['deniz', 'atik'],
+  },
+  {
+    id: 'measurement',
+    label: 'Çevre laboratuvarı ya da sürekli ölçüm/izleme sistemi var',
+    topics: ['olcum', 'hava', 'atiksu'],
+  },
 ];
 
 const locationOptions = [
   { id: 'osb', label: 'Organize sanayi bölgesinde' },
   { id: 'coast', label: 'Kıyı veya denizle ilişkili' },
   { id: 'protected', label: 'Korunan alanla ilişkili olabilir' },
+  { id: 'water-basin', label: 'İçme suyu havzası veya su kaynağıyla ilişkili' },
+  { id: 'groundwater', label: 'Yeraltı suyu kullanımı veya kuyusu var' },
+  { id: 'forest', label: 'Orman alanı veya yakın çevresiyle ilişkili' },
   { id: 'unknown-location', label: 'Konumsal statü henüz bilinmiyor' },
 ];
+
+const featureLegislation: Record<string, string[]> = {
+  'air-source': [
+    'skhkky',
+    'koku-emisyonlari-kontrolu',
+    'surekli-emisyon-olcum-sistemleri',
+  ],
+  wastewater: [
+    'su-kirliligi-kontrolu',
+    'atiksu-aritma-teknik-usuller',
+    'surekli-atiksu-izleme-sistemleri',
+    'atiksu-aritma-enerji-tesviki',
+  ],
+  'direct-discharge': [
+    'su-kirliligi-kontrolu',
+    'yerustu-su-kalitesi',
+    'surekli-atiksu-izleme-sistemleri',
+  ],
+  'waste-storage': ['atik-yonetimi', 'atiklarin-duzenli-depolanmasi'],
+  'waste-treatment': [
+    'cevre-izin-ve-lisans-yonetmeligi',
+    'atik-yonetimi',
+    'atiklarin-yakilmasi',
+    'atik-on-islem-geri-kazanim-tesisleri',
+    'met-atik-isleme',
+  ],
+  'product-role': [
+    'ambalaj-atiklarinin-kontrolu',
+    'atik-yaglarin-yonetimi',
+    'atik-pil-akumulator-kontrolu',
+    'aeee-yonetimi',
+    'elektronik-esya-zararli-madde-kisitlamasi',
+    'omrunu-tamamlamis-lastikler',
+    'omrunu-tamamlamis-araclar',
+    'gekap-yonetmeligi',
+  ],
+  chemicals: [
+    'kkdik',
+    'sea-yonetmeligi',
+    'zararli-kimyasallar-ihracat-ithalat',
+    'pcb-pct-kontrolu',
+    'kalici-organik-kirleticiler',
+  ],
+  'hazardous-inventory': [
+    'buyuk-endustriyel-kazalar',
+    'bekra-guvenlik-raporu-tebligi',
+    'bekra-onleme-politikasi-tebligi',
+    'bekra-kaza-senaryosu-tebligi',
+    'bekra-dahili-acil-durum-tebligi',
+    'pcb-pct-kontrolu',
+  ],
+  'land-risk': ['toprak-kirliligi-kontrolu'],
+  'noise-source': ['cevresel-gurultu-kontrolu'],
+  mining: ['maden-atiklari', 'madencilik-dogaya-yeniden-kazandirma'],
+  'coastal-activity': [
+    'gemilerden-atik-alinmasi',
+    'dip-tarama-malzemesi',
+    'tersane-tekne-imal-cekevleri',
+  ],
+  measurement: [
+    'cevre-olcum-analiz-laboratuvarlari',
+    'surekli-emisyon-olcum-sistemleri',
+    'surekli-atiksu-izleme-sistemleri',
+  ],
+};
+
+const sectorLegislation: Record<string, string[]> = {
+  genel: ['met-diger-uretim-faaliyetleri'],
+  enerji: ['skhkky', 'endustriyel-emisyonlarin-yonetimi', 'met-enerji-uretimi'],
+  mineral: [
+    'skhkky',
+    'endustriyel-emisyonlarin-yonetimi',
+    'met-mineral-endustrisi',
+  ],
+  metal: ['endustriyel-emisyonlarin-yonetimi', 'kkdik', 'met-metal-uretimi'],
+  kimya: [
+    'kkdik',
+    'sea-yonetmeligi',
+    'buyuk-endustriyel-kazalar',
+    'met-kimya-endustrisi',
+  ],
+  atik: [
+    'atik-yonetimi',
+    'cevre-izin-ve-lisans-yonetmeligi',
+    'atik-on-islem-geri-kazanim-tesisleri',
+    'met-atik-isleme',
+  ],
+  maden: ['maden-atiklari', 'madencilik-dogaya-yeniden-kazandirma'],
+  insaat: ['hafriyat-insaat-yikinti-atiklari'],
+  liman: [
+    'gemilerden-atik-alinmasi',
+    'dip-tarama-malzemesi',
+    'tersane-tekne-imal-cekevleri',
+  ],
+  saglik: ['tibbi-atiklarin-kontrolu'],
+  tekstil: ['met-diger-uretim-faaliyetleri'],
+  gida: ['met-diger-uretim-faaliyetleri'],
+  otomotiv: [
+    'omrunu-tamamlamis-araclar',
+    'aeee-yonetimi',
+    'elektronik-esya-zararli-madde-kisitlamasi',
+    'gekap-yonetmeligi',
+    'met-diger-uretim-faaliyetleri',
+  ],
+};
+
+const locationLegislation: Record<string, string[]> = {
+  coast: [
+    'gemilerden-atik-alinmasi',
+    'dip-tarama-malzemesi',
+    'tersane-tekne-imal-cekevleri',
+  ],
+  protected: [
+    'ced-yonetmeligi',
+    'stratejik-cevresel-degerlendirme',
+    'sulak-alanlarin-korunmasi',
+    'korunan-alanlarda-planlama',
+    'korunan-alanlar-tespit-tescil',
+  ],
+  'water-basin': [
+    'su-kirliligi-kontrolu',
+    'yerustu-su-kalitesi',
+    'icme-kullanma-suyu-havzalari',
+  ],
+  groundwater: ['yeralti-sularinin-korunmasi'],
+  forest: ['ced-yonetmeligi', 'madencilik-dogaya-yeniden-kazandirma'],
+};
 
 const basis: Record<string, string> = {
   'ced-yonetmeligi': 'Ek-1 ve Ek-2 proje listeleri',
@@ -90,34 +279,86 @@ const wizardSteps = ['Konu', 'Tesis', 'Koşullar', 'Okuma listesi'];
 
 export function LegislationWizard() {
   const [step, setStep] = useState(1);
-  const [topic, setTopic] = useState('hava');
-  const [stage, setStage] = useState('faaliyette');
-  const [sector, setSector] = useState('genel');
-  const [features, setFeatures] = useState<string[]>(['stack']);
-  const [locations, setLocations] = useState<string[]>(['osb']);
+  const [topic, setTopic] = useState('all');
+  const [stage, setStage] = useState('belirsiz');
+  const [sector, setSector] = useState('belirsiz');
+  const [features, setFeatures] = useState<string[]>([]);
+  const [locations, setLocations] = useState<string[]>([]);
   const [showAllTopics, setShowAllTopics] = useState(false);
 
-  const selectedCategory = categories.find(
-    (category) => category.id === topic,
-  )!;
-  const SelectedIcon = icons[topic as keyof typeof icons];
+  const selectedCategory =
+    topic === 'all'
+      ? {
+          id: 'all',
+          label: 'Tüm çevre mevzuatı kapsamı',
+          shortLabel: 'Tüm çevre kapsamı',
+          description: 'Tesisin tüm çevre alanları birlikte taranır.',
+          subtopics: [],
+        }
+      : categories.find((category) => category.id === topic)!;
+  const SelectedIcon =
+    topic === 'all' ? ScanSearch : icons[topic as keyof typeof icons];
   const visibleTopics = showAllTopics ? wizardTopics : wizardTopics.slice(0, 6);
+  const visibleFeatureOptions = featureOptions.filter(
+    (option) => topic === 'all' || option.topics.includes(topic),
+  );
+  const profileGapCount = [
+    stage === 'belirsiz',
+    sector === 'belirsiz',
+    features.length === 0,
+    locations.length === 0,
+  ].filter(Boolean).length;
 
   const results = useMemo(() => {
-    const direct = legislation.filter((item) =>
-      item.categories.includes(topic),
-    );
+    const direct =
+      topic === 'all'
+        ? []
+        : legislation.filter(
+            (item) =>
+              item.status !== 'Yürürlükten kaldırıldı' &&
+              item.categories.includes(topic),
+          );
     const baseline = legislation.filter((item) =>
       ['cevre-kanunu-2872', 'cevre-izin-ve-lisans-yonetmeligi'].includes(
         item.slug,
       ),
     );
+    const stageSlugs =
+      stage === 'planlama'
+        ? ['ced-yonetmeligi', 'stratejik-cevresel-degerlendirme']
+        : stage === 'degisiklik'
+          ? ['ced-yonetmeligi', 'cevre-izin-ve-lisans-yonetmeligi']
+          : stage === 'devir'
+            ? ['cevre-izin-ve-lisans-yonetmeligi', 'cevre-yonetimi-hizmetleri']
+            : stage === 'kapanis'
+              ? [
+                  'toprak-kirliligi-kontrolu',
+                  'atik-yonetimi',
+                  'madencilik-dogaya-yeniden-kazandirma',
+                ]
+              : stage === 'faaliyette'
+                ? [
+                    'cevre-izin-ve-lisans-yonetmeligi',
+                    'cevre-denetimi-yonetmeligi',
+                  ]
+                : [];
+    const matchedSlugs = [
+      ...stageSlugs,
+      ...(sectorLegislation[sector] ?? []),
+      ...features.flatMap((feature) => featureLegislation[feature] ?? []),
+      ...locations.flatMap((location) => locationLegislation[location] ?? []),
+    ];
+    const matched = legislation.filter(
+      (item) =>
+        item.status !== 'Yürürlükten kaldırıldı' &&
+        matchedSlugs.includes(item.slug),
+    );
     return [
       ...new Map(
-        [...baseline, ...direct].map((item) => [item.slug, item]),
+        [...baseline, ...direct, ...matched].map((item) => [item.slug, item]),
       ).values(),
-    ].slice(0, 7);
-  }, [topic]);
+    ];
+  }, [features, locations, sector, stage, topic]);
 
   function toggle(
     value: string,
@@ -133,12 +374,17 @@ export function LegislationWizard() {
 
   function reset() {
     setStep(1);
-    setTopic('hava');
-    setStage('faaliyette');
-    setSector('genel');
-    setFeatures(['stack']);
-    setLocations(['osb']);
+    setTopic('all');
+    setStage('belirsiz');
+    setSector('belirsiz');
+    setFeatures([]);
+    setLocations([]);
     setShowAllTopics(false);
+  }
+
+  function selectTopic(nextTopic: string) {
+    setTopic(nextTopic);
+    setFeatures([]);
   }
 
   return (
@@ -148,14 +394,14 @@ export function LegislationWizard() {
           <div>
             <p className="section-kicker mb-2">Şimdi başlayın</p>
             <h2 className="font-heading text-[22px] font-semibold tracking-[-0.035em]">
-              Önce çevre alanını seçin
+              Tüm çevre kapsamını tarayın
             </h2>
             <p className="mt-2 max-w-lg text-sm leading-6 text-muted-foreground">
-              Dört kısa adım sonunda okunacak mevzuat listeniz hazır olsun.
+              15 alanı birlikte tarayın veya belirli bir konudan başlayın.
             </p>
           </div>
           <span className="meta-type hidden rounded-full border border-border bg-background px-3 py-1.5 text-[10px] font-medium text-muted-foreground sm:inline-flex">
-            03–04 dk.
+            05–07 dk.
           </span>
         </div>
         <ol
@@ -220,12 +466,49 @@ export function LegislationWizard() {
                 id="wizard-step-one"
                 className="font-heading text-[19px] font-semibold tracking-[-0.025em]"
               >
-                İlk olarak hangi çevre alanıyla ilgileniyorsunuz?
+                Tüm kapsamı mı, belirli bir alanı mı tarayalım?
               </h3>
               <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                Seçiminiz sonraki tesis sorularını daraltır.
+                Emin değilseniz tüm çevre kapsamıyla başlayın.
               </p>
             </div>
+
+            <button
+              type="button"
+              onClick={() => selectTopic('all')}
+              aria-pressed={topic === 'all'}
+              className="topic-option group mb-3 flex min-h-16 w-full items-center gap-3 rounded-[12px] border px-4 py-3.5 text-left transition-all"
+            >
+              <span className="grid size-9 shrink-0 place-items-center rounded-[10px] border border-border/70 bg-card text-primary transition-colors group-aria-pressed:border-primary group-aria-pressed:bg-primary group-aria-pressed:text-primary-foreground">
+                <ScanSearch className="size-4.5" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <strong className="block text-sm font-semibold">
+                  Tesisimin tüm çevre kapsamını tara
+                </strong>
+                <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">
+                  15 alan · tesis bilgilerine göre tek okuma rotası
+                </span>
+              </span>
+              {topic === 'all' ? (
+                <span className="grid size-5 place-items-center rounded-full bg-primary text-primary-foreground">
+                  <Check
+                    className="size-3"
+                    strokeWidth={3}
+                    aria-hidden="true"
+                  />
+                </span>
+              ) : (
+                <ArrowRight
+                  className="size-4 text-muted-foreground/50"
+                  aria-hidden="true"
+                />
+              )}
+            </button>
+
+            <p className="meta-type mb-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+              Ya da tek alanla başlayın
+            </p>
             <ul
               className="grid gap-2.5 sm:grid-cols-2"
               aria-label="Çevre mevzuatı alanları"
@@ -237,7 +520,7 @@ export function LegislationWizard() {
                   <li key={item.id} className="contents">
                     <button
                       type="button"
-                      onClick={() => setTopic(item.id)}
+                      onClick={() => selectTopic(item.id)}
                       aria-pressed={active}
                       className="topic-option group flex min-h-14 items-center gap-3 rounded-[11px] border px-3.5 py-3 text-left text-sm font-medium transition-all"
                     >
@@ -274,7 +557,8 @@ export function LegislationWizard() {
                 onClick={() => setShowAllTopics(true)}
                 aria-expanded={showAllTopics}
               >
-                Diğer 3 çevre alanını göster
+                Diğer {wizardTopics.length - visibleTopics.length} çevre alanını
+                göster
                 <ChevronDown className="size-3.5" aria-hidden="true" />
               </Button>
             )}
@@ -306,6 +590,9 @@ export function LegislationWizard() {
                   onChange={(event) => setStage(event.target.value)}
                   className="w-full [&>select]:h-11 [&>select]:rounded-[10px] [&>select]:bg-background"
                 >
+                  <NativeSelectOption value="belirsiz">
+                    Henüz seçmedim / bilmiyorum
+                  </NativeSelectOption>
                   <NativeSelectOption value="planlama">
                     Planlama / yeni kuruluş
                   </NativeSelectOption>
@@ -314,6 +601,9 @@ export function LegislationWizard() {
                   </NativeSelectOption>
                   <NativeSelectOption value="degisiklik">
                     Kapasite veya proses değişikliği
+                  </NativeSelectOption>
+                  <NativeSelectOption value="devir">
+                    Devir / işletmeci değişikliği
                   </NativeSelectOption>
                   <NativeSelectOption value="kapanis">
                     Faaliyet sonlandırma
@@ -331,6 +621,9 @@ export function LegislationWizard() {
                   onChange={(event) => setSector(event.target.value)}
                   className="w-full [&>select]:h-11 [&>select]:rounded-[10px] [&>select]:bg-background"
                 >
+                  <NativeSelectOption value="belirsiz">
+                    Faaliyet grubunu seçin
+                  </NativeSelectOption>
                   <NativeSelectOption value="genel">
                     Genel imalat sanayii
                   </NativeSelectOption>
@@ -354,6 +647,21 @@ export function LegislationWizard() {
                   </NativeSelectOption>
                   <NativeSelectOption value="gida">
                     Gıda ve tarım ürünleri
+                  </NativeSelectOption>
+                  <NativeSelectOption value="maden">
+                    Madencilik ve taş ocakları
+                  </NativeSelectOption>
+                  <NativeSelectOption value="insaat">
+                    İnşaat ve altyapı
+                  </NativeSelectOption>
+                  <NativeSelectOption value="liman">
+                    Liman, tersane ve kıyı tesisleri
+                  </NativeSelectOption>
+                  <NativeSelectOption value="saglik">
+                    Sağlık kuruluşları
+                  </NativeSelectOption>
+                  <NativeSelectOption value="otomotiv">
+                    Otomotiv, elektronik ve ürün üretimi
                   </NativeSelectOption>
                 </NativeSelect>
               </label>
@@ -390,7 +698,7 @@ export function LegislationWizard() {
                   Proses ve çevresel çıkışlar
                 </legend>
                 <div className="grid gap-2.5">
-                  {featureOptions.map((option) => (
+                  {visibleFeatureOptions.map((option) => (
                     <label
                       key={option.id}
                       className="choice-row flex cursor-pointer items-start gap-3 rounded-[11px] border border-border px-3.5 py-3 text-sm leading-5 transition-colors hover:bg-muted/50"
@@ -464,11 +772,15 @@ export function LegislationWizard() {
 
             <Alert className="mt-5 rounded-[12px] border-primary/20 bg-primary/5 px-4 py-3 shadow-none">
               <FileSearch className="text-primary" aria-hidden="true" />
-              <AlertTitle>Bu liste mevzuat yorumu içermez</AlertTitle>
+              <AlertTitle>
+                {profileGapCount > 0
+                  ? `${profileGapCount} bilgi alanı henüz belirsiz`
+                  : 'Bu liste mevzuat yorumu içermez'}
+              </AlertTitle>
               <AlertDescription>
-                Konu ve tesis verileriniz resmî düzenleme başlıklarıyla
-                eşleştirilir. Kapsam sonucu, ilgili madde veya ek dayanağı
-                doğrulandığında kesinleşir.
+                {profileGapCount > 0
+                  ? 'Belirsiz alanlar kapsam dışı kabul edilmez. Liste, verdiğiniz bilgilerle oluşturulmuş bir ön okuma rotasıdır.'
+                  : 'Konu ve tesis verileriniz resmî düzenleme başlıklarıyla eşleştirilir. Kapsam sonucu, ilgili madde veya ek dayanağı doğrulandığında kesinleşir.'}
               </AlertDescription>
             </Alert>
 
@@ -489,15 +801,13 @@ export function LegislationWizard() {
                         </h4>
                         <Badge
                           variant={
-                            item.slug === 'cevre-kanunu-2872'
+                            item.foundation || item.status === 'Yürürlükte'
                               ? 'secondary'
                               : 'outline'
                           }
                           className="h-5 rounded-full"
                         >
-                          {item.slug === 'cevre-kanunu-2872'
-                            ? 'Temel düzenleme'
-                            : 'Konu eşleşmesi'}
+                          {item.foundation ? 'Temel düzenleme' : item.status}
                         </Badge>
                       </div>
                       <p className="mt-2 text-xs leading-5 text-muted-foreground">
@@ -515,6 +825,8 @@ export function LegislationWizard() {
                         <a
                           className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
                           href={item.sourceUrl}
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           Resmî kaynak{' '}
                           <ExternalLink className="size-3" aria-hidden="true" />
@@ -525,6 +837,21 @@ export function LegislationWizard() {
                 </article>
               ))}
             </div>
+
+            <Button
+              nativeButton={false}
+              render={
+                <Link
+                  href={topic === 'all' ? '/mevzuat' : `/mevzuat?alan=${topic}`}
+                  aria-label="İlgili tüm mevzuat kayıtlarını aç"
+                />
+              }
+              variant="outline"
+              className="mt-4 h-10 w-full justify-between rounded-[10px] px-4"
+            >
+              İlgili tüm kayıtları kütüphanede aç
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </Button>
           </section>
         )}
       </div>
@@ -564,7 +891,9 @@ export function LegislationWizard() {
               onClick={() => setStep((value) => Math.min(4, value + 1))}
             >
               {step === 1
-                ? 'Seçimimi kullan ve devam et'
+                ? topic === 'all'
+                  ? 'Tüm kapsamla devam et'
+                  : 'Seçimimi kullan ve devam et'
                 : step === 2
                   ? 'Koşullara geç'
                   : 'Okuma listesini oluştur'}

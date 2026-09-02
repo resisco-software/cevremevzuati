@@ -4,6 +4,7 @@ import { BookOpenCheck, ShieldCheck } from 'lucide-react';
 import { LegislationBrowser } from '@/components/site/legislation-browser';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
+import { categories, legislation } from '@/lib/legislation-data';
 
 export const metadata: Metadata = {
   title: 'Çevre Mevzuatı Dizini',
@@ -29,8 +30,9 @@ export default async function LegislationPage({
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
               Konu başlığı, düzenleme adı veya Resmî Gazete sayısıyla arayın.
-              Her kayıtta ilk yayım, değişiklik izi ve resmî kaynak birlikte
-              gösterilir.
+              Her kayıtta ilk yayım, kayıt durumu ve resmî kaynak birlikte
+              gösterilir; değişiklik kayıtları bulundukça ana düzenlemeye
+              bağlanır.
             </p>
           </div>
           <div className="grid gap-2 text-sm text-muted-foreground sm:grid-cols-2 lg:grid-cols-1">
@@ -44,6 +46,13 @@ export default async function LegislationPage({
                 aria-hidden="true"
               />{' '}
               Yorum içermeyen kayıt yapısı
+            </span>
+            <span className="flex items-center gap-2">
+              <BookOpenCheck
+                className="size-4 text-primary"
+                aria-hidden="true"
+              />{' '}
+              {categories.length} alan · {legislation.length} kaynak kaydı
             </span>
           </div>
         </div>

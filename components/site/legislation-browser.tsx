@@ -15,6 +15,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { categories, legislation } from '@/lib/legislation-data';
 
+type DocumentType = (typeof legislation)[number]['type'];
+type RecordStatus = (typeof legislation)[number]['status'];
+
+const documentTypes = Array.from(new Set(legislation.map((item) => item.type)));
+const recordStatuses = Array.from(
+  new Set(legislation.map((item) => item.status)),
+);
+
 export function LegislationBrowser({
   compact = false,
   initialCategory = 'all',
@@ -28,32 +36,93 @@ export function LegislationBrowser({
       ? initialCategory
       : 'all',
   );
+  const [documentType, setDocumentType] = useState<'all' | DocumentType>('all');
+  const [recordStatus, setRecordStatus] = useState<'all' | RecordStatus>('all');
+  const [showAllCategories, setShowAllCategories] = useState(
+    categories.findIndex((item) => item.id === initialCategory) >= 8,
+  );
+  const [visibleCount, setVisibleCount] = useState(12);
 
   const filtered = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase('tr-TR');
     return legislation.filter((item) => {
       const matchesCategory =
-        category === 'all' || item.categories.includes(category);
+        category === 'all' ||
+        item.foundation ||
+        item.categories.includes(category);
+      const matchesType = documentType === 'all' || item.type === documentType;
+      const matchesStatus =
+        recordStatus === 'all' || item.status === recordStatus;
       const categoryTerms = item.categories
         .flatMap((id) => {
           const entry = categories.find((candidate) => candidate.id === id);
           return entry
-            ? [entry.label, entry.shortLabel, entry.description]
+            ? [
+                entry.label,
+                entry.shortLabel,
+                entry.description,
+                ...entry.subtopics,
+              ]
             : [];
         })
         .join(' ');
+      const changeTerms = item.changes?.map((change) => change.label).join(' ');
       const matchesQuery =
         normalized.length === 0 ||
-        [item.title, item.summary, item.type, item.gazetteNumber, categoryTerms]
+        [
+          item.title,
+          item.summary,
+          item.type,
+          item.gazetteNumber,
+          categoryTerms,
+          changeTerms,
+        ]
           .join(' ')
           .toLocaleLowerCase('tr-TR')
           .includes(normalized);
-      return matchesCategory && matchesQuery;
+      return matchesCategory && matchesType && matchesStatus && matchesQuery;
     });
-  }, [category, query]);
+  }, [category, documentType, query, recordStatus]);
 
-  const shown = compact ? filtered.slice(0, 9) : filtered;
-  const hasFilters = query.length > 0 || category !== 'all';
+  const shown = compact
+    ? filtered.slice(0, 9)
+    : filtered.slice(0, visibleCount);
+  const visibleCategories = showAllCategories
+    ? categories
+    : categories.slice(0, 8);
+  const hasFilters =
+    query.trim().length > 0 ||
+    category !== 'all' ||
+    documentType !== 'all' ||
+    recordStatus !== 'all';
+
+  function clearFilters() {
+    setQuery('');
+    setCategory('all');
+    setDocumentType('all');
+    setRecordStatus('all');
+    setVisibleCount(12);
+  }
+
+  function changeQuery(value: string) {
+    setQuery(value);
+    setVisibleCount(12);
+  }
+
+  function changeCategory(value: string) {
+    setCategory(value);
+    setVisibleCount(12);
+  }
+
+  function changeDocumentType(value: 'all' | DocumentType) {
+    setDocumentType(value);
+    setVisibleCount(12);
+  }
+
+  function changeRecordStatus(value: 'all' | RecordStatus) {
+    setRecordStatus(value);
+    setVisibleCount(12);
+  }
 
   return (
     <div>
@@ -77,7 +146,7 @@ export function LegislationBrowser({
             <Input
               id="legislation-search"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => changeQuery(event.target.value)}
               className="h-13 rounded-xl border-input bg-background pr-4 pl-12 text-[15px] shadow-none focus-visible:border-primary"
               placeholder="Örn. çevre izni, atık, 32029…"
             />
@@ -90,10 +159,7 @@ export function LegislationBrowser({
             {hasFilters && (
               <button
                 type="button"
-                onClick={() => {
-                  setQuery('');
-                  setCategory('all');
-                }}
+                onClick={clearFilters}
                 className="text-xs font-semibold text-primary hover:underline"
               >
                 Aramayı temizle
@@ -104,24 +170,98 @@ export function LegislationBrowser({
             <legend className="sr-only">Mevzuat alanına göre filtrele</legend>
             <button
               type="button"
-              onClick={() => setCategory('all')}
+              onClick={() => changeCategory('all')}
               aria-pressed={category === 'all'}
               className="filter-chip"
             >
               Tümü
             </button>
-            {categories.map((item) => (
+            {visibleCategories.map((item) => (
               <button
                 key={item.id}
                 type="button"
-                onClick={() => setCategory(item.id)}
+                onClick={() => changeCategory(item.id)}
                 aria-pressed={category === item.id}
                 className="filter-chip"
               >
                 {item.shortLabel}
               </button>
             ))}
+            <button
+              type="button"
+              onClick={() => setShowAllCategories((current) => !current)}
+              className="filter-chip"
+              aria-expanded={showAllCategories}
+            >
+              {showAllCategories
+                ? 'Daha az alan'
+                : `${categories.length - visibleCategories.length} alan daha`}
+            </button>
           </fieldset>
+
+          <div className="mt-5 grid gap-5 border-t border-border/70 pt-5 sm:grid-cols-2">
+            <fieldset>
+              <legend className="mb-2.5 text-xs font-semibold">
+                Belge türü
+              </legend>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => changeDocumentType('all')}
+                  aria-pressed={documentType === 'all'}
+                  className="filter-chip"
+                >
+                  Tümü
+                </button>
+                {documentTypes.map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => changeDocumentType(type)}
+                    aria-pressed={documentType === type}
+                    className="filter-chip"
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend className="mb-2.5 text-xs font-semibold">
+                Kayıt durumu
+              </legend>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => changeRecordStatus('all')}
+                  aria-pressed={recordStatus === 'all'}
+                  className="filter-chip"
+                >
+                  Tümü
+                </button>
+                {recordStatuses.map((status) => (
+                  <button
+                    key={status}
+                    type="button"
+                    onClick={() => changeRecordStatus(status)}
+                    aria-pressed={recordStatus === status}
+                    className="filter-chip"
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+          <p className="mt-4 text-[11px] leading-5 text-muted-foreground">
+            <strong className="font-semibold text-foreground">
+              Kayıt durumu:
+            </strong>{' '}
+            “Yürürlükte” güncel resmî listede doğrulanan kaydı; “Kaynak kaydı”
+            ise yayım künyesi eklenmiş ve yürürlük kontrolü süren kaydı
+            gösterir.
+          </p>
         </div>
       </div>
 
@@ -150,8 +290,19 @@ export function LegislationBrowser({
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="secondary">{item.type}</Badge>
-                  <Badge variant="outline" className="gap-1 text-primary">
-                    <CheckCircle2 className="size-3" aria-hidden="true" />
+                  <Badge
+                    variant="outline"
+                    className={`gap-1 ${
+                      item.status === 'Yürürlükte'
+                        ? 'text-primary'
+                        : 'text-muted-foreground'
+                    }`}
+                  >
+                    {item.status === 'Yürürlükte' ? (
+                      <CheckCircle2 className="size-3" aria-hidden="true" />
+                    ) : (
+                      <FileText className="size-3" aria-hidden="true" />
+                    )}
                     {item.status}
                   </Badge>
                 </div>
@@ -165,15 +316,17 @@ export function LegislationBrowser({
                   <span>Resmî Gazete: {item.publicationLabel}</span>
                   <span>Sayı: {item.gazetteNumber}</span>
                   <span>
-                    {item.categories
-                      .map(
-                        (id) =>
-                          categories.find((entry) => entry.id === id)
-                            ?.shortLabel,
-                      )
-                      .filter(Boolean)
-                      .slice(0, 3)
-                      .join(' · ')}
+                    {item.foundation
+                      ? 'Temel düzenleme'
+                      : item.categories
+                          .map(
+                            (id) =>
+                              categories.find((entry) => entry.id === id)
+                                ?.shortLabel,
+                          )
+                          .filter(Boolean)
+                          .slice(0, 3)
+                          .join(' · ')}
                   </span>
                 </div>
               </div>
@@ -197,6 +350,8 @@ export function LegislationBrowser({
                     <a
                       href={item.consolidatedUrl ?? item.sourceUrl}
                       aria-label={`${item.title} resmî kaynağı`}
+                      target="_blank"
+                      rel="noreferrer"
                     />
                   }
                   variant="ghost"
@@ -208,6 +363,19 @@ export function LegislationBrowser({
               </div>
             </article>
           ))}
+          {!compact && shown.length < filtered.length && (
+            <div className="flex justify-center pt-3">
+              <Button
+                type="button"
+                variant="outline"
+                className="h-11 rounded-xl px-5"
+                onClick={() => setVisibleCount((count) => count + 12)}
+              >
+                12 kayıt daha göster
+                <ArrowRight className="size-4 rotate-90" aria-hidden="true" />
+              </Button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="mt-5 rounded-2xl border border-dashed border-border px-6 py-16 text-center">

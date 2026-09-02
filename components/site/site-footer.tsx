@@ -28,6 +28,9 @@ export function SiteFooter() {
             İçerik
           </p>
           <div className="grid gap-3 text-sm text-background/75">
+            <Link className="hover:text-background" href="/kapsam">
+              Kapsam haritası
+            </Link>
             <Link className="hover:text-background" href="/mevzuat">
               Mevzuat dizini
             </Link>

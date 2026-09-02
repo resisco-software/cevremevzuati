@@ -81,8 +81,19 @@ export default async function LegislationDetailPage({
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="secondary">{item.type}</Badge>
-                <Badge variant="outline" className="gap-1 text-primary">
-                  <CheckCircle2 className="size-3" aria-hidden="true" />{' '}
+                <Badge
+                  variant="outline"
+                  className={`gap-1 ${
+                    item.status === 'Yürürlükte'
+                      ? 'text-primary'
+                      : 'text-muted-foreground'
+                  }`}
+                >
+                  {item.status === 'Yürürlükte' ? (
+                    <CheckCircle2 className="size-3" aria-hidden="true" />
+                  ) : (
+                    <FileText className="size-3" aria-hidden="true" />
+                  )}{' '}
                   {item.status}
                 </Badge>
               </div>
@@ -135,6 +146,8 @@ export default async function LegislationDetailPage({
                   <a
                     href={item.consolidatedUrl ?? item.sourceUrl}
                     aria-label={`${item.title} resmî metni`}
+                    target="_blank"
+                    rel="noreferrer"
                   />
                 }
                 className="mt-5 h-10 w-full rounded-[10px]"
@@ -146,6 +159,8 @@ export default async function LegislationDetailPage({
                 <a
                   href={item.sourceUrl}
                   className="mt-3 flex items-center justify-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   İlk yayım kaynağı{' '}
                   <ExternalLink className="size-3" aria-hidden="true" />
@@ -196,6 +211,8 @@ export default async function LegislationDetailPage({
                   <a
                     className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
                     href={change.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
                   >
                     Değişiklik kaynağı{' '}
                     <ExternalLink className="size-3" aria-hidden="true" />
@@ -275,7 +292,11 @@ export default async function LegislationDetailPage({
               Kaynak niteliği
             </div>
             <p className="mt-3 text-xs leading-5 text-muted-foreground">
-              Bu kayıttaki yayın bilgileri Resmî Gazete kaynağına bağlıdır.
+              {item.status === 'Yürürlükte'
+                ? 'Yayım künyesi resmî kaynağa bağlıdır; yürürlük durumu güncel resmî listeyle karşılaştırılmıştır.'
+                : item.status === 'Yürürlükten kaldırıldı'
+                  ? 'Bu kayıt tarihsel iz için tutulur ve güncel okuma rotasına eklenmez.'
+                  : 'Yayım künyesi resmî kaynağa bağlıdır; güncel yürürlük kontrolü tamamlanmadan yükümlülük sonucu olarak kullanılmaz.'}
             </p>
             <Link
               href="/metodoloji"

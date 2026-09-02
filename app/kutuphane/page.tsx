@@ -13,6 +13,7 @@ import { LegislationBrowser } from '@/components/site/legislation-browser';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
 import { Button } from '@/components/ui/button';
+import { categories, legislation } from '@/lib/legislation-data';
 
 export const metadata: Metadata = {
   title: 'Mevzuat Kütüphanesi | Çevre Mevzuatı',
@@ -62,7 +63,8 @@ export default function LibraryPage() {
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-background/60">
               Düzenleme adıyla arayın veya çevre alanını seçin. Her kayıtta
-              resmî metin, değişiklikler ve bağlı belgeler birlikte gösterilir.
+              resmî kaynak bağlantısı; varsa değişiklikler ve bağlı belgeler
+              birlikte gösterilir.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button
@@ -152,6 +154,10 @@ export default function LibraryPage() {
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
             Kaynağın niteliği her belgede ayrıca gösterilir. Kurum içi çalışma
             notları resmî mevzuat gibi yayımlanmaz.
+          </p>
+          <p className="meta-type mt-3 text-[11px] text-primary">
+            {categories.length} ana alan · {legislation.length} kaynak kaydı ·
+            kanun, yönetmelik ve tebliğ
           </p>
         </div>
         <LegislationBrowser />

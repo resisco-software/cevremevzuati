@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/site/theme-toggle';
 
 const nav = [
-  { href: '/#konu-dizini', label: 'Konu dizini' },
+  { href: '/kapsam', label: 'Kapsam haritası' },
   { href: '/mevzuat', label: 'Mevzuat' },
   { href: '/kutuphane', label: 'Kütüphane' },
   { href: '/sozluk', label: 'Sözlük' },

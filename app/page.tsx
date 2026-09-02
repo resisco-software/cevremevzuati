@@ -9,13 +9,17 @@ import {
   FileClock,
   FileText,
   FlaskConical,
+  Gauge,
   Layers3,
   Map,
   MapPinned,
+  Package,
+  Pickaxe,
   Recycle,
   Search,
   ShieldCheck,
   Volume2,
+  Waves,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -31,13 +35,17 @@ const categoryIcons = {
   izin: CheckCircle2,
   hava: Cloud,
   su: Droplets,
+  atiksu: Waves,
   atik: Recycle,
+  urun: Package,
   toprak: MapPinned,
   gurultu: Volume2,
   kimyasal: FlaskConical,
   deniz: Droplets,
   doga: Map,
+  maden: Pickaxe,
   entegre: Layers3,
+  olcum: Gauge,
 } as const;
 
 export default function Home() {
@@ -111,6 +119,14 @@ export default function Home() {
                   <Search className="size-4" aria-hidden="true" />
                 </Button>
               </div>
+
+              <div className="meta-type mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[10px] uppercase tracking-[0.07em] text-muted-foreground">
+                <span>{localCategories.length} ana çevre alanı</span>
+                <span className="size-1 rounded-full bg-primary/45" />
+                <span>{legislation.length} kaynak kaydı</span>
+                <span className="size-1 rounded-full bg-primary/45" />
+                <span>Kanun · Yönetmelik · Tebliğ</span>
+              </div>
             </div>
 
             <div
@@ -165,15 +181,40 @@ export default function Home() {
       >
         <div className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr] lg:gap-12">
           <div>
-            <p className="section-kicker">Konu dizini</p>
+            <p className="section-kicker">Kapsam haritası</p>
             <h2 className="mt-3 max-w-sm font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-[46px]">
-              Çevre mevzuatının tamamı, doğru giriş noktalarıyla.
+              Çevre mevzuatının kapsamı, 15 doğru giriş noktasıyla.
             </h2>
             <p className="mt-5 max-w-md text-sm leading-7 text-muted-foreground">
-              Her alan, düzenlemeleri başlıklarına göre toplar. Kapsam kontrolü
-              tesis bilgileri ve mevzuattaki madde/ek eşikleri üzerinden
-              yapılır.
+              Kuruluştan kapanışa; hava, su, atık, ürün, kimyasal, deniz, doğa
+              ve ölçüm dahil bütün çevre alanlarını tek yapıda tarayın.
             </p>
+            <div className="mt-6 flex flex-wrap gap-2 text-xs text-muted-foreground">
+              <span className="rounded-full border border-border bg-card px-3 py-1.5">
+                {localCategories.length} ana alan
+              </span>
+              <span className="rounded-full border border-border bg-card px-3 py-1.5">
+                {localCategories.reduce(
+                  (total, category) => total + category.subtopics.length,
+                  0,
+                )}{' '}
+                alt başlık
+              </span>
+              <span className="rounded-full border border-border bg-card px-3 py-1.5">
+                {legislation.length} kayıt
+              </span>
+            </div>
+            <Button
+              nativeButton={false}
+              render={
+                <Link href="/kapsam" aria-label="Tam kapsam haritasını aç" />
+              }
+              variant="outline"
+              className="mt-7 h-10 rounded-[10px] px-4"
+            >
+              Tam kapsam haritasını aç
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </Button>
           </div>
 
           <div className="category-index grid border-l border-t border-border sm:grid-cols-2">
@@ -181,25 +222,37 @@ export default function Home() {
               const Icon =
                 categoryIcons[category.id as keyof typeof categoryIcons] ??
                 FileText;
+              const recordCount = legislation.filter(
+                (item) =>
+                  item.foundation || item.categories.includes(category.id),
+              ).length;
               return (
                 <Link
                   key={category.id}
                   href={`/mevzuat?alan=${category.id}`}
-                  className="group relative min-h-44 border-r border-b border-border p-5 transition-colors duration-200 hover:bg-card sm:p-6"
+                  className="group relative min-h-56 border-r border-b border-border p-5 transition-colors duration-200 hover:bg-card sm:p-6"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <span className="grid size-9 place-items-center rounded-[10px] border border-border bg-card text-primary transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
                       <Icon className="size-4.5" aria-hidden="true" />
                     </span>
-                    <span className="meta-type text-[11px] text-muted-foreground">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
+                    <div className="text-right">
+                      <span className="meta-type block text-[11px] text-muted-foreground">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="mt-1 block text-[10px] font-semibold text-primary">
+                        {recordCount} kayıt
+                      </span>
+                    </div>
                   </div>
                   <h3 className="mt-7 max-w-xs font-heading text-lg font-semibold leading-6 tracking-[-0.025em]">
                     {category.label}
                   </h3>
                   <p className="mt-2 line-clamp-2 text-xs leading-5 text-muted-foreground">
                     {category.description}
+                  </p>
+                  <p className="mt-3 pr-7 text-[11px] leading-5 text-muted-foreground/80">
+                    {category.subtopics.slice(0, 2).join(' · ')}
                   </p>
                   <ArrowRight
                     className="absolute right-5 bottom-5 size-4 -translate-x-1 text-primary opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"

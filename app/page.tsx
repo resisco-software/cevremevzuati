@@ -169,7 +169,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-y border-border bg-foreground text-background">
+      <section className="inverse-panel border-y border-border">
         <div className="mx-auto grid max-w-[1280px] lg:grid-cols-[0.78fr_1.22fr]">
           <div className="relative isolate overflow-hidden border-b border-background/10 px-5 py-16 sm:px-8 lg:border-r lg:border-b-0 lg:px-10 lg:py-20">
             <div

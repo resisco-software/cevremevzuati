@@ -2,6 +2,7 @@ import { FileCheck2, Menu, Search } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/site/theme-toggle';
 
 const nav = [
   { href: '/#alanlar', label: 'Mevzuat alanları' },
@@ -48,6 +49,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button
             nativeButton={false}
             render={<Link href="/mevzuat" aria-label="Mevzuatta ara" />}

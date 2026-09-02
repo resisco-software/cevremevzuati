@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-foreground text-background">
+    <footer className="inverse-panel border-t border-border">
       <div className="site-frame grid gap-10 py-12 lg:grid-cols-[1.25fr_0.75fr_0.75fr]">
         <div>
           <div className="flex items-center gap-3">

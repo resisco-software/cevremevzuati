@@ -1,98 +1,72 @@
-import { ArrowRight, FileCheck2, Menu, Search } from 'lucide-react';
+import { ArrowRight, FileCheck2, Search } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { MobileNav } from '@/components/site/mobile-nav';
+import { NavLinks } from '@/components/site/nav-links';
 import { ThemeToggle } from '@/components/site/theme-toggle';
 
 const nav = [
-  { href: '/kapsam', label: 'Kapsam haritası' },
+  { href: '/#alanlar', label: 'Tesisime göre' },
   { href: '/mevzuat', label: 'Mevzuat' },
-  { href: '/kutuphane', label: 'Kütüphane' },
+  { href: '/kapsam', label: 'Kapsam haritası' },
   { href: '/sozluk', label: 'Sözlük' },
+  { href: '/metodoloji', label: 'Kaynak ve yöntem' },
 ];
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-border/90 bg-background/88 backdrop-blur-2xl">
-      <div className="site-frame flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/92 backdrop-blur-2xl">
+      <div className="site-frame flex h-16 items-center justify-between gap-4">
         <Link
-          className="group flex items-center gap-3"
+          className="group flex shrink-0 items-center gap-3 rounded-md focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
           href="/"
           aria-label="Çevre Mevzuatı ana sayfa"
         >
-          <span className="grid size-9 place-items-center rounded-[10px] bg-primary text-primary-foreground shadow-[0_1px_0_oklch(1_0_0/0.18)_inset] transition-transform duration-200 group-hover:-translate-y-px">
+          <span className="grid size-9 place-items-center rounded-md bg-primary text-primary-foreground shadow-[0_1px_0_oklch(1_0_0/0.18)_inset] transition-transform duration-200 group-hover:-translate-y-px">
             <FileCheck2 className="size-[18px]" aria-hidden="true" />
           </span>
           <span className="leading-none">
-            <span className="block text-[15px] font-semibold tracking-[-0.025em]">
+            <span className="block text-base font-semibold tracking-[-0.02em]">
               çevre mevzuatı
             </span>
-            <span className="meta-type mt-1.5 block text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+            <span className="meta-type mt-1.5 block text-xs uppercase tracking-[0.1em] text-muted-foreground">
               Tesis navigasyonu
             </span>
           </span>
         </Link>
 
-        <nav
-          className="hidden h-full items-center gap-1 text-[13px] text-muted-foreground lg:flex"
-          aria-label="Ana menü"
-        >
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              className="rounded-lg px-3 py-2 transition-colors hover:bg-muted hover:text-foreground"
-              href={item.href}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <NavLinks items={nav} />
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <ThemeToggle />
+          {/* Küçük ekranda arama ikon buton olarak kalır, gizlenmez. */}
           <Button
             nativeButton={false}
             render={<Link href="/mevzuat" aria-label="Mevzuatta ara" />}
             variant="outline"
-            className="hidden h-9 gap-2 rounded-[10px] bg-card px-3.5 text-[13px] shadow-none sm:inline-flex"
+            className="inline-flex size-10 items-center justify-center rounded-md bg-card p-0 shadow-none xl:hidden"
+          >
+            <Search className="size-4" aria-hidden="true" />
+          </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/mevzuat" />}
+            variant="outline"
+            className="hidden h-10 gap-2 rounded-md bg-card px-3.5 text-sm shadow-none xl:inline-flex"
           >
             <Search className="size-4" aria-hidden="true" />
             Mevzuatta ara
           </Button>
           <Button
             nativeButton={false}
-            render={
-              <Link
-                href="/#alanlar"
-                aria-label="Tesisime göre mevzuat rotasını başlat"
-              />
-            }
-            className="h-9 gap-2 rounded-[10px] px-3.5 text-[13px] shadow-none"
+            render={<Link href="/#alanlar" />}
+            className="hidden h-10 gap-2 rounded-md px-3.5 text-sm shadow-none lg:inline-flex"
           >
-            <span className="sm:hidden">Başla</span>
-            <span className="hidden sm:inline">Tesisime göre</span>
+            Rotamı oluştur
             <ArrowRight className="size-3.5" aria-hidden="true" />
           </Button>
-          <details className="mobile-menu relative lg:hidden">
-            <summary className="grid size-9 cursor-pointer list-none place-items-center rounded-[10px] border border-border bg-card [&::-webkit-details-marker]:hidden">
-              <Menu className="size-4" aria-hidden="true" />
-              <span className="sr-only">Menüyü aç</span>
-            </summary>
-            <nav
-              className="absolute right-0 top-11 grid min-w-60 gap-1 rounded-xl border border-border bg-popover p-2 text-sm text-popover-foreground shadow-xl"
-              aria-label="Mobil menü"
-            >
-              {nav.map((item) => (
-                <Link
-                  key={item.href}
-                  className="rounded-lg px-3 py-2.5 hover:bg-muted"
-                  href={item.href}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </details>
+          <MobileNav items={nav} />
         </div>
       </div>
     </header>

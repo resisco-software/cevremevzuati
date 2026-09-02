@@ -1,14 +1,25 @@
 import type { Metadata } from 'next';
-import { BookMarked, Quote } from 'lucide-react';
+import { Quote } from 'lucide-react';
 
+import { Breadcrumbs } from '@/components/site/breadcrumbs';
 import { GlossaryBrowser } from '@/components/site/glossary-browser';
+import { JsonLd } from '@/components/site/json-ld';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
+import { glossary } from '@/lib/legislation-data';
+import { absoluteUrl, openGraphFor } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Mevzuat Sözlüğü | Çevre Mevzuatı',
+  title: 'Mevzuat sözlüğü',
   description:
     'Çevre mevzuatındaki terimleri, kaynak düzenleme ve madde atıflarıyla bulun.',
+  alternates: { canonical: '/sozluk' },
+  openGraph: openGraphFor({
+    title: 'Çevre mevzuatı sözlüğü',
+    description:
+      'Çevre mevzuatındaki terimleri, kaynak düzenleme ve madde atıflarıyla bulun.',
+    path: '/sozluk',
+  }),
 };
 
 export default async function GlossaryPage({
@@ -17,41 +28,67 @@ export default async function GlossaryPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
+  const distinctTerms = new Set(glossary.map((entry) => entry.term));
+
   return (
-    <main className="min-h-screen bg-background">
+    <>
       <SiteHeader />
-      <section className="border-b border-border bg-card">
-        <div className="site-frame grid gap-8 py-14 lg:grid-cols-[1fr_320px] lg:items-end lg:py-18">
-          <div>
-            <p className="section-kicker">Mevzuat sözlüğü</p>
-            <h1 className="mt-3 max-w-3xl font-heading text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl">
-              Tanımı, geçtiği maddeden ayırmayın.
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-              Terimler yalnızca mevzuattaki tanım kaynaklarıyla gösterilir. Aynı
-              terim farklı düzenlemelerde farklı tanımlanıyorsa kayıtlar
-              ayrılır.
-            </p>
-          </div>
-          <div className="precision-card bg-primary/5 p-5">
-            <Quote className="size-5 text-primary" aria-hidden="true" />
-            <p className="mt-4 text-sm font-semibold">
-              Tanım + düzenleme + madde
-            </p>
-            <p className="mt-2 text-xs leading-5 text-muted-foreground">
-              Her sözlük kaydının değişmez üç bileşeni.
-            </p>
-            <BookMarked
-              className="mt-5 size-4 text-muted-foreground"
-              aria-hidden="true"
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'DefinedTermSet',
+          name: 'Çevre Mevzuatı Sözlüğü',
+          url: absoluteUrl('/sozluk'),
+          inLanguage: 'tr-TR',
+          hasDefinedTerm: glossary.map((entry) => ({
+            '@type': 'DefinedTerm',
+            name: entry.term,
+            description: entry.definition,
+            inDefinedTermSet: entry.source,
+          })),
+        }}
+      />
+      <main id="icerik" className="min-h-screen bg-background">
+        <section className="border-b border-border bg-card">
+          <div className="site-frame py-12 lg:py-16">
+            <Breadcrumbs
+              items={[
+                { label: 'Ana sayfa', href: '/' },
+                { label: 'Mevzuat sözlüğü' },
+              ]}
             />
+            <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_320px] lg:items-end">
+              <div>
+                <p className="section-kicker">Çevre mevzuatı</p>
+                <h1 className="mt-3 max-w-3xl font-heading text-[clamp(2.5rem,4.4vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+                  Mevzuat sözlüğü
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
+                  Tanımı, geçtiği maddeden ayırmayın. Terimler yalnızca
+                  mevzuattaki tanım kaynaklarıyla gösterilir; aynı terim farklı
+                  düzenlemelerde farklı tanımlanıyorsa kayıtlar ayrılır.
+                </p>
+              </div>
+              <div className="precision-card bg-primary/5 p-5">
+                <Quote className="size-5 text-primary" aria-hidden="true" />
+                <p className="mt-4 text-base font-semibold">
+                  Tanım + düzenleme + madde
+                </p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Her sözlük kaydının değişmez üç bileşeni.
+                </p>
+                <p className="mt-4 text-sm leading-6 text-muted-foreground">
+                  {glossary.length} tanım · {distinctTerms.size} terim
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-      <section className="site-frame py-10 lg:py-14">
-        <GlossaryBrowser initialQuery={q} />
-      </section>
+        </section>
+        <section className="site-frame py-10 lg:py-14">
+          <GlossaryBrowser key={q ?? ''} initialQuery={q} />
+        </section>
+      </main>
       <SiteFooter />
-    </main>
+    </>
   );
 }

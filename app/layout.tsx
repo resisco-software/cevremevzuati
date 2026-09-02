@@ -3,29 +3,28 @@ import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 
-const themeScript = `try{const s=localStorage.getItem('cevremevzuati-theme');const d=s?s==='dark':matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);document.documentElement.style.colorScheme=d?'dark':'light'}catch(e){}`;
+import { siteDescription, siteName, siteUrl } from '@/lib/site';
+
+const themeScript = `try{var s=localStorage.getItem('cevremevzuati-theme');var d=(s==='dark'||s==='light')?s==='dark':matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);document.documentElement.style.colorScheme=d?'dark':'light'}catch(e){}`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cevremevzuati.com'),
-  title: 'Çevre Mevzuatı | Tesisiniz için mevzuat navigasyonu',
-  description:
-    'Sanayi tesisleri için resmî kaynağa dayalı çevre mevzuatı navigasyonu, mevzuat kütüphanesi ve sözlük.',
-  alternates: {
-    canonical: '/',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Çevre Mevzuatı | Tesisiniz için mevzuat navigasyonu',
+    template: '%s | Çevre Mevzuatı',
   },
+  description: siteDescription,
+  applicationName: siteName,
   icons: {
     icon: '/favicon.svg',
   },
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
-    url: '/',
-    siteName: 'Çevre Mevzuatı',
-    title: 'Çevre Mevzuatı',
-    description: 'Tesisiniz için doğrulanabilir mevzuat navigasyonu',
+    siteName,
     images: [
       {
-        url: '/og.png',
+        url: '/og.jpg',
         width: 1200,
         height: 630,
         alt: 'Çevre Mevzuatı — Tesisiniz için doğrulanabilir mevzuat navigasyonu',
@@ -34,9 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Çevre Mevzuatı',
-    description: 'Tesisiniz için doğrulanabilir mevzuat navigasyonu',
-    images: ['/og.png'],
+    images: ['/og.jpg'],
   },
 };
 
@@ -54,7 +51,15 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <a
+          href="#icerik"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-primary-foreground focus:outline-3 focus:outline-offset-2 focus:outline-ring/60"
+        >
+          İçeriğe atla
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

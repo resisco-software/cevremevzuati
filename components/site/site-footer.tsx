@@ -29,7 +29,7 @@ export function SiteFooter() {
     <footer className="mt-16 border-t border-rule">
       <div className="site-frame grid gap-10 py-12 lg:grid-cols-[1.4fr_repeat(2,0.7fr)]">
         <div className="measure">
-          <p className="font-display text-lg font-semibold">Çevre Mevzuatı</p>
+          <p className="text-md font-semibold">Çevre Mevzuatı</p>
           <p className="mt-4 text-sm leading-7 text-muted-foreground">
             Sanayi tesislerinin çevre mevzuatındaki yerini bulmasına yardımcı
             olan, resmî kaynağa dayalı mevzuat navigasyonu. {legislation.length}{' '}
@@ -42,13 +42,13 @@ export function SiteFooter() {
         </div>
         {columns.map((column) => (
           <nav key={column.heading} aria-label={column.heading}>
-            <h2 className="label">{column.heading}</h2>
+            <h2 className="eyebrow">{column.heading}</h2>
             <ul className="mt-4 grid gap-3 text-sm">
               {column.links.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
+                    className="text-muted-foreground hover:text-ink hover:underline"
                   >
                     {link.label}
                   </Link>
@@ -58,8 +58,8 @@ export function SiteFooter() {
           </nav>
         ))}
       </div>
-      <div className="ruled">
-        <div className="site-frame record flex flex-col gap-2 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <div className="border-t border-border">
+        <div className="site-frame flex flex-col gap-2 py-5 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>
             © {new Date().getFullYear()} {publisherName}
           </span>
@@ -67,7 +67,7 @@ export function SiteFooter() {
             En son kaynak kontrolü: {lastSourceCheck()} ·{' '}
             <ExternalLink
               href="https://karbonmevzuati.com"
-              className="underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
+              className="hover:text-ink hover:underline"
               iconClassName="ml-1 inline size-3"
             >
               karbonmevzuati.com

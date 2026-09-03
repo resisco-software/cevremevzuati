@@ -77,7 +77,7 @@ export function ThemeToggle() {
       type="button"
       onClick={selectNext}
       suppressHydrationWarning
-      className="inline-flex h-10 items-center gap-2 border border-rule-strong px-2.5 text-sm text-lead hover:border-ink hover:text-ink sm:px-3"
+      className="btn btn-quiet h-10 gap-2 px-2.5 text-sm text-muted-foreground hover:text-ink sm:px-3"
       aria-label={`Tema: ${current.long}. Değiştirmek için tıklayın.`}
       title={`Tema: ${current.long}`}
     >

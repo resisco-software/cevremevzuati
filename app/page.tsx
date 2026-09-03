@@ -1,20 +1,28 @@
 import type { Metadata } from 'next';
-import { ArrowRight } from 'lucide-react';
+import {
+  ArrowRight,
+  BookMarked,
+  CheckCircle2,
+  FileSearch,
+  Layers,
+  ListChecks,
+  Compass,
+} from 'lucide-react';
 import Link from 'next/link';
 
-import { ExternalLink } from '@/components/site/external-link';
-import { HomeSearch } from '@/components/site/home-search';
 import { JsonLd } from '@/components/site/json-ld';
 import { LegislationWizard } from '@/components/site/legislation-wizard';
+import { QuickSearch } from '@/components/site/quick-search';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
+import { areaStyle } from '@/lib/area-theme';
 import {
   categories,
   categoryRecordCount,
   glossary,
   lastSourceCheck,
   legislation,
-  verificationSummary,
+  maxCategoryRecordCount,
 } from '@/lib/legislation-data';
 import {
   absoluteUrl,
@@ -36,29 +44,45 @@ export const metadata: Metadata = {
   }),
 };
 
+/** Sitenin resmî mevzuat portallarından ayrıştığı somut noktalar. */
+const differences = [
+  {
+    icon: FileSearch,
+    title: 'Tam adı bilmeden bulun',
+    body: 'SKHKKY, ÇİLY, GEKAP, SEÖS gibi kısaltmalar; Türkçe karakter kullanmadan yazım; Resmî Gazete sayısı. Üçü de çalışır.',
+  },
+  {
+    icon: ListChecks,
+    title: 'Hangi eke bakacağınız yazılı',
+    body: 'Her kayıtta kimi kapsadığı, önce bakılacak ek veya madde ve tipik yükümlülükler listelenir. PDF açmadan görürsünüz.',
+  },
+  {
+    icon: Compass,
+    title: 'Tesisinizi tanımlayın, liste çıksın',
+    body: 'Konuyu bilmiyorsanız dört soruya cevap verin. Her sonucun altında onu listeye getiren cevabınız yazar.',
+  },
+  {
+    icon: CheckCircle2,
+    title: 'Bağlantı doğrudan düzenlemeye gider',
+    body: `${legislation.length} kaydın tamamı madde düzeyinde Resmî Gazete bağlantısı taşır. Günün tam sayısına atan bağlantı yok.`,
+  },
+];
+
 const featuredSlugs = [
   'cevre-izin-ve-lisans-yonetmeligi',
   'skhkky',
-  'endustriyel-emisyonlarin-yonetimi',
   'atik-yonetimi',
+  'endustriyel-emisyonlarin-yonetimi',
+  'sifir-atik',
+  'su-kirliligi-kontrolu',
 ];
 
 const featured = featuredSlugs
   .map((slug) => legislation.find((item) => item.slug === slug))
   .filter((item): item is (typeof legislation)[number] => Boolean(item));
 
-/** Aynı terimin iki düzenlemede ayrı tanımlandığı gerçek örnek. */
-const doubleDefined = (() => {
-  const counts = glossary.reduce<Record<string, number>>((acc, entry) => {
-    acc[entry.term] = (acc[entry.term] ?? 0) + 1;
-    return acc;
-  }, {});
-  const term = Object.keys(counts).find((key) => counts[key] > 1);
-  return term ? glossary.filter((entry) => entry.term === term) : [];
-})();
-
 export default function HomePage() {
-  const summary = verificationSummary();
+  const maxCount = maxCategoryRecordCount();
 
   return (
     <>
@@ -72,252 +96,248 @@ export default function HomePage() {
           inLanguage: 'tr-TR',
           description: siteDescription,
           publisher: { '@type': 'Organization', name: siteName },
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: `${absoluteUrl('/mevzuat')}?q={search_term_string}`,
+            'query-input': 'required name=search_term_string',
+          },
         }}
       />
       <main id="icerik">
-        <section className="site-frame pt-14 pb-12 lg:pt-20 lg:pb-16">
-          <p className="label">Türkiye çevre mevzuatı · tesis navigasyonu</p>
-          <h1 className="display-xl measure mt-6">
-            Hangi çevre mevzuatını okumanız gerektiğini bulun.
-          </h1>
-          <div className="ruled-strong mt-8 max-w-3xl" />
-          <dl className="record mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-            <div className="flex gap-2">
-              <dt className="text-muted-foreground">Ana çevre alanı</dt>
-              <dd className="text-ink">{categories.length}</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="text-muted-foreground">Mevzuat kaydı</dt>
-              <dd className="text-ink">{legislation.length}</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="text-muted-foreground">Sözlük tanımı</dt>
-              <dd className="text-ink">{glossary.length}</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="text-muted-foreground">Kırık kaynak</dt>
-              <dd className="text-ink">0</dd>
-            </div>
-          </dl>
-          <p className="measure mt-8 text-md leading-8 text-muted-foreground">
-            Adını biliyorsanız arayın. Tesisi tarif ediyorsanız rota çıkarın.
-            Her kaydın yanında hangi eke bakacağınız yazılıdır.
-          </p>
-          <div className="mt-8 max-w-2xl">
-            <HomeSearch />
+        {/* ---- arama önce ---- */}
+        <section className="site-frame pt-12 pb-14 lg:pt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="text-3xl">
+              Çevre mevzuatında aradığınızı bulun.
+            </h1>
+            <p className="mt-5 text-md leading-8 text-muted-foreground">
+              {categories.length} çevre alanı, {legislation.length} düzenleme,{' '}
+              {glossary.length} tanım. Hepsi resmî kaynağına bağlı, hepsi
+              aranabilir.
+            </p>
           </div>
-          <div className="mt-6">
+
+          <div className="mx-auto mt-9 max-w-3xl">
+            <QuickSearch />
+          </div>
+
+          {/* iki kapı: adını biliyorum / bilmiyorum */}
+          <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
             <Link
               href="#alanlar"
-              className="inline-flex h-12 items-center gap-2.5 bg-seal px-5 text-base font-medium text-primary-foreground hover:bg-lead"
+              className="card card-link flex items-start gap-4 p-5"
             >
-              Tesisime göre rota
-              <ArrowRight className="size-4" aria-hidden="true" />
+              <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                <Compass className="size-5" aria-hidden="true" />
+              </span>
+              <span>
+                <span className="block font-semibold">
+                  Konuyu bilmiyorum
+                </span>
+                <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                  Tesisinizi tanımlayın, okuma listesi çıkarayım
+                </span>
+              </span>
+            </Link>
+            <Link
+              href="/kapsam"
+              className="card card-link flex items-start gap-4 p-5"
+            >
+              <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                <Layers className="size-5" aria-hidden="true" />
+              </span>
+              <span>
+                <span className="block font-semibold">Konudan gözat</span>
+                <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                  {categories.length} çevre alanı, alt başlıklarıyla
+                </span>
+              </span>
             </Link>
           </div>
         </section>
 
-        <section id="alanlar" className="ruled-strong">
-          <div className="site-frame py-12 lg:py-16">
+        {/* ---- alan haritası ---- */}
+        <section id="konu-dizini" className="border-t border-border bg-card">
+          <div className="site-frame py-14 lg:py-16">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <p className="eyebrow">Çevre alanları</p>
+                <h2 className="mt-2.5 text-xl">
+                  Hangi alandan girmek istersiniz?
+                </h2>
+                <p className="measure mt-3 leading-8 text-muted-foreground">
+                  Her alanın sabit bir rengi var; çubuk o alandaki kayıt
+                  sayısını gösterir.
+                </p>
+              </div>
+              <Link
+                href="/mevzuat"
+                className="btn btn-quiet h-11 px-4 text-sm"
+              >
+                Tüm dizin
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
+            </div>
+
+            <ul className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {categories.map((category) => {
+                const count = categoryRecordCount(category.id);
+                return (
+                  <li key={category.id} style={areaStyle(category.id)}>
+                    <Link
+                      href={`/mevzuat?alan=${category.id}`}
+                      className="card card-link area-edge flex h-full flex-col p-5"
+                    >
+                      <span className="flex items-center gap-2.5">
+                        <span className="area-dot" aria-hidden="true" />
+                        <span className="font-semibold leading-snug">
+                          {category.label}
+                        </span>
+                      </span>
+                      <span className="mt-2.5 block text-sm leading-6 text-muted-foreground">
+                        {category.subtopics.slice(0, 3).join(' · ')}
+                      </span>
+                      <span className="mt-4 flex items-center gap-3">
+                        <span className="meter flex-1" aria-hidden="true">
+                          <span
+                            style={{
+                              width: `${Math.max(6, (count / maxCount) * 100)}%`,
+                            }}
+                          />
+                        </span>
+                        <span className="gazette shrink-0 text-muted-foreground">
+                          {count} kayıt
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        {/* ---- neden burası ---- */}
+        <section className="border-t border-border">
+          <div className="site-frame py-14 lg:py-16">
+            <p className="eyebrow">Neden burası</p>
+            <h2 className="measure mt-2.5 text-xl">
+              Resmî portalda arama, doğru adı bilmenizi ister. Burada
+              bilmeniz gerekmiyor.
+            </h2>
+            <ul className="mt-9 grid gap-3 sm:grid-cols-2">
+              {differences.map((entry) => (
+                <li key={entry.title} className="card flex items-start gap-4 p-5">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                    <entry.icon className="size-5" aria-hidden="true" />
+                  </span>
+                  <span>
+                    <span className="block font-semibold">{entry.title}</span>
+                    <span className="mt-1.5 block text-sm leading-7 text-muted-foreground">
+                      {entry.body}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 text-sm leading-7 text-muted-foreground">
+              Bu site hukuki görüş üretmez ve resmî portalın yerine geçmez.
+              Bağlayıcı metin Resmî Gazete&apos;dedir; her kayıt oraya
+              bağlanır.{' '}
+              <Link
+                href="/metodoloji"
+                className="font-medium text-primary hover:underline"
+              >
+                Kaynak ve yöntem
+              </Link>
+              .
+            </p>
+          </div>
+        </section>
+
+        {/* ---- sihirbaz ---- */}
+        <section id="alanlar" className="border-t border-border bg-card">
+          <div className="site-frame py-14 lg:py-16">
             <LegislationWizard />
           </div>
         </section>
 
-        <section id="konu-dizini" className="ruled-strong">
-          <div className="site-frame py-12 lg:py-16">
-            <div className="ledger">
+        {/* ---- sık açılan kayıtlar ---- */}
+        <section className="border-t border-border">
+          <div className="site-frame py-14 lg:py-16">
+            <div className="flex flex-wrap items-end justify-between gap-6">
               <div>
-                <p className="label">Kapsam</p>
-                <h2 className="display-lg measure mt-4">
-                  Çevre mevzuatının bütünü, {categories.length} giriş noktası.
+                <p className="eyebrow">Sık açılan kayıtlar</p>
+                <h2 className="mt-2.5 text-xl">
+                  Çoğu sanayi tesisinin başladığı yer
                 </h2>
-                <p className="measure mt-5 leading-8 text-muted-foreground">
-                  Kuruluştan kapanışa; hava, su, atık, ürün, kimyasal, deniz,
-                  doğa ve ölçüm. Alanı seçin, ilgili kayıtlara inin.
-                </p>
-                <ol className="record-list mt-10">
-                  {categories.map((category, index) => {
-                    const count = categoryRecordCount(category.id);
-                    return (
-                      <li key={category.id}>
-                        <Link
-                          href={`/mevzuat?alan=${category.id}`}
-                          className="record-row hanging group"
-                        >
-                          <span className="hanging-num">
-                            {String(index + 1).padStart(2, '0')}
-                          </span>
-                          <span className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-                            <span className="font-display text-md font-semibold group-hover:text-lead">
-                              {category.label}
-                            </span>
-                            <span className="record text-xs text-muted-foreground">
-                              {count} kayıt
-                            </span>
-                          </span>
-                          <span className="mt-2 block max-w-lg text-sm leading-7 text-muted-foreground">
-                            {category.subtopics.slice(0, 3).join(' · ')}
-                          </span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ol>
               </div>
-              <aside>
-                <h2 className="label">Kaynak izi</h2>
-                <dl className="kunye mt-4">
-                  <div>
-                    <dt>Kayıt</dt>
-                    <dd>{summary.total}</dd>
-                  </div>
-                  <div>
-                    <dt>Künyesi doğrulanmış</dt>
-                    <dd>{summary.verified}</dd>
-                  </div>
-                  <div>
-                    <dt>Son kontrol</dt>
-                    <dd>{lastSourceCheck()}</dd>
-                  </div>
-                </dl>
-                <p className="mt-5 text-sm leading-7 text-muted-foreground">
-                  Kaynak bağlantısı günün tam Resmî Gazete sayısına değil,
-                  düzenlemenin kendi sayfasına gider.
-                </p>
-                <Link
-                  href="/metodoloji"
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm underline decoration-rule underline-offset-4 hover:decoration-ink"
-                >
-                  Kaynak ve yöntem
-                  <ArrowRight className="size-3.5" aria-hidden="true" />
-                </Link>
-              </aside>
+              <Link href="/mevzuat" className="btn btn-quiet h-11 px-4 text-sm">
+                {legislation.length} kaydın tamamı
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
             </div>
+            <ul className="mt-9 grid gap-3 lg:grid-cols-2">
+              {featured.map((item) => {
+                const areaId = item.categories[0] ?? 'izin';
+                return (
+                  <li key={item.slug} style={areaStyle(areaId)}>
+                    <Link
+                      href={`/mevzuat/${item.slug}`}
+                      className="card card-link area-edge flex h-full flex-col p-5"
+                    >
+                      <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                        <span className="area-dot" aria-hidden="true" />
+                        <span className="text-sm text-muted-foreground">
+                          {item.type}
+                        </span>
+                        <span className="gazette ml-auto text-muted-foreground">
+                          RG {item.gazetteNumber} · {item.publicationLabel}
+                        </span>
+                      </span>
+                      <span className="mt-2 block font-semibold leading-snug">
+                        {item.title}
+                      </span>
+                      <span className="mt-2 block text-sm leading-7 text-muted-foreground">
+                        {item.appliesTo}
+                      </span>
+                      {item.primaryAnnex && (
+                        <span className="mt-3 block text-sm leading-6">
+                          <span className="eyebrow">Önce</span>{' '}
+                          <span className="text-muted-foreground">
+                            {item.primaryAnnex}
+                          </span>
+                        </span>
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </section>
 
-        <section className="site-frame pb-16 lg:pb-20">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="label">Sık bakılanlar</p>
-              <h2 className="display-lg mt-4">
-                Aramakla değil, okumakla vakit geçirin.
+        {/* ---- sözlük ---- */}
+        <section className="border-t border-border bg-card">
+          <div className="site-frame flex flex-wrap items-center justify-between gap-8 py-14 lg:py-16">
+            <div className="measure">
+              <p className="eyebrow">Sözlük</p>
+              <h2 className="mt-2.5 text-xl">
+                Tanım nereden geliyorsa, cevabı orada.
               </h2>
+              <p className="mt-3 leading-8 text-muted-foreground">
+                {glossary.length} terim, kullanıldığı düzenleme ve maddeyle
+                birlikte. Aynı terim farklı düzenlemelerde farklı
+                tanımlanıyorsa kayıtlar ayrılır. En son kaynak kontrolü{' '}
+                {lastSourceCheck()}.
+              </p>
             </div>
-            <Link
-              href="/mevzuat"
-              className="inline-flex h-11 items-center gap-2 border border-rule-strong px-4 text-sm hover:border-ink"
-            >
-              {legislation.length} kaydın tamamı
-              <ArrowRight className="size-4" aria-hidden="true" />
+            <Link href="/sozluk" className="btn btn-primary h-12 px-5">
+              <BookMarked className="size-4" aria-hidden="true" />
+              Sözlüğü aç
             </Link>
           </div>
-
-          <ul className="record-list mt-10">
-            {featured.map((item) => (
-              <li key={item.slug}>
-                <div className="record-row">
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                    <p className="label">{item.aliases[0] ?? item.type}</p>
-                    <span className="record text-xs text-muted-foreground">
-                      RG {item.gazetteNumber} · {item.publicationLabel}
-                    </span>
-                  </div>
-                  <h3 className="font-display mt-2 text-md font-semibold">
-                    <Link
-                      href={`/mevzuat/${item.slug}`}
-                      className="hover:text-lead"
-                    >
-                      {item.title}
-                    </Link>
-                  </h3>
-                  <p className="measure mt-2 text-sm leading-7 text-muted-foreground">
-                    {item.appliesTo}
-                  </p>
-                  {item.primaryAnnex && (
-                    <p className="measure mt-1.5 text-sm leading-7">
-                      <span className="label">Önce</span>{' '}
-                      <span className="text-muted-foreground">
-                        {item.primaryAnnex}
-                      </span>
-                    </p>
-                  )}
-                  <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                    <Link
-                      href={`/mevzuat/${item.slug}`}
-                      className="underline decoration-rule underline-offset-4 hover:text-lead hover:decoration-ink"
-                    >
-                      Kayıt sayfası
-                    </Link>
-                    <ExternalLink
-                      href={item.consolidatedUrl ?? item.sourceUrl}
-                      className="inline-flex items-center gap-1.5 text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-ink"
-                      iconClassName="size-3"
-                    >
-                      Resmî kaynak
-                    </ExternalLink>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
         </section>
-
-        {doubleDefined.length > 1 && (
-          <section className="site-frame pb-8">
-            <div className="ledger">
-              <div>
-                <p className="label">Sözlük</p>
-                <h2 className="display-lg measure mt-4">
-                  Tanım nereden geliyorsa, cevabı orada.
-                </h2>
-                <p className="measure mt-5 leading-8 text-muted-foreground">
-                  Her terim, kullanıldığı düzenleme ve maddeyle birlikte
-                  gösterilir. Aynı terim farklı düzenlemelerde farklı
-                  tanımlanıyorsa kayıtlar ayrılır.
-                </p>
-
-                <h3 className="font-display mt-10 text-lg font-semibold">
-                  “{doubleDefined[0].term}” · {doubleDefined.length} tanım
-                </h3>
-                <div className="mt-5 grid gap-8">
-                  {doubleDefined.slice(0, 2).map((entry) => (
-                    <figure key={entry.source}>
-                      <blockquote
-                        cite={entry.sourceUrl}
-                        className="quote measure"
-                      >
-                        {entry.verbatim
-                          ? `“${entry.definition}”`
-                          : entry.definition}
-                      </blockquote>
-                      <figcaption className="record mt-3 pl-5 text-xs text-muted-foreground">
-                        {entry.source} · {entry.article}
-                        {!entry.verbatim && ' · sadeleştirilmiş özet'}
-                      </figcaption>
-                    </figure>
-                  ))}
-                </div>
-
-                <Link
-                  href="/sozluk"
-                  className="mt-8 inline-flex h-11 items-center gap-2 border border-rule-strong px-4 text-sm hover:border-ink"
-                >
-                  {glossary.length} tanımın tamamı
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </Link>
-              </div>
-              <aside className="panel h-fit p-5">
-                <h2 className="label">Sözlük kuralı</h2>
-                <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                  Bir tanım ya mevzuat metninden birebir alıntıdır ve tırnak
-                  içinde gösterilir, ya da sadeleştirilmiş özettir. Bağlayıcı
-                  metin her zaman kaynaktaki maddedir.
-                </p>
-              </aside>
-            </div>
-          </section>
-        )}
       </main>
       <SiteFooter />
     </>

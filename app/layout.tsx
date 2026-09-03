@@ -1,22 +1,16 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Mono, Source_Serif_4 } from 'next/font/google';
+import { IBM_Plex_Mono } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 
 import { siteDescription, siteName, siteUrl } from '@/lib/site';
 import './globals.css';
 
 /**
- * Başlık: Source Serif — uzun Türkçe yönetmelik adları için.
- * İlk açılış açık temadır; koyu yalnızca kullanıcı seçerse gelir.
+ * Tipografi: gövde ve başlıklar Geist Sans.
+ * Serif başlık denemesi kaldırıldı; resmî belge görünümünü pekiştiriyordu,
+ * oysa hedef mevzuat.gov.tr'den ayrışmak. Monospace yalnızca Resmî Gazete
+ * sayısı ve tarih gibi hizalanması gereken verilerde kalır.
  */
-const displaySerif = Source_Serif_4({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-display',
-  display: 'swap',
-});
-
 const recordMono = IBM_Plex_Mono({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500', '600'],
@@ -24,7 +18,11 @@ const recordMono = IBM_Plex_Mono({
   display: 'swap',
 });
 
-const themeScript = `try{var s=localStorage.getItem('cevremevzuati-theme-v2');var d=s==='dark'||(s==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);document.documentElement.style.colorScheme=d?'dark':'light'}catch(e){}`;
+/*
+  Tema, ilk boyamadan önce uygulanır; yanıp sönme olmaz.
+  Kayıt yoksa veya 'system' ise işletim sistemi tercihi izlenir.
+*/
+const themeScript = `try{var s=localStorage.getItem('cevremevzuati-theme-v2');var d=s==='dark'||(s!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);document.documentElement.style.colorScheme=d?'dark':'light'}catch(e){}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -64,7 +62,7 @@ export default function RootLayout({
   return (
     <html
       lang="tr"
-      className={`${GeistSans.variable} ${displaySerif.variable} ${recordMono.variable}`}
+      className={`${GeistSans.variable} ${recordMono.variable}`}
       suppressHydrationWarning
     >
       <head>

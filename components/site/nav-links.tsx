@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-/** Etkin sayfa mühür rengiyle altı çizilir; dolgu kullanılmaz. */
 export function NavLinks({
   items,
 }: {
@@ -13,24 +12,24 @@ export function NavLinks({
 
   return (
     <nav
-      className="hidden min-w-0 items-center gap-6 text-sm lg:flex"
+      className="hidden min-w-0 items-center gap-1 text-sm lg:flex"
       aria-label="Ana menü"
     >
       {items.map((item) => {
         const path = item.href.split('#')[0] || '/';
         const active =
           path === '/'
-            ? pathname === '/' && item.href.includes('#')
+            ? pathname === '/'
             : pathname === path || pathname.startsWith(`${path}/`);
         return (
           <Link
             key={item.href}
             href={item.href}
             aria-current={active ? 'page' : undefined}
-            className={`whitespace-nowrap border-b-2 py-1 transition-colors ${
+            className={`rounded-lg px-3 py-2 whitespace-nowrap transition-colors ${
               active
-                ? 'border-ink font-medium text-ink'
-                : 'border-transparent text-lead hover:border-rule-strong hover:text-ink'
+                ? 'bg-secondary font-medium text-ink'
+                : 'text-muted-foreground hover:bg-secondary hover:text-ink'
             }`}
           >
             {item.label}

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useId, useMemo, useRef, useState } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   categories,
   legislation,
@@ -60,6 +62,17 @@ export function QuickSearch() {
   const shown = results.slice(0, MAX_RESULTS);
   const open = query.trim().length >= 2;
 
+  function openSearch() {
+    if (active >= 0 && active < shown.length) {
+      router.push(`/mevzuat/${shown[active].slug}`);
+      return;
+    }
+    const trimmed = query.trim();
+    router.push(
+      trimmed ? `/mevzuat?q=${encodeURIComponent(trimmed)}` : '/mevzuat',
+    );
+  }
+
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Escape') {
       setQuery('');
@@ -72,17 +85,7 @@ export function QuickSearch() {
       setActive((current) => (current + 1) % (shown.length + 1));
     } else if (event.key === 'ArrowUp') {
       event.preventDefault();
-      setActive((current) =>
-        current <= 0 ? shown.length : current - 1,
-      );
-    } else if (event.key === 'Enter') {
-      if (active >= 0 && active < shown.length) {
-        event.preventDefault();
-        router.push(`/mevzuat/${shown[active].slug}`);
-      } else {
-        event.preventDefault();
-        router.push(`/mevzuat?q=${encodeURIComponent(query.trim())}`);
-      }
+      setActive((current) => (current <= 0 ? shown.length : current - 1));
     }
   }
 
@@ -97,16 +100,29 @@ export function QuickSearch() {
       <label htmlFor="quick-search" className="sr-only">
         Adını, kısaltmasını veya Resmî Gazete sayısını yazarak mevzuatta ara
       </label>
-      <div className="relative">
+      <form
+        className="relative"
+        role="search"
+        onSubmit={(event) => {
+          event.preventDefault();
+          openSearch();
+        }}
+      >
         <Search
-          className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground"
+          className="pointer-events-none absolute top-1/2 left-5 size-6 -translate-y-1/2 text-primary"
           aria-hidden="true"
         />
-        <input
+        <Input
           ref={inputRef}
           id="quick-search"
           type="search"
           aria-describedby={`${listId}-durum`}
+          aria-controls={open ? `${listId}-sonuclar` : undefined}
+          aria-activedescendant={
+            active >= 0 && active < shown.length
+              ? `${listId}-sonuc-${active}`
+              : undefined
+          }
           autoComplete="off"
           value={query}
           onChange={(event) => {
@@ -114,8 +130,8 @@ export function QuickSearch() {
             setActive(-1);
           }}
           onKeyDown={onKeyDown}
-          className="field h-16 pr-12 pl-12 text-md"
-          placeholder="Örn. SKHKKY, atiksu, 32029…"
+          className="home-search-input h-[4.75rem] rounded-xl border-input bg-card pr-24 pl-14 text-md shadow-[var(--shadow-search)] md:pr-40 md:text-lg"
+          placeholder="Mevzuatta ara…"
         />
         {query && (
           <button
@@ -126,12 +142,21 @@ export function QuickSearch() {
               inputRef.current?.focus();
             }}
             aria-label="Aramayı temizle"
-            className="absolute top-1/2 right-3 grid size-9 -translate-y-1/2 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-ink"
+            className="absolute top-1/2 right-[4.75rem] grid size-10 -translate-y-1/2 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-ink md:right-[7.25rem]"
           >
             <X className="size-4" aria-hidden="true" />
           </button>
         )}
-      </div>
+        <Button
+          type="submit"
+          size="lg"
+          className="absolute top-2 right-2 h-[3.75rem] min-w-16 rounded-[0.65rem] px-4 text-base md:min-w-28 md:px-5"
+        >
+          <Search className="size-4 md:hidden" aria-hidden="true" />
+          <span className="hidden md:inline">Ara</span>
+          <ArrowRight className="hidden size-4 md:block" aria-hidden="true" />
+        </Button>
+      </form>
 
       {/*
         Örnek sorgular aramanın neyi kabul ettiğini gösterir.
@@ -141,9 +166,9 @@ export function QuickSearch() {
       */}
       {!open && (
         <div className="mt-4">
-          <p className="text-sm text-muted-foreground">
-            Kısaltma, Türkçe karaktersiz yazım ve Resmî Gazete sayısı çalışır.
-            Deneyin:
+          <p className="text-sm leading-6 text-muted-foreground">
+            Tam adını bilmeniz gerekmez. Kısaltma, Türkçe karaktersiz yazım ve
+            Resmî Gazete sayısı da çalışır.
           </p>
           <div className="mt-2.5 flex flex-wrap gap-2">
             {examples.map((example) => (
@@ -167,17 +192,22 @@ export function QuickSearch() {
       {open && (
         <div className="mt-4">
           <p id={`${listId}-durum`} className="sr-only" aria-live="polite">
-            {results.length} kayıt bulundu. Ok tuşlarıyla gezinebilir,
-            Enter ile açabilirsiniz.
+            {results.length} kayıt bulundu. Ok tuşlarıyla gezinebilir, Enter ile
+            açabilirsiniz.
           </p>
           {shown.length > 0 ? (
             <>
-              <ul aria-label="Arama sonuçları" className="grid gap-2">
+              <ul
+                id={`${listId}-sonuclar`}
+                aria-label="Arama sonuçları"
+                className="grid gap-2"
+              >
                 {shown.map((item, index) => {
                   const areaId = item.categories[0] ?? 'izin';
                   return (
                     <li key={item.slug}>
                       <Link
+                        id={`${listId}-sonuc-${index}`}
                         href={`/mevzuat/${item.slug}`}
                         style={areaStyle(areaId)}
                         onMouseEnter={() => setActive(index)}
@@ -223,8 +253,8 @@ export function QuickSearch() {
                 “{query.trim()}” için kayıt bulunamadı
               </p>
               <p className="mt-1.5 text-sm leading-7 text-muted-foreground">
-                Kısaltma da deneyebilirsiniz: SKHKKY, ÇİLY, AYY, GEKAP, SEÖS.
-                Ya da konudan başlayın.
+                Kısaltma da deneyebilirsiniz: SKHKKY, ÇİLY, AYY, GEKAP, SEÖS. Ya
+                da konudan başlayın.
               </p>
               <Link
                 href="/kapsam"

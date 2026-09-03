@@ -53,7 +53,8 @@ export const metadata: Metadata = {
   description: siteDescription,
   applicationName: siteName,
   icons: {
-    icon: '/favicon.svg',
+    icon: '/logo.png',
+    shortcut: '/logo.png',
   },
   openGraph: {
     type: 'website',

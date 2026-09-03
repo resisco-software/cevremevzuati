@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { ExternalLink } from '@/components/site/external-link';
@@ -29,7 +30,17 @@ export function SiteFooter() {
     <footer className="mt-16 border-t border-border">
       <div className="site-frame grid gap-10 py-12 lg:grid-cols-[1.4fr_repeat(2,0.7fr)]">
         <div className="measure">
-          <p className="text-md font-semibold">Çevre Mevzuatı</p>
+          <p className="flex items-center gap-3 text-md font-semibold">
+            <Image
+              src="/logo.png"
+              alt=""
+              width={36}
+              height={36}
+              className="size-9 shrink-0"
+              aria-hidden="true"
+            />
+            Çevre Mevzuatı
+          </p>
           <p className="mt-4 text-sm leading-7 text-muted-foreground">
             Sanayi tesislerinin çevre mevzuatındaki yerini bulmasına yardımcı
             olan, resmî kaynağa dayalı mevzuat navigasyonu. {legislation.length}{' '}

@@ -88,6 +88,8 @@
   --area: var(--primary);
   --shadow-card: 0 1px 2px rgb(25 29 31 / 0.05), 0 1px 1px rgb(25 29 31 / 0.03);
   --shadow-lift: 0 6px 20px -8px rgb(25 29 31 / 0.16);
+  --shadow-search:
+    0 16px 48px -28px rgb(15 110 90 / 0.28), 0 2px 8px rgb(25 29 31 / 0.06);
   --measure: 70ch;
   color-scheme: light;
 }
@@ -113,6 +115,8 @@
 
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-lift: 0 8px 24px -10px rgb(0 0 0 / 0.6);
+  --shadow-search:
+    0 18px 52px -28px rgb(79 194 165 / 0.22), 0 2px 12px rgb(0 0 0 / 0.35);
   color-scheme: dark;
 }
 
@@ -200,6 +204,40 @@
 
 .measure {
   max-width: var(--measure);
+}
+
+.home-hero {
+  background:
+    radial-gradient(
+      circle at 82% 12%,
+      color-mix(in srgb, var(--primary) 9%, transparent),
+      transparent 28rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--card) 44%, transparent),
+      transparent 72%
+    );
+}
+
+.home-search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.home-route-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.home-route-card::after {
+  position: absolute;
+  inset: auto -3rem -5rem auto;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+  content: '';
+  pointer-events: none;
 }
 
 /* ---------- kart ---------- */

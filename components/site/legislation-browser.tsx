@@ -43,9 +43,13 @@ const PAGE_SIZE = 15;
 export function LegislationBrowser({
   initialCategory = 'all',
   initialQuery = '',
+  initialDocumentType = 'all',
+  initialRecordStatus = 'all',
 }: {
   initialCategory?: string;
   initialQuery?: string;
+  initialDocumentType?: string;
+  initialRecordStatus?: string;
 }) {
   const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState(
@@ -53,8 +57,16 @@ export function LegislationBrowser({
       ? initialCategory
       : 'all',
   );
-  const [documentType, setDocumentType] = useState<'all' | DocumentType>('all');
-  const [recordStatus, setRecordStatus] = useState<'all' | RecordStatus>('all');
+  const [documentType, setDocumentType] = useState<'all' | DocumentType>(
+    documentTypes.includes(initialDocumentType as DocumentType)
+      ? (initialDocumentType as DocumentType)
+      : 'all',
+  );
+  const [recordStatus, setRecordStatus] = useState<'all' | RecordStatus>(
+    recordStatuses.includes(initialRecordStatus as RecordStatus)
+      ? (initialRecordStatus as RecordStatus)
+      : 'all',
+  );
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 

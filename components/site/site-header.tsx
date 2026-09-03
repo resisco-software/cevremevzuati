@@ -1,4 +1,4 @@
-import { Leaf } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { MobileNav } from '@/components/site/mobile-nav';
@@ -33,9 +33,14 @@ export function SiteHeader() {
           className="flex h-10 shrink-0 items-center gap-2.5 rounded-lg"
           aria-label="Çevre Mevzuatı ana sayfa"
         >
-          <span className="grid size-8 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground">
-            <Leaf className="size-4" aria-hidden="true" />
-          </span>
+          <Image
+            src="/logo.png"
+            alt=""
+            width={36}
+            height={36}
+            className="size-9 shrink-0"
+            aria-hidden="true"
+          />
           <span className="text-base font-semibold tracking-[-0.015em] whitespace-nowrap">
             Çevre Mevzuatı
           </span>

@@ -24,9 +24,14 @@ export const metadata: Metadata = {
 export default async function LegislationPage({
   searchParams,
 }: {
-  searchParams: Promise<{ alan?: string; q?: string }>;
+  searchParams: Promise<{
+    alan?: string;
+    q?: string;
+    tur?: string;
+    durum?: string;
+  }>;
 }) {
-  const { alan, q } = await searchParams;
+  const { alan, q, tur, durum } = await searchParams;
 
   return (
     <>
@@ -43,9 +48,7 @@ export default async function LegislationPage({
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
                 <p className="eyebrow">Çevre mevzuatı</p>
-                <h1 className="text-3xl measure mt-4">
-                  Mevzuat dizini
-                </h1>
+                <h1 className="text-3xl measure mt-4">Mevzuat dizini</h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
                   Konu başlığı, düzenleme adı, kısaltma veya Resmî Gazete
                   sayısıyla arayın. Her kayıtta yayım künyesi, kimi kapsadığı,
@@ -81,9 +84,11 @@ export default async function LegislationPage({
         <section className="site-frame py-10 lg:py-14">
           {/* key: adres değişince bileşen yeniden kurulur, filtre URL ile senkron kalır */}
           <LegislationBrowser
-            key={`${alan ?? 'all'}-${q ?? ''}`}
+            key={`${alan ?? 'all'}-${q ?? ''}-${tur ?? 'all'}-${durum ?? 'all'}`}
             initialCategory={alan}
             initialQuery={q}
+            initialDocumentType={tur}
+            initialRecordStatus={durum}
           />
         </section>
       </main>

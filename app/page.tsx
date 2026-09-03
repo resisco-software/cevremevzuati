@@ -356,7 +356,7 @@ export default function HomePage() {
         </section>
 
         {/* ---- sihirbaz ---- */}
-        <section id="alanlar" className="border-t border-border bg-card">
+        <section id="alanlar" className="border-t border-border bg-muted/30">
           <div className="site-frame py-14 lg:py-16">
             <LegislationWizard />
           </div>

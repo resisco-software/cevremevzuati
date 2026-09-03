@@ -2,6 +2,10 @@ export const siteUrl = 'https://cevremevzuati.com';
 
 export const siteName = 'Çevre Mevzuatı';
 
+export const publisherName = 'Resisco Mühendislik A.Ş.';
+
+export const publisherEmail = 'info@resisco.com';
+
 export const siteDescription =
   'Sanayi tesisleri için resmî kaynağa dayalı çevre mevzuatı navigasyonu, mevzuat kütüphanesi ve sözlük.';
 

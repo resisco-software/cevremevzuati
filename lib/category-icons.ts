@@ -1,0 +1,37 @@
+import {
+  Anchor,
+  Building2,
+  CheckCircle2,
+  Cloud,
+  Droplets,
+  FlaskConical,
+  Gauge,
+  Landmark,
+  Layers3,
+  Mountain,
+  Package,
+  Pickaxe,
+  Recycle,
+  Volume2,
+  Waves,
+  type LucideIcon,
+} from 'lucide-react';
+
+/** Her çevre alanı için ayrı ikon; iki alan aynı ikonu paylaşmaz. */
+export const categoryIcons: Record<string, LucideIcon> = {
+  kurulus: Building2,
+  izin: CheckCircle2,
+  hava: Cloud,
+  su: Droplets,
+  atiksu: Waves,
+  atik: Recycle,
+  urun: Package,
+  kimyasal: FlaskConical,
+  toprak: Mountain,
+  gurultu: Volume2,
+  deniz: Anchor,
+  doga: Landmark,
+  maden: Pickaxe,
+  entegre: Layers3,
+  olcum: Gauge,
+};

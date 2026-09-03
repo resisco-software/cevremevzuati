@@ -78,7 +78,7 @@ export function GlossaryBrowser({
             id="glossary-search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="h-12 rounded-none border-x-0 border-t-0 border-b-2 border-ink bg-transparent pl-12 text-md shadow-none"
+            className="h-14 rounded-xl border-rule bg-card pl-12 text-md shadow-paper"
             placeholder="Terim, mevzuat veya konu ara…"
           />
         </label>

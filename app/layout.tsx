@@ -1,17 +1,14 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Mono, Source_Serif_4 } from 'next/font/google';
+import { IBM_Plex_Mono, Playfair_Display } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 
 import { siteDescription, siteName, siteUrl } from '@/lib/site';
 import './globals.css';
 
 /**
- * Resmî sicil tipografisi.
- * Başlıklarda metin serifi: uzun yönetmelik adları ekranda okunur kalsın.
- * Künye ve sayılarda daktilo hissi veren monospace.
- * Gövde Geist Sans olarak kalır; yerelden servis edilir, ek yük getirmez.
+ * Okuma odası tipografisi: Playfair başlık, Geist gövde, Plex künye.
  */
-const displaySerif = Source_Serif_4({
+const displaySerif = Playfair_Display({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '600', '700'],
   style: ['normal', 'italic'],

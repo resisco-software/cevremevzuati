@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { ExternalLink } from '@/components/site/external-link';
 import { lastSourceCheck, legislation } from '@/lib/legislation-data';
+import { publisherName } from '@/lib/site';
 
 const columns = [
   {
@@ -25,7 +26,7 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="ruled-strong mt-20">
+    <footer className="mt-16 border-t border-rule">
       <div className="site-frame grid gap-10 py-12 lg:grid-cols-[1.4fr_repeat(2,0.7fr)]">
         <div className="measure">
           <p className="font-display text-lg font-semibold">Çevre Mevzuatı</p>
@@ -59,7 +60,9 @@ export function SiteFooter() {
       </div>
       <div className="ruled">
         <div className="site-frame record flex flex-col gap-2 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} Çevre Mevzuatı</span>
+          <span>
+            © {new Date().getFullYear()} {publisherName}
+          </span>
           <span>
             En son kaynak kontrolü: {lastSourceCheck()} ·{' '}
             <ExternalLink

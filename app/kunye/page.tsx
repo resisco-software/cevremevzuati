@@ -6,7 +6,7 @@ import { Breadcrumbs } from '@/components/site/breadcrumbs';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
 import { lastSourceCheck, legislation, verificationSummary } from '@/lib/legislation-data';
-import { openGraphFor } from '@/lib/site';
+import { openGraphFor, publisherEmail, publisherName } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Künye ve iletişim',
@@ -133,24 +133,25 @@ export default function ImprintPage() {
                 gördüğünüzde bildirin. Bildirimde kaydın adını, hatalı gördüğünüz
                 bilgiyi ve varsa doğru kaynağı belirtmeniz düzeltmeyi hızlandırır.
               </p>
-              {/* YAYIN ÖNCESİ: aşağıdaki iki satırı gerçek bilgilerle doldurun. */}
-              <dl className="mt-5 grid gap-3 border border-dashed border-rule-strong p-5 text-base">
+              <dl className="mt-5 grid gap-3 border border-rule p-5 text-base">
                 <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-rule pb-3">
                   <dt className="font-medium">Yayıncı</dt>
-                  <dd className="text-muted-foreground">
-                    Yayın öncesi eklenecek
-                  </dd>
+                  <dd className="text-muted-foreground">{publisherName}</dd>
                 </div>
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                   <dt className="font-medium">E-posta</dt>
-                  <dd className="text-muted-foreground">
-                    Yayın öncesi eklenecek
+                  <dd>
+                    <a
+                      href={`mailto:${publisherEmail}`}
+                      className="rounded font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                    >
+                      {publisherEmail}
+                    </a>
                   </dd>
                 </div>
               </dl>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                Yayıncı ve iletişim bilgileri henüz yayımlanmadı. Bu alan
-                doldurulmadan site kamuya açık olarak tanıtılmamalıdır.
+                Düzeltme ve künye talepleri bu adrese yazılabilir.
               </p>
             </div>
           </div>

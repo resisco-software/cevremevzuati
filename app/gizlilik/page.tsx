@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Breadcrumbs } from '@/components/site/breadcrumbs';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
-import { openGraphFor } from '@/lib/site';
+import { openGraphFor, publisherEmail, publisherName } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Gizlilik ve KVKK',
@@ -116,33 +116,41 @@ export default function PrivacyPage() {
                 yalnızca barındırma sağlayıcısının işlediği erişim kayıtları
                 bakımından gündeme gelebilir.
               </p>
-              {/* YAYIN ÖNCESİ: veri sorumlusu kimliği ve başvuru adresi eklenmeli. */}
-              <div className="mt-5 border border-dashed border-rule-strong p-5">
-                <p className="text-base font-semibold">
-                  Veri sorumlusu bilgisi eklenmedi
-                </p>
-                <p className="mt-2 text-base leading-7 text-muted-foreground">
-                  KVKK aydınlatma yükümlülüğü, veri sorumlusunun kimliğinin
-                  açıkça belirtilmesini gerektirir. Bu bilgi ve başvuru adresi{' '}
-                  <Link
-                    href="/kunye"
-                    className="rounded font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
-                  >
-                    künye sayfasında
-                  </Link>{' '}
-                  doldurulmadan site kamuya açık olarak tanıtılmamalıdır.
-                </p>
-              </div>
+              <dl className="mt-5 grid gap-3 border border-rule p-5 text-base">
+                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-rule pb-3">
+                  <dt className="font-medium">Veri sorumlusu</dt>
+                  <dd className="text-muted-foreground">{publisherName}</dd>
+                </div>
+                <div className="flex flex-wrap items-baseline justify-between gap-3">
+                  <dt className="font-medium">Başvuru</dt>
+                  <dd>
+                    <a
+                      href={`mailto:${publisherEmail}`}
+                      className="rounded font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                    >
+                      {publisherEmail}
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Künye ve iletişim bilgileri{' '}
+                <Link
+                  href="/kunye"
+                  className="rounded font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                >
+                  künye sayfasında
+                </Link>{' '}
+                da yer alır.
+              </p>
             </div>
 
             <div className="ruled pt-6">
               <h2 className="text-lg font-semibold">Bu metnin durumu</h2>
               <p className="mt-3 text-base leading-7 text-muted-foreground">
                 Metin, sitenin mevcut teknik davranışını doğru biçimde anlatır.
-                Yayına almadan önce bir hukukçu tarafından gözden geçirilmesi ve
-                veri sorumlusu bilgisinin eklenmesi gerekir. Sitenin teknik
-                davranışı değişirse (örneğin analitik veya form eklenirse) bu
-                metin de güncellenmelidir.
+                Sitenin teknik davranışı değişirse (örneğin analitik veya form
+                eklenirse) bu metin de güncellenmelidir.
               </p>
             </div>
           </div>

@@ -58,7 +58,7 @@ export default function ScopePage() {
                   <Button
                     nativeButton={false}
                     render={<Link href="/#alanlar" />}
-                    className="inline-flex h-12 items-center gap-2 bg-seal px-5 text-base font-medium text-primary-foreground hover:bg-ink"
+                    className="inline-flex h-12 items-center gap-2 rounded-xl bg-seal px-5 text-base font-medium text-primary-foreground hover:bg-ink"
                   >
                     <ScanSearch className="size-4" aria-hidden="true" />
                     Tesisimin kapsamını tara
@@ -121,7 +121,7 @@ export default function ScopePage() {
               return (
                 <li
                   key={category.id}
-                  className="hanging py-6"
+                  className="panel flex flex-col gap-4 p-6"
                 >
                   <div className="flex items-baseline justify-between gap-4">
                     <span className="record text-sm text-muted-foreground">
@@ -151,7 +151,7 @@ export default function ScopePage() {
                     {category.subtopics.map((subtopic) => (
                       <li
                         key={subtopic}
-                        className="border border-rule px-2.5 py-1 text-sm text-muted-foreground"
+                        className="rounded-full border border-rule px-2.5 py-1 text-sm text-muted-foreground"
                       >
                         {subtopic}
                       </li>

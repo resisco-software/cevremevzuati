@@ -1,31 +1,18 @@
 'use client';
 
 import {
-  Anchor,
   ArrowLeft,
   ArrowRight,
-  Building2,
   Check,
   CheckCircle2,
   ChevronDown,
-  Cloud,
   Copy,
-  Droplets,
-  FlaskConical,
-  Gauge,
   Info,
-  Landmark,
   Layers3,
-  Mountain,
-  Package,
-  Pickaxe,
   Printer,
-  Recycle,
   RotateCcw,
   ScanSearch,
   TriangleAlert,
-  Volume2,
-  Waves,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -38,26 +25,8 @@ import {
   NativeSelectOption,
 } from '@/components/ui/native-select';
 import { ExternalLink } from '@/components/site/external-link';
+import { categoryIcons } from '@/lib/category-icons';
 import { categories, getLegislation, legislation } from '@/lib/legislation-data';
-
-/** Her çevre alanı için ayrı ikon; iki alan aynı ikonu paylaşmaz. */
-const icons = {
-  kurulus: Building2,
-  izin: CheckCircle2,
-  hava: Cloud,
-  su: Droplets,
-  atiksu: Waves,
-  atik: Recycle,
-  urun: Package,
-  kimyasal: FlaskConical,
-  toprak: Mountain,
-  gurultu: Volume2,
-  deniz: Anchor,
-  doga: Landmark,
-  maden: Pickaxe,
-  entegre: Layers3,
-  olcum: Gauge,
-} as const;
 
 type Option = { id: string; label: string; topics: string[]; slugs: string[] };
 
@@ -573,7 +542,7 @@ export function LegislationWizard({
         });
 
   const SelectedIcon =
-    topic === 'all' ? ScanSearch : (icons[topic as keyof typeof icons] ?? ScanSearch);
+    topic === 'all' ? ScanSearch : (categoryIcons[topic] ?? ScanSearch);
   const visibleTopics = showAllTopics ? categories : categories.slice(0, 6);
   const visibleFeatureOptions = featureOptions.filter(
     (option) => topic === 'all' || option.topics.includes(topic),
@@ -807,7 +776,7 @@ export function LegislationWizard({
         </div>
       </div>
 
-      <div className="ruled-strong pt-8">
+      <div className="pt-8">
         <p className="sr-only" aria-live="polite">
           {`Adım ${step} / ${wizardSteps.length}: ${wizardSteps[step - 1]}`}
         </p>
@@ -830,7 +799,7 @@ export function LegislationWizard({
               aria-pressed={topic === 'all'}
               className="topic-option mt-6 flex w-full items-center gap-4 px-4 py-4 text-left"
             >
-              <span className="grid size-10 shrink-0 place-items-center border border-rule text-seal">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-ochre">
                 <ScanSearch className="size-5" aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
@@ -850,7 +819,7 @@ export function LegislationWizard({
             <p className="label mt-8 mb-3">Ya da tek alanla başlayın</p>
             <ul className="grid gap-2 sm:grid-cols-2">
               {visibleTopics.map((category) => {
-                const Icon = icons[category.id as keyof typeof icons] ?? Layers3;
+                const Icon = categoryIcons[category.id] ?? Layers3;
                 return (
                   <li key={category.id} className="contents">
                     <button
@@ -928,7 +897,7 @@ export function LegislationWizard({
                   id="facility-stage"
                   value={stage}
                   onChange={(event) => setStage(event.target.value)}
-                  className="w-full [&>select]:h-12 [&>select]:rounded-none [&>select]:border-rule-strong [&>select]:bg-transparent"
+                  className="w-full [&>select]:h-12 [&>select]:rounded-xl [&>select]:border-rule [&>select]:bg-card"
                 >
                   {stageOptions.map((option) => (
                     <NativeSelectOption key={option.id} value={option.id}>
@@ -946,7 +915,7 @@ export function LegislationWizard({
                   id="facility-sector"
                   value={sector}
                   onChange={(event) => setSector(event.target.value)}
-                  className="w-full [&>select]:h-12 [&>select]:rounded-none [&>select]:border-rule-strong [&>select]:bg-transparent"
+                  className="w-full [&>select]:h-12 [&>select]:rounded-xl [&>select]:border-rule [&>select]:bg-card"
                 >
                   {sectorOptions.map((option) => (
                     <NativeSelectOption key={option.id} value={option.id}>

@@ -123,17 +123,18 @@ export function LegislationBrowser({
       {/* ---- arama ---- */}
       <label htmlFor="legislation-search" className="block">
         <span className="label">Kayıt ara</span>
-        <span className="mt-2 flex items-center border-b-2 border-ink">
+        <span className="search-field mt-3">
           <Search
-            className="size-5 shrink-0 text-lead"
+            className="size-5 shrink-0 text-ochre"
             aria-hidden="true"
           />
           <input
             id="legislation-search"
             value={query}
             onChange={(event) => changeQuery(event.target.value)}
-            className="font-display h-14 w-full bg-transparent px-3 text-xl outline-none placeholder:text-lead/70"
-            placeholder="SKHKKY, atiksu, GEKAP, 32029…"
+            autoFocus
+            className="min-w-0 flex-1 bg-transparent font-display text-xl outline-none placeholder:text-lead/70"
+            placeholder="SKHKKY, atıksu, GEKAP, 32029…"
           />
         </span>
       </label>

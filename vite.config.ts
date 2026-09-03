@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite';
 import vinext from 'vinext';
 import { defineConfig } from 'vite';
 
@@ -24,6 +25,7 @@ export default defineConfig(async () => {
     return {
       ...shared,
       plugins: [
+        tailwindcss(),
         vinext(),
         nitro({
           vercel: {
@@ -52,6 +54,7 @@ export default defineConfig(async () => {
   return {
     ...shared,
     plugins: [
+      tailwindcss(),
       vinext(),
       sites(),
       cloudflare({

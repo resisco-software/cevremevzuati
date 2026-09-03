@@ -1,55 +1,320 @@
 {
-  "project": "cevremevzuati.com",
-  "updated": "2026-09-03",
-  "intent": "Sanayi tesislerinin çevre mevzuatını mevzuat.gov.tr'ye göre daha kolay bulmasını sağlayan araç. Resmî portalın taklidi değil, alternatifi.",
-  "decisions": [
-    {
-      "date": "2026-09-03",
-      "choice": "urun-yonu",
-      "title": "Ürün arayüzü yönü",
-      "rationale": "Kâğıt-mürekkep sicil yönü iyi işlenmişti ama tam olarak kaçılmak istenen şeye, resmî belge arayüzüne yakınsıyordu. Hedef mevzuat.gov.tr'den ayrışmak olduğu için ürün diline geçildi.",
-      "supersedes": "resmi-sicil",
-      "tokens": {
-        "light": {
-          "background": "#F7F8F7",
-          "card": "#FFFFFF",
-          "ink": "#191D1F",
-          "lead": "#5C646A",
-          "primary": "#0F6E5A",
-          "attention": "#A15C0B",
-          "line": "#E4E7E6"
-        },
-        "dark": {
-          "background": "#14171A",
-          "card": "#1C2125",
-          "ink": "#E9EDEE",
-          "lead": "#9AA3A9",
-          "primary": "#4FC2A5",
-          "attention": "#E0A458",
-          "line": "#272D31"
-        }
+  "version": 1,
+  "project": {
+    "name": "cevremevzuati",
+    "productType": null,
+    "stack": [
+      "react",
+      "shadcn",
+      "tailwind-v4",
+      "vite"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "app/globals.css"
+    ],
+    "components": [
+      "components/ui"
+    ],
+    "assets": [],
+    "instructions": []
+  },
+  "design": {
+    "colorMode": "light-and-dark",
+    "colors": {
+      "--color-background": {
+        "value": "var(--background)",
+        "source": "app/globals.css"
       },
-      "typography": {
-        "body": "Geist Sans, 17px, 1.7",
-        "mono": "IBM Plex Mono (yalnızca Resmî Gazete sayısı ve tarih)",
-        "note": "Serif başlık denemesi kaldırıldı; belge görünümünü pekiştiriyordu."
+      "--color-foreground": {
+        "value": "var(--foreground)",
+        "source": "app/globals.css"
       },
-      "signature": [
-        "15 çevre alanının her birine sabit kimlik rengi ve ikonu (lib/area-theme.ts, lib/category-icons.ts)",
-        "Ana sayfada anında arama: kısaltma, Türkçe karaktersiz yazım ve RG sayısı ile yazarken sonuç",
-        "Sonuç kartında kimi kapsadığı ve önce bakılacak ek görünür",
-        "Kart sol kenarında alan rengi şeridi (.area-edge)",
-        "Alan renkleri temaya göre stil sayfasında çözülür: --area-l / --area-d"
-      ],
-      "verified": {
-        "contrast": "Açık ve koyu temada tüm sayfalarda sıfır WCAG AA hatası",
-        "areaColors": "15 rengin hepsi kendi temasının zemininde >= 4.5:1",
-        "mobile": "375 px'te hiçbir sayfada yatay taşma yok"
+      "--color-ring": {
+        "value": "var(--ring)",
+        "source": "app/globals.css"
+      },
+      "--color-input": {
+        "value": "var(--input)",
+        "source": "app/globals.css"
+      },
+      "--color-border": {
+        "value": "var(--border)",
+        "source": "app/globals.css"
+      },
+      "--color-destructive": {
+        "value": "var(--destructive)",
+        "source": "app/globals.css"
+      },
+      "--color-accent-foreground": {
+        "value": "var(--accent-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-accent": {
+        "value": "var(--accent)",
+        "source": "app/globals.css"
+      },
+      "--color-muted-foreground": {
+        "value": "var(--muted-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-muted": {
+        "value": "var(--muted)",
+        "source": "app/globals.css"
+      },
+      "--color-secondary-foreground": {
+        "value": "var(--secondary-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-secondary": {
+        "value": "var(--secondary)",
+        "source": "app/globals.css"
+      },
+      "--color-primary-foreground": {
+        "value": "var(--primary-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-primary": {
+        "value": "var(--primary)",
+        "source": "app/globals.css"
+      },
+      "--color-popover-foreground": {
+        "value": "var(--popover-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-popover": {
+        "value": "var(--popover)",
+        "source": "app/globals.css"
+      },
+      "--color-card-foreground": {
+        "value": "var(--card-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-card": {
+        "value": "var(--card)",
+        "source": "app/globals.css"
+      },
+      "--color-ink": {
+        "value": "var(--ink)",
+        "source": "app/globals.css"
+      },
+      "--color-lead": {
+        "value": "var(--lead)",
+        "source": "app/globals.css"
+      },
+      "--color-line": {
+        "value": "var(--line)",
+        "source": "app/globals.css"
+      },
+      "--color-line-strong": {
+        "value": "var(--line-strong)",
+        "source": "app/globals.css"
+      },
+      "--color-attention": {
+        "value": "var(--attention)",
+        "source": "app/globals.css"
+      },
+      "--color-area": {
+        "value": "var(--area)",
+        "source": "app/globals.css"
+      },
+      "--background": {
+        "value": "#14171a",
+        "source": "app/globals.css"
+      },
+      "--foreground": {
+        "value": "var(--ink)",
+        "source": "app/globals.css"
+      },
+      "--card-foreground": {
+        "value": "var(--ink)",
+        "source": "app/globals.css"
+      },
+      "--popover-foreground": {
+        "value": "var(--ink)",
+        "source": "app/globals.css"
+      },
+      "--primary": {
+        "value": "#4fc2a5",
+        "source": "app/globals.css"
+      },
+      "--primary-foreground": {
+        "value": "#10201c",
+        "source": "app/globals.css"
+      },
+      "--secondary": {
+        "value": "#232a2e",
+        "source": "app/globals.css"
+      },
+      "--secondary-foreground": {
+        "value": "var(--ink)",
+        "source": "app/globals.css"
+      },
+      "--muted": {
+        "value": "#232a2e",
+        "source": "app/globals.css"
+      },
+      "--muted-foreground": {
+        "value": "var(--lead)",
+        "source": "app/globals.css"
+      },
+      "--accent": {
+        "value": "#2a2318",
+        "source": "app/globals.css"
+      },
+      "--accent-foreground": {
+        "value": "var(--attention)",
+        "source": "app/globals.css"
+      },
+      "--destructive": {
+        "value": "#ea7a6e",
+        "source": "app/globals.css"
+      },
+      "--border": {
+        "value": "var(--line)",
+        "source": "app/globals.css"
+      },
+      "--ring": {
+        "value": "#0f6e5a",
+        "source": "app/globals.css"
       }
+    },
+    "typography": {
+      "--font-sans": {
+        "value": "var(--font-sans-ui)",
+        "source": "app/globals.css"
+      },
+      "--font-mono": {
+        "value": "var(--font-mono-ui)",
+        "source": "app/globals.css"
+      },
+      "--text-xs": {
+        "value": "0.8125rem",
+        "source": "app/globals.css"
+      },
+      "--text-sm": {
+        "value": "0.9375rem",
+        "source": "app/globals.css"
+      },
+      "--text-base": {
+        "value": "1.0625rem",
+        "source": "app/globals.css"
+      },
+      "--text-md": {
+        "value": "1.1875rem",
+        "source": "app/globals.css"
+      },
+      "--text-lg": {
+        "value": "1.4375rem",
+        "source": "app/globals.css"
+      },
+      "--text-xl": {
+        "value": "1.875rem",
+        "source": "app/globals.css"
+      },
+      "--text-2xl": {
+        "value": "2.375rem",
+        "source": "app/globals.css"
+      },
+      "--text-3xl": {
+        "value": "clamp(2.25rem, 4vw, 3.25rem)",
+        "source": "app/globals.css"
+      },
+      "--font-sans-ui": {
+        "value": "var(--font-geist-sans), 'Inter', 'Segoe UI', sans-serif",
+        "source": "app/globals.css"
+      },
+      "--font-mono-ui": {
+        "value": "var(--font-record), 'SFMono-Regular', Consolas, monospace",
+        "source": "app/globals.css"
+      }
+    },
+    "spacing": {},
+    "radius": {
+      "--radius-sm": {
+        "value": "5px",
+        "source": "app/globals.css"
+      },
+      "--radius-md": {
+        "value": "7px",
+        "source": "app/globals.css"
+      },
+      "--radius-lg": {
+        "value": "10px",
+        "source": "app/globals.css"
+      },
+      "--radius-xl": {
+        "value": "14px",
+        "source": "app/globals.css"
+      },
+      "--radius-2xl": {
+        "value": "18px",
+        "source": "app/globals.css"
+      },
+      "--radius-3xl": {
+        "value": "24px",
+        "source": "app/globals.css"
+      }
+    },
+    "shadows": {
+      "--shadow-card": {
+        "value": "0 1px 2px rgb(0 0 0 / 0.4)",
+        "source": "app/globals.css"
+      },
+      "--shadow-lift": {
+        "value": "0 8px 24px -10px rgb(0 0 0 / 0.6)",
+        "source": "app/globals.css"
+      }
+    },
+    "motion": {},
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [
+      "badge",
+      "button",
+      "checkbox",
+      "input",
+      "native-select"
+    ],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [],
+  "evidence": [
+    {
+      "fact": "components.installed",
+      "source": "components/ui"
+    },
+    {
+      "fact": "design.colorMode:light-and-dark",
+      "source": "app/globals.css"
+    },
+    {
+      "fact": "design.tokens",
+      "source": "app/globals.css"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:shadcn",
+      "source": "components.json"
+    },
+    {
+      "fact": "project.stack:tailwind-v4",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:vite",
+      "source": "package.json"
     }
   ],
-  "notes": [
-    "21st MCP ve CLI kimlik doğrulaması yapılmadı; katalog ve üretim özellikleri kullanılmadı.",
-    "denetim-duzeltmeleri dalında eş zamanlı bir Cursor oturumu kâğıt-mürekkep yönünü sürdürüyor. Bu yön tasarim-urun-yonu dalında."
-  ]
+  "generatedAt": "2026-09-03T19:24:23.860Z"
 }

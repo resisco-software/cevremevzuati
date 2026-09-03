@@ -1,8 +1,9 @@
-import { Leaf, Search } from 'lucide-react';
+import { Leaf } from 'lucide-react';
 import Link from 'next/link';
 
 import { MobileNav } from '@/components/site/mobile-nav';
 import { NavLinks } from '@/components/site/nav-links';
+import { PaletteButton } from '@/components/site/palette-button';
 import { ThemeToggle } from '@/components/site/theme-toggle';
 
 const nav = [
@@ -33,13 +34,7 @@ export function SiteHeader() {
 
         <div className="flex shrink-0 items-center gap-2">
           <ThemeToggle />
-          <Link
-            href="/mevzuat"
-            aria-label="Mevzuatta ara"
-            className="btn inline-flex items-center justify-center btn-quiet size-10 lg:hidden"
-          >
-            <Search className="size-4" aria-hidden="true" />
-          </Link>
+          <PaletteButton />
           <Link href="/#alanlar" className="btn btn-primary hidden h-10 px-4 text-sm lg:inline-flex">
             Tesisime göre
           </Link>

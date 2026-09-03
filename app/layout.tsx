@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { IBM_Plex_Mono } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 
+import { SiteCommandPalette } from '@/components/site/site-command-palette';
 import { siteDescription, siteName, siteUrl } from '@/lib/site';
 import './globals.css';
 
@@ -76,6 +77,7 @@ export default function RootLayout({
           İçeriğe atla
         </a>
         {children}
+        <SiteCommandPalette />
       </body>
     </html>
   );

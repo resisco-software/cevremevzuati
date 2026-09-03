@@ -297,7 +297,7 @@ export function LegislationBrowser({
                       </Link>
                     </h3>
                     <p className="measure mt-2 text-sm leading-7 text-muted-foreground">
-                      {item.appliesTo}
+                      {item.summary}
                     </p>
                     {item.primaryAnnex && (
                       <p className="measure mt-2.5 text-sm leading-6">

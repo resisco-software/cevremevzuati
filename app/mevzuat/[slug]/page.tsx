@@ -242,35 +242,22 @@ export default async function LegislationDetailPage({
                     ))}
                   </ol>
                 ) : (
-                  <ol className="mt-6 grid gap-3 list-none">
-                    {[
-                      [
-                        'Başlangıç hükümleri',
-                        'Amaç · Kapsam · Dayanak · Tanımlar',
-                      ],
-                      [
-                        'İlgili hükümler',
-                        item.obligations.length > 0
-                          ? item.obligations.join(' · ')
-                          : 'Düzenlemenin madde başlıkları',
-                      ],
-                      ['Son hükümler', 'Geçici maddeler · Yürürlük · Yürütme'],
-                    ].map(([label, description], index) => (
-                      <li key={label} className="card p-4 shadow-none">
-                        <div className="flex gap-4">
-                          <span className="gazette text-xs text-muted-foreground">
-                            {String(index + 1).padStart(2, '0')}
-                          </span>
-                          <div>
-                            <h3 className="text-sm font-semibold">{label}</h3>
-                            <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                              {description}
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ol>
+                  <div className="mt-6 border-l-2 border-attention pl-5">
+                    <p className="text-md font-semibold">
+                      Madde ve ek dizini henüz işlenmedi
+                    </p>
+                    <p className="measure mt-2 text-sm leading-7 text-muted-foreground">
+                      Doğrulanmamış bir başlık üretmek yerine doğrudan resmî
+                      metne yönlendiriyoruz.
+                    </p>
+                    <ExternalLink
+                      href={item.consolidatedUrl ?? item.sourceUrl}
+                      className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline hover:decoration-seal"
+                      iconClassName="size-3"
+                    >
+                      Resmî metni aç
+                    </ExternalLink>
+                  </div>
                 )}
               </section>
 

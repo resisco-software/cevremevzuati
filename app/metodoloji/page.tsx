@@ -89,7 +89,7 @@ export default function MethodologyPage() {
                 { label: 'Kaynak ve yöntem' },
               ]}
             />
-            <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-3 py-1.5 text-sm font-medium text-seal">
+            <span className="mt-8 inline-flex items-center gap-2 border border-rule px-3 py-1.5 text-sm font-medium text-seal">
               <ShieldCheck className="size-3.5" aria-hidden="true" />
               Yorum değil, kaynak ilişkisi
             </span>

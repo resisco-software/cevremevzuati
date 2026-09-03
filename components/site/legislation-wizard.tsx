@@ -799,7 +799,7 @@ export function LegislationWizard({
               aria-pressed={topic === 'all'}
               className="topic-option mt-6 flex w-full items-center gap-4 px-4 py-4 text-left"
             >
-              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-ochre">
+              <span className="grid size-10 shrink-0 place-items-center border border-rule text-ink">
                 <ScanSearch className="size-5" aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
@@ -897,7 +897,7 @@ export function LegislationWizard({
                   id="facility-stage"
                   value={stage}
                   onChange={(event) => setStage(event.target.value)}
-                  className="w-full [&>select]:h-12 [&>select]:rounded-xl [&>select]:border-rule [&>select]:bg-card"
+                  className="w-full [&>select]:h-12 [&>select]:border-rule [&>select]:bg-card"
                 >
                   {stageOptions.map((option) => (
                     <NativeSelectOption key={option.id} value={option.id}>
@@ -915,7 +915,7 @@ export function LegislationWizard({
                   id="facility-sector"
                   value={sector}
                   onChange={(event) => setSector(event.target.value)}
-                  className="w-full [&>select]:h-12 [&>select]:rounded-xl [&>select]:border-rule [&>select]:bg-card"
+                  className="w-full [&>select]:h-12 [&>select]:border-rule [&>select]:bg-card"
                 >
                   {sectorOptions.map((option) => (
                     <NativeSelectOption key={option.id} value={option.id}>

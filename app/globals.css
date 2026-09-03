@@ -41,35 +41,34 @@
   --text-xl: var(--step-xl);
   --text-2xl: var(--step-2xl);
   --text-3xl: var(--step-3xl);
-  --radius-sm: 0.4rem;
-  --radius-md: 0.55rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.25rem;
-  --radius-3xl: 1.5rem;
-  --radius-4xl: 1.75rem;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 8px;
+  --radius-3xl: 10px;
+  --radius-4xl: 12px;
 }
 
 /*
-  Psikoloji: ferah okuma odası, bağıran “çevre yeşili” değil.
-  Taş-kâğıt zemin nefes verir. Mürekkep laciverti ciddiyet ve güven verir.
-  Bronz tek sıcak vurgu; yönlendirir, NGO veya bakanlık sitesi gibi durmaz.
+  Açık kâğıt, mürekkep, ince kural. Yeşil yok, altın yok, rozet yok.
+  İlk izlenim resmî gazete masası; boşluk ferah, renk bağırmaz.
 */
 :root {
   --font-sans-ui: var(--font-geist-sans), 'Inter', 'Segoe UI', sans-serif;
-  --font-display-ui: var(--font-display), 'Playfair Display', Georgia, serif;
+  --font-display-ui: var(--font-display), 'Iowan Old Style', Georgia, serif;
   --font-mono-ui: var(--font-record), 'SFMono-Regular', Consolas, monospace;
 
-  --paper: #f6f3ec;
-  --paper-raised: #fffdf8;
-  --paper-inset: #ebe6db;
-  --ink: #1b1e24;
-  --lead: #5f636b;
-  --seal: #2a3544;
-  --rule: #ddd6c8;
-  --rule-strong: #c4bcae;
-  --ochre: #8b6d3f;
-  --forest: #8b6d3f;
+  --paper: #f7f6f2;
+  --paper-raised: #ffffff;
+  --paper-inset: #efeee9;
+  --ink: #17181b;
+  --lead: #5c5f66;
+  --seal: #17181b;
+  --rule: #d9d6ce;
+  --rule-strong: #b8b4aa;
+  --ochre: #5c5f66;
+  --forest: #5c5f66;
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -78,21 +77,20 @@
   --popover: var(--paper-raised);
   --popover-foreground: var(--ink);
   --primary: var(--seal);
-  --primary-foreground: #fffdf8;
+  --primary-foreground: #f7f6f2;
   --secondary: var(--paper-inset);
   --secondary-foreground: var(--ink);
-  --muted: #efebe3;
+  --muted: #efeee9;
   --muted-foreground: var(--lead);
-  --accent: color-mix(in srgb, var(--ochre) 14%, var(--paper-raised));
-  --accent-foreground: var(--ochre);
-  --destructive: #9b2c2c;
+  --accent: var(--paper-inset);
+  --accent-foreground: var(--ink);
+  --destructive: #8b2e2e;
   --border: var(--rule);
   --input: var(--rule-strong);
-  --ring: var(--ochre);
+  --ring: var(--ink);
 
-  --shadow-paper: 0 1px 2px color-mix(in srgb, var(--ink) 5%, transparent),
-    0 12px 32px color-mix(in srgb, var(--ink) 5%, transparent);
-  --shadow-lift: 0 16px 40px color-mix(in srgb, var(--ink) 8%, transparent);
+  --shadow-paper: none;
+  --shadow-lift: none;
 
   --step-xs: 0.75rem;
   --step-sm: 0.875rem;
@@ -108,23 +106,23 @@
 }
 
 .dark {
-  --paper: #14161a;
-  --paper-raised: #1c1f25;
-  --paper-inset: #262a31;
-  --ink: #ece8e0;
-  --lead: #9a9ea6;
-  --seal: #d8c7a2;
-  --rule: #2c3138;
-  --rule-strong: #4a5058;
-  --ochre: #c4a66a;
-  --forest: #c4a66a;
-  --muted: #22262c;
-  --accent: color-mix(in srgb, var(--ochre) 16%, var(--paper));
-  --accent-foreground: var(--ochre);
-  --destructive: #e07a7a;
-  --primary-foreground: #1b1e24;
-  --shadow-paper: 0 1px 2px rgb(0 0 0 / 0.28), 0 12px 28px rgb(0 0 0 / 0.28);
-  --shadow-lift: 0 16px 40px rgb(0 0 0 / 0.4);
+  --paper: #141516;
+  --paper-raised: #1c1d1f;
+  --paper-inset: #242628;
+  --ink: #ecece8;
+  --lead: #9a9c9f;
+  --seal: #ecece8;
+  --rule: #2e3033;
+  --rule-strong: #4a4d52;
+  --ochre: #9a9c9f;
+  --forest: #9a9c9f;
+  --muted: #242628;
+  --accent: #242628;
+  --accent-foreground: var(--ink);
+  --destructive: #d97a7a;
+  --primary-foreground: #141516;
+  --shadow-paper: none;
+  --shadow-lift: none;
   color-scheme: dark;
 }
 
@@ -153,13 +151,7 @@
   }
 
   body {
-    background:
-      radial-gradient(
-        880px 380px at 12% -12%,
-        color-mix(in srgb, var(--ochre) 9%, transparent),
-        transparent 56%
-      ),
-      var(--paper);
+    background: var(--paper);
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
     font-size: var(--step-base);
@@ -184,12 +176,12 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--ochre);
+    outline: 2px solid var(--ink);
     outline-offset: 2px;
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--ochre) 28%, transparent);
+    background: color-mix(in srgb, var(--ink) 14%, transparent);
     color: var(--ink);
   }
 }
@@ -238,21 +230,17 @@
 
 .panel {
   border: 1px solid var(--rule);
-  border-radius: 1.25rem;
   background: var(--paper-raised);
-  box-shadow: var(--shadow-paper);
 }
 
 .search-field {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  min-height: 4.25rem;
-  padding: 0.5rem 0.5rem 0.5rem 1.15rem;
-  border: 1px solid var(--rule);
-  border-radius: 1.15rem;
+  min-height: 3.75rem;
+  padding: 0.4rem 0.4rem 0.4rem 1rem;
+  border: 1px solid var(--rule-strong);
   background: var(--paper-raised);
-  box-shadow: var(--shadow-paper);
 }
 
 .search-field:focus-within {
@@ -264,8 +252,8 @@
   font-family: var(--font-display-ui);
   font-size: var(--step-3xl);
   font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
 }
 
 .display-lg {
@@ -360,9 +348,7 @@
 
 .record-list > li {
   border: 1px solid var(--rule);
-  border-radius: 1rem;
   background: var(--paper-raised);
-  box-shadow: var(--shadow-paper);
 }
 
 .record-row {
@@ -414,8 +400,7 @@
   min-height: 2.5rem;
   align-items: center;
   border: 1px solid var(--rule-strong);
-  border-radius: 999px;
-  background: var(--paper-raised);
+  background: transparent;
   padding-inline: 0.85rem;
   font-family: var(--font-mono-ui);
   font-size: var(--step-xs);
@@ -440,7 +425,6 @@
 
 .topic-option {
   border: 1px solid var(--rule);
-  border-radius: 1rem;
   background: var(--paper-raised);
   transition:
     border-color 120ms ease,
@@ -460,7 +444,6 @@
 
 .choice-row {
   border: 1px solid var(--rule);
-  border-radius: 0.9rem;
 }
 
 .choice-row:has([data-checked]) {
@@ -469,8 +452,7 @@
 }
 
 .measure-bar {
-  height: 8px;
-  border-radius: 999px;
+  height: 4px;
   background: color-mix(in srgb, var(--rule) 70%, transparent);
   display: flex;
   align-items: stretch;

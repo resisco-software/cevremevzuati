@@ -16,26 +16,18 @@ const nav = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-rule/80 bg-paper/80 backdrop-blur-xl">
-      <div className="site-frame flex h-[4.25rem] items-center justify-between gap-6">
+    <header className="sticky top-0 z-50 border-b-2 border-ink bg-background">
+      <div className="site-frame flex h-16 items-center justify-between gap-6">
         <Link
           href="/"
-          className="group flex shrink-0 items-center gap-3"
+          className="group flex shrink-0 flex-col justify-center"
           aria-label="Çevre Mevzuatı ana sayfa"
         >
-          <span
-            aria-hidden="true"
-            className="grid size-9 place-items-center rounded-xl bg-seal text-sm font-semibold text-primary-foreground"
-          >
-            Ç
+          <span className="font-display text-lg font-bold leading-none tracking-[-0.015em] group-hover:text-lead">
+            Çevre Mevzuatı
           </span>
-          <span className="flex flex-col justify-center">
-            <span className="font-display text-lg font-semibold leading-none tracking-[-0.02em] group-hover:text-seal">
-              Çevre Mevzuatı
-            </span>
-            <span className="label mt-1.5 leading-none">
-              {legislation.length} kayıt · tesis rotası
-            </span>
+          <span className="label mt-1 leading-none">
+            Tesis navigasyonu · {legislation.length} kayıt
           </span>
         </Link>
 
@@ -46,20 +38,20 @@ export function SiteHeader() {
           <Link
             href="/mevzuat"
             aria-label="Mevzuatta ara"
-            className="grid size-10 place-items-center rounded-xl border border-rule bg-card text-lead hover:border-seal hover:text-ink xl:hidden"
+            className="grid size-10 place-items-center border border-rule-strong text-lead hover:border-ink hover:text-ink xl:hidden"
           >
             <Search className="size-4" aria-hidden="true" />
           </Link>
           <Link
             href="/mevzuat"
-            className="hidden h-10 items-center gap-2 rounded-xl border border-rule bg-card px-3.5 text-sm text-lead hover:border-seal hover:text-ink xl:inline-flex"
+            className="hidden h-10 items-center gap-2 border border-rule-strong px-3.5 text-sm text-lead hover:border-ink hover:text-ink xl:inline-flex"
           >
             <Search className="size-4" aria-hidden="true" />
             Ara
           </Link>
           <Link
             href="/#alanlar"
-            className="hidden h-10 items-center gap-2 rounded-xl bg-seal px-4 text-sm font-medium text-primary-foreground hover:bg-forest lg:inline-flex"
+            className="hidden h-10 items-center gap-2 bg-seal px-4 text-sm font-medium text-primary-foreground hover:bg-lead lg:inline-flex"
           >
             Rotamı oluştur
           </Link>

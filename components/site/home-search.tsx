@@ -18,7 +18,7 @@ export function HomeSearch() {
         <label htmlFor="home-search" className="sr-only">
           Mevzuatta ara
         </label>
-        <Search className="size-5 shrink-0 text-ochre" aria-hidden="true" />
+        <Search className="size-5 shrink-0 text-lead" aria-hidden="true" />
         <input
           id="home-search"
           name="q"
@@ -29,21 +29,15 @@ export function HomeSearch() {
         />
         <button
           type="submit"
-          className="inline-flex h-11 shrink-0 items-center rounded-xl bg-seal px-4 text-sm font-semibold text-primary-foreground hover:bg-ink"
+          className="inline-flex h-11 shrink-0 items-center bg-seal px-4 text-sm font-semibold text-primary-foreground hover:bg-lead"
         >
           Ara
         </button>
       </form>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Adını biliyorsanız yazın. Tesisi tarif etmek için aşağıya inin.
-      </p>
       <ul className="mt-3 flex flex-wrap gap-2">
         {shortcuts.map((item) => (
           <li key={item.q}>
-            <Link
-              href={`/mevzuat?q=${encodeURIComponent(item.q)}`}
-              className="filter-chip"
-            >
+            <Link href={`/mevzuat?q=${encodeURIComponent(item.q)}`} className="filter-chip">
               {item.label}
             </Link>
           </li>

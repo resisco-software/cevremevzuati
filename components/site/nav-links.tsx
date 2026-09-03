@@ -27,10 +27,10 @@ export function NavLinks({
             key={item.href}
             href={item.href}
             aria-current={active ? 'page' : undefined}
-            className={`rounded-full px-3 py-1.5 transition-colors ${
+            className={`whitespace-nowrap border-b-2 py-1 transition-colors ${
               active
-                ? 'bg-accent font-medium text-forest'
-                : 'text-lead hover:bg-card hover:text-ink'
+                ? 'border-ink font-medium text-ink'
+                : 'border-transparent text-lead hover:border-rule-strong hover:text-ink'
             }`}
           >
             {item.label}

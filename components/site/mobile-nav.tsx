@@ -51,7 +51,7 @@ export function MobileNav({
         aria-expanded={open}
         aria-controls="mobil-menu"
         aria-label={open ? 'Menüyü kapat' : 'Menüyü aç'}
-        className="grid size-10 place-items-center rounded-md border border-input bg-card focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
+        className="grid size-10 place-items-center border border-rule-strong bg-background focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring/60"
       >
         {open ? (
           <X className="size-4" aria-hidden="true" />
@@ -63,7 +63,7 @@ export function MobileNav({
         id="mobil-menu"
         ref={panelRef}
         hidden={!open}
-        className="absolute right-0 top-12 z-50 grid min-w-60 gap-1 rounded-lg border border-border bg-popover p-2 text-sm text-popover-foreground shadow-xl"
+        className="absolute right-0 top-12 z-50 grid min-w-60 gap-1 border border-rule-strong bg-popover p-2 text-sm text-popover-foreground"
       >
         <nav aria-label="Mobil menü" className="grid gap-1">
           {items.map((item) => (

@@ -125,7 +125,7 @@ export function LegislationBrowser({
         <span className="label">Kayıt ara</span>
         <span className="search-field mt-3">
           <Search
-            className="size-5 shrink-0 text-ochre"
+            className="size-5 shrink-0 text-lead"
             aria-hidden="true"
           />
           <input

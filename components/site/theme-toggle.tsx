@@ -3,7 +3,7 @@
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { useCallback, useSyncExternalStore } from 'react';
 
-const STORAGE_KEY = 'cevremevzuati-theme';
+const STORAGE_KEY = 'cevremevzuati-theme-v2';
 
 type ThemeChoice = 'light' | 'dark' | 'system';
 
@@ -29,14 +29,16 @@ function subscribe(listener: () => void) {
 function readChoice(): ThemeChoice {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    return stored === 'dark' || stored === 'light' ? stored : 'system';
+    return stored === 'dark' || stored === 'light' || stored === 'system'
+      ? stored
+      : 'light';
   } catch {
-    return 'system';
+    return 'light';
   }
 }
 
 function serverChoice(): ThemeChoice {
-  return 'system';
+  return 'light';
 }
 
 function applyTheme(choice: ThemeChoice) {
@@ -59,8 +61,7 @@ export function ThemeToggle() {
   const selectNext = useCallback(() => {
     const next = order[(order.indexOf(choice) + 1) % order.length];
     try {
-      if (next === 'system') window.localStorage.removeItem(STORAGE_KEY);
-      else window.localStorage.setItem(STORAGE_KEY, next);
+      window.localStorage.setItem(STORAGE_KEY, next);
     } catch {
       /* depolama kapalıysa tema yalnızca bu sekmede geçerli olur */
     }
@@ -76,7 +77,7 @@ export function ThemeToggle() {
       type="button"
       onClick={selectNext}
       suppressHydrationWarning
-      className="inline-flex h-10 items-center gap-2 rounded-xl border border-rule bg-card px-2.5 text-sm text-lead hover:border-seal hover:text-ink sm:px-3"
+      className="inline-flex h-10 items-center gap-2 border border-rule-strong px-2.5 text-sm text-lead hover:border-ink hover:text-ink sm:px-3"
       aria-label={`Tema: ${current.long}. Değiştirmek için tıklayın.`}
       title={`Tema: ${current.long}`}
     >

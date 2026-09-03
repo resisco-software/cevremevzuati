@@ -36,7 +36,7 @@ export function SiteHeader() {
           <Link
             href="/mevzuat"
             aria-label="Mevzuatta ara"
-            className="btn btn-quiet size-10 lg:hidden"
+            className="btn inline-flex items-center justify-center btn-quiet size-10 lg:hidden"
           >
             <Search className="size-4" aria-hidden="true" />
           </Link>

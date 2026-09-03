@@ -93,22 +93,14 @@ export function QuickSearch() {
       </label>
       <div className="relative mt-2.5">
         <Search
-          className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-lead"
+          className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground"
           aria-hidden="true"
         />
         <input
           ref={inputRef}
           id="quick-search"
           type="search"
-          role="combobox"
-          aria-expanded={open}
-          aria-controls={listId}
-          aria-autocomplete="list"
-          aria-activedescendant={
-            active >= 0 && active < shown.length
-              ? `${listId}-${active}`
-              : undefined
-          }
+          aria-describedby={`${listId}-durum`}
           autoComplete="off"
           value={query}
           onChange={(event) => {
@@ -128,7 +120,7 @@ export function QuickSearch() {
               inputRef.current?.focus();
             }}
             aria-label="Aramayı temizle"
-            className="absolute top-1/2 right-3 grid size-9 -translate-y-1/2 place-items-center rounded-md text-lead hover:bg-muted hover:text-ink"
+            className="absolute top-1/2 right-3 grid size-9 -translate-y-1/2 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-ink"
           >
             <X className="size-4" aria-hidden="true" />
           </button>
@@ -158,20 +150,18 @@ export function QuickSearch() {
       {/* anında sonuç */}
       {open && (
         <div className="mt-4">
-          <p className="sr-only" aria-live="polite">
-            {results.length} kayıt bulundu.
+          <p id={`${listId}-durum`} className="sr-only" aria-live="polite">
+            {results.length} kayıt bulundu. Ok tuşlarıyla gezinebilir,
+            Enter ile açabilirsiniz.
           </p>
           {shown.length > 0 ? (
             <>
-              <ul id={listId} role="listbox" aria-label="Arama sonuçları" className="grid gap-2">
+              <ul aria-label="Arama sonuçları" className="grid gap-2">
                 {shown.map((item, index) => {
                   const areaId = item.categories[0] ?? 'izin';
                   return (
-                    <li key={item.slug} role="none">
+                    <li key={item.slug}>
                       <Link
-                        id={`${listId}-${index}`}
-                        role="option"
-                        aria-selected={active === index}
                         href={`/mevzuat/${item.slug}`}
                         style={areaStyle(areaId)}
                         onMouseEnter={() => setActive(index)}

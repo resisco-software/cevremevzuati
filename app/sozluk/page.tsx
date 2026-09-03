@@ -59,8 +59,8 @@ export default async function GlossaryPage({
             />
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_320px] lg:items-end">
               <div>
-                <p className="label">Çevre mevzuatı</p>
-                <h1 className="display-xl measure mt-4">
+                <p className="eyebrow">Çevre mevzuatı</p>
+                <h1 className="text-3xl measure mt-4">
                   Mevzuat sözlüğü
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
@@ -70,7 +70,7 @@ export default async function GlossaryPage({
                 </p>
               </div>
               <div className="border-l-2 border-seal pl-5">
-                <Quote className="size-5 text-seal" aria-hidden="true" />
+                <Quote className="size-5 text-primary" aria-hidden="true" />
                 <p className="mt-4 text-base font-semibold">
                   Tanım + düzenleme + madde
                 </p>

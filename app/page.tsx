@@ -16,6 +16,7 @@ import { QuickSearch } from '@/components/site/quick-search';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
 import { areaStyle } from '@/lib/area-theme';
+import { categoryIcons } from '@/lib/category-icons';
 import {
   categories,
   categoryRecordCount,
@@ -172,7 +173,7 @@ export default function HomePage() {
               </div>
               <Link
                 href="/mevzuat"
-                className="btn btn-quiet h-11 px-4 text-sm"
+                className="btn inline-flex items-center justify-center btn-quiet h-11 px-4 text-sm"
               >
                 Tüm dizin
                 <ArrowRight className="size-4" aria-hidden="true" />
@@ -182,14 +183,18 @@ export default function HomePage() {
             <ul className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category) => {
                 const count = categoryRecordCount(category.id);
+                const Icon = categoryIcons[category.id] ?? Layers;
                 return (
                   <li key={category.id} style={areaStyle(category.id)}>
                     <Link
                       href={`/mevzuat?alan=${category.id}`}
                       className="card card-link area-edge flex h-full flex-col p-5"
                     >
-                      <span className="flex items-center gap-2.5">
-                        <span className="area-dot" aria-hidden="true" />
+                      <span className="flex items-start gap-3">
+                        <Icon
+                          className="mt-0.5 size-5 shrink-0 text-area"
+                          aria-hidden="true"
+                        />
                         <span className="font-semibold leading-snug">
                           {category.label}
                         </span>
@@ -272,7 +277,7 @@ export default function HomePage() {
                   Çoğu sanayi tesisinin başladığı yer
                 </h2>
               </div>
-              <Link href="/mevzuat" className="btn btn-quiet h-11 px-4 text-sm">
+              <Link href="/mevzuat" className="btn inline-flex items-center justify-center btn-quiet h-11 px-4 text-sm">
                 {legislation.length} kaydın tamamı
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
@@ -332,7 +337,7 @@ export default function HomePage() {
                 {lastSourceCheck()}.
               </p>
             </div>
-            <Link href="/sozluk" className="btn btn-primary h-12 px-5">
+            <Link href="/sozluk" className="btn inline-flex items-center justify-center btn-primary h-12 px-5">
               <BookMarked className="size-4" aria-hidden="true" />
               Sözlüğü aç
             </Link>

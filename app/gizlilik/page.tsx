@@ -33,8 +33,8 @@ export default function PrivacyPage() {
                 { label: 'Gizlilik ve KVKK' },
               ]}
             />
-            <p className="label mt-8">Çevre Mevzuatı</p>
-            <h1 className="display-xl measure mt-4">
+            <p className="eyebrow mt-8">Çevre Mevzuatı</p>
+            <h1 className="text-3xl measure mt-4">
               Gizlilik ve KVKK
             </h1>
             <p className="mt-6 text-base leading-7 text-muted-foreground">
@@ -48,8 +48,8 @@ export default function PrivacyPage() {
         <section className="site-frame max-w-[900px] py-12 lg:py-16">
           <div className="grid gap-10">
             <div>
-              <h2 className="flex items-center gap-2.5 display-md">
-                <Database className="size-5 text-seal" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 text-xl">
+                <Database className="size-5 text-primary" aria-hidden="true" />
                 Toplanan kişisel veri
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -61,8 +61,8 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 display-md">
-                <Cookie className="size-5 text-seal" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 text-xl">
+                <Cookie className="size-5 text-primary" aria-hidden="true" />
                 Çerez ve tarayıcı depolaması
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -75,8 +75,8 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 display-md">
-                <Shield className="size-5 text-seal" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 text-xl">
+                <Shield className="size-5 text-primary" aria-hidden="true" />
                 Sunucu kayıtları
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -90,8 +90,8 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 display-md">
-                <ExternalLinkIcon className="size-5 text-seal" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 text-xl">
+                <ExternalLinkIcon className="size-5 text-primary" aria-hidden="true" />
                 Dış bağlantılar
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -104,7 +104,7 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h2 className="display-md">
+              <h2 className="text-xl">
                 KVKK kapsamındaki haklarınız
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -116,8 +116,8 @@ export default function PrivacyPage() {
                 yalnızca barındırma sağlayıcısının işlediği erişim kayıtları
                 bakımından gündeme gelebilir.
               </p>
-              <dl className="mt-5 grid gap-3 border border-rule p-5 text-base">
-                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-rule pb-3">
+              <dl className="mt-5 grid gap-3 border border-border p-5 text-base">
+                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-border pb-3">
                   <dt className="font-medium">Veri sorumlusu</dt>
                   <dd className="text-muted-foreground">{publisherName}</dd>
                 </div>
@@ -126,7 +126,7 @@ export default function PrivacyPage() {
                   <dd>
                     <a
                       href={`mailto:${publisherEmail}`}
-                      className="rounded font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                      className="rounded font-semibold text-primary hover:underline hover:decoration-seal"
                     >
                       {publisherEmail}
                     </a>
@@ -136,8 +136,8 @@ export default function PrivacyPage() {
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 Künye ve iletişim bilgileri{' '}
                 <Link
-                  href="/kunye"
-                  className="rounded font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                  href="/kv"
+                  className="rounded font-semibold text-primary hover:underline hover:decoration-seal"
                 >
                   künye sayfasında
                 </Link>{' '}
@@ -145,7 +145,7 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div className="ruled pt-6">
+            <div className="border-t border-border pt-6">
               <h2 className="text-lg font-semibold">Bu metnin durumu</h2>
               <p className="mt-3 text-base leading-7 text-muted-foreground">
                 Metin, sitenin mevcut teknik davranışını doğru biçimde anlatır.

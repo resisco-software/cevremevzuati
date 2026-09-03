@@ -89,11 +89,11 @@ export default function MethodologyPage() {
                 { label: 'Kaynak ve yöntem' },
               ]}
             />
-            <span className="mt-8 inline-flex items-center gap-2 border border-rule px-3 py-1.5 text-sm font-medium text-seal">
+            <span className="mt-8 inline-flex items-center gap-2 border border-border px-3 py-1.5 text-sm font-medium text-primary">
               <ShieldCheck className="size-3.5" aria-hidden="true" />
               Yorum değil, kaynak ilişkisi
             </span>
-            <h1 className="display-xl measure mt-6">
+            <h1 className="text-3xl measure mt-6">
               Kaynak ve yöntem
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground">
@@ -105,23 +105,23 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        <section className="ruled-strong py-12 lg:py-16">
+        <section className="border-t border-border py-12 lg:py-16">
           <div className="site-frame">
-            <h2 className="display-lg">
+            <h2 className="text-2xl">
               Kaydın kuruluşu
             </h2>
             <ol className="mt-10 grid gap-4 sm:grid-cols-2">
               {steps.map((step, index) => (
-                <li key={step.title} className="ruled pt-6">
+                <li key={step.title} className="border-t border-border pt-6">
                   <div className="flex items-center justify-between gap-4">
-                    <span className="grid size-10 place-items-center rounded-lg bg-secondary text-seal">
+                    <span className="grid size-10 place-items-center rounded-lg bg-secondary text-primary">
                       <step.icon className="size-4.5" aria-hidden="true" />
                     </span>
-                    <span className="record text-sm text-muted-foreground">
+                    <span className="gazette text-sm text-muted-foreground">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>
-                  <h3 className="mt-5 font-display text-md font-semibold leading-snug">
+                  <h3 className="mt-5 text-md font-semibold leading-snug">
                     {step.title}
                   </h3>
                   <p className="mt-3 text-base leading-7 text-muted-foreground">
@@ -133,9 +133,9 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        <section className="ruled-strong py-12 lg:py-16">
+        <section className="border-t border-border py-12 lg:py-16">
           <div className="site-frame">
-            <h2 className="display-lg">
+            <h2 className="text-2xl">
               Şu anda ne doğrulanmış durumda?
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground">
@@ -145,7 +145,7 @@ export default function MethodologyPage() {
             </p>
             <dl className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
               <div>
-                <dd className="display-md">
+                <dd className="text-xl">
                   {summary.total}
                 </dd>
                 <dt className="mt-1 text-sm text-muted-foreground">
@@ -153,7 +153,7 @@ export default function MethodologyPage() {
                 </dt>
               </div>
               <div>
-                <dd className="display-md text-seal">
+                <dd className="text-xl text-primary">
                   {summary.verified}
                 </dd>
                 <dt className="mt-1 text-sm text-muted-foreground">
@@ -161,7 +161,7 @@ export default function MethodologyPage() {
                 </dt>
               </div>
               <div>
-                <dd className="display-md">
+                <dd className="text-xl">
                   {withChanges}
                 </dd>
                 <dt className="mt-1 text-sm text-muted-foreground">
@@ -169,7 +169,7 @@ export default function MethodologyPage() {
                 </dt>
               </div>
               <div>
-                <dd className="display-md">
+                <dd className="text-xl">
                   {withConsolidated}
                 </dd>
                 <dt className="mt-1 text-sm text-muted-foreground">
@@ -177,7 +177,7 @@ export default function MethodologyPage() {
                 </dt>
               </div>
             </dl>
-            <div className="mt-6 border-l-2 border-ochre pl-5">
+            <div className="mt-6 border-l-2 border-attention pl-5">
               <h3 className="text-base font-semibold">Bilinen sınırlar</h3>
               <ul className="mt-3 grid gap-2 text-base leading-7 text-muted-foreground">
                 <li>
@@ -201,9 +201,9 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        <section className="ruled-strong py-12 lg:py-16">
+        <section className="border-t border-border py-12 lg:py-16">
           <div className="site-frame">
-            <h2 className="display-lg">
+            <h2 className="text-2xl">
               Sonuç dili
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground">
@@ -212,8 +212,8 @@ export default function MethodologyPage() {
             </p>
             <ul className="mt-8 grid gap-4 lg:grid-cols-3">
               {resultLanguage.map((entry) => (
-                <li key={entry.title} className="ruled pt-6">
-                  <h3 className="font-display text-lg font-semibold">
+                <li key={entry.title} className="border-t border-border pt-6">
+                  <h3 className="text-lg font-semibold">
                     {entry.title}
                   </h3>
                   <p className="mt-3 text-base leading-7 text-muted-foreground">

@@ -26,7 +26,7 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-16 border-t border-rule">
+    <footer className="mt-16 border-t border-border">
       <div className="site-frame grid gap-10 py-12 lg:grid-cols-[1.4fr_repeat(2,0.7fr)]">
         <div className="measure">
           <p className="text-md font-semibold">Çevre Mevzuatı</p>

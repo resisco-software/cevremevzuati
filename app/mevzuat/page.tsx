@@ -42,8 +42,8 @@ export default async function LegislationPage({
             />
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                <p className="label">Çevre mevzuatı</p>
-                <h1 className="display-xl measure mt-4">
+                <p className="eyebrow">Çevre mevzuatı</p>
+                <h1 className="text-3xl measure mt-4">
                   Mevzuat dizini
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
@@ -55,21 +55,21 @@ export default async function LegislationPage({
               <ul className="grid gap-2.5 text-sm text-muted-foreground sm:grid-cols-2 lg:grid-cols-1">
                 <li className="flex items-center gap-2">
                   <ShieldCheck
-                    className="size-4 shrink-0 text-seal"
+                    className="size-4 shrink-0 text-primary"
                     aria-hidden="true"
                   />
                   Madde düzeyinde resmî kaynak
                 </li>
                 <li className="flex items-center gap-2">
                   <BookOpenCheck
-                    className="size-4 shrink-0 text-seal"
+                    className="size-4 shrink-0 text-primary"
                     aria-hidden="true"
                   />
                   Yorum içermeyen kayıt yapısı
                 </li>
                 <li className="flex items-center gap-2">
                   <BookOpenCheck
-                    className="size-4 shrink-0 text-seal"
+                    className="size-4 shrink-0 text-primary"
                     aria-hidden="true"
                   />
                   {categories.length} alan · {legislation.length} kayıt

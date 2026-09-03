@@ -78,17 +78,17 @@ export function GlossaryBrowser({
             id="glossary-search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="h-14 border-rule bg-card pl-12 text-md"
+            className="h-14 border-border bg-card pl-12 text-md"
             placeholder="Terim, mevzuat veya konu ara…"
           />
         </label>
         <fieldset className="chip-scroller">
-          <legend className="label mb-2.5">Konu</legend>
+          <legend className="eyebrow mb-2.5">Konu</legend>
           <button
             type="button"
             onClick={() => setTag('all')}
             aria-pressed={tag === 'all'}
-            className="filter-chip"
+            className="pill"
           >
             Tümü
           </button>
@@ -98,7 +98,7 @@ export function GlossaryBrowser({
               type="button"
               onClick={() => setTag(item)}
               aria-pressed={tag === item}
-              className="filter-chip"
+              className="pill"
             >
               {item}
             </button>
@@ -106,7 +106,7 @@ export function GlossaryBrowser({
         </fieldset>
       </div>
 
-      <div className="ruled mt-8 flex flex-wrap items-baseline justify-between gap-3 pt-4 text-sm text-muted-foreground">
+      <div className="border-t border-border mt-8 flex flex-wrap items-baseline justify-between gap-3 pt-4 text-sm text-muted-foreground">
         <span>
           <strong className="text-foreground">{filtered.length}</strong> tanım
         </span>
@@ -124,7 +124,7 @@ export function GlossaryBrowser({
               className="grid gap-5 py-8 lg:grid-cols-[15rem_1fr] lg:gap-10"
             >
               <div>
-                <h3 className="font-display text-lg font-semibold">
+                <h3 className="text-lg font-semibold">
                   {entry.term}
                 </h3>
                 {definitionCount[entry.term] > 1 && (
@@ -155,20 +155,20 @@ export function GlossaryBrowser({
                 </p>
               </div>
               <div className="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-1 text-sm">
-                <p className="record text-xs text-muted-foreground">{entry.source}</p>
-                <p className="record text-xs text-muted-foreground">{entry.article}</p>
+                <p className="gazette text-xs text-muted-foreground">{entry.source}</p>
+                <p className="gazette text-xs text-muted-foreground">{entry.article}</p>
                 <>
                   {entry.sourceSlug && (
                     <Link
                       href={`/mevzuat/${entry.sourceSlug}`}
-                      className="text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                      className="text-primary hover:underline hover:decoration-seal"
                     >
                       Kayıt sayfası
                     </Link>
                   )}
                   <ExternalLink
                     href={entry.sourceUrl}
-                    className="inline-flex items-center gap-1.5 text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
+                    className="inline-flex items-center gap-1.5 text-muted-foreground hover:underline hover:text-ink hover:decoration-seal"
                     iconClassName="size-3"
                   >
                     Resmî kaynak
@@ -180,7 +180,7 @@ export function GlossaryBrowser({
         </div>
       ) : (
         <div className="py-16 text-center">
-          <h3 className="font-display text-lg font-semibold">
+          <h3 className="text-lg font-semibold">
             Eşleşen tanım bulunamadı
           </h3>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -189,7 +189,7 @@ export function GlossaryBrowser({
           <Button
             type="button"
             variant="outline"
-            className="mt-5 h-11 border border-rule-strong px-4"
+            className="mt-5 h-11 border border-input px-4"
             onClick={() => {
               setQuery('');
               setTag('all');

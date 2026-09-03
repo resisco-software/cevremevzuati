@@ -103,14 +103,14 @@ export default async function LegislationDetailPage({
             ]}
           />
 
-          <div className="ledger mt-10">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
             {/* ---- okuma sütunu ---- */}
             <article>
-              <p className="label">
+              <p className="eyebrow">
                 {item.type}
                 {item.foundation && ' · Temel düzenleme'}
               </p>
-              <h1 className="display-lg mt-4 max-w-4xl">{item.title}</h1>
+              <h1 className="text-2xl mt-4 max-w-4xl">{item.title}</h1>
 
               {item.originalTitle && (
                 <p className="mt-4 text-sm leading-7 text-muted-foreground">
@@ -119,7 +119,7 @@ export default async function LegislationDetailPage({
                 </p>
               )}
               {item.aliases.length > 0 && (
-                <p className="record mt-3 text-xs text-muted-foreground">
+                <p className="gazette mt-3 text-xs text-muted-foreground">
                   {item.aliases.join(' · ')}
                 </p>
               )}
@@ -130,8 +130,8 @@ export default async function LegislationDetailPage({
                 <span
                   className={
                     item.status === 'Yürürlükte'
-                      ? 'status'
-                      : 'status status-repealed'
+                      ? 'badge badge-live'
+                      : 'badge badge-repealed'
                   }
                 >
                   {item.status}
@@ -140,7 +140,7 @@ export default async function LegislationDetailPage({
                   <Link
                     key={category.id}
                     href={`/mevzuat?alan=${category.id}`}
-                    className="text-sm text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
+                    className="text-sm text-muted-foreground hover:underline hover:text-ink hover:decoration-seal"
                   >
                     {category.shortLabel}
                   </Link>
@@ -148,29 +148,29 @@ export default async function LegislationDetailPage({
               </div>
 
               {/* kapsam */}
-              <section className="ruled-strong mt-12 pt-8">
-                <h2 className="display-md">Bu düzenleme kimi kapsar?</h2>
+              <section className="border-t border-border mt-12 pt-8">
+                <h2 className="text-xl">Bu düzenleme kimi kapsar?</h2>
                 <p className="measure mt-5 text-md leading-8">
                   {item.appliesTo}
                 </p>
 
                 {item.primaryAnnex && (
-                  <div className="ruled mt-8 pt-5">
-                    <h3 className="label">Önce bakılacak ek veya madde</h3>
-                    <p className="measure font-display mt-3 text-md leading-8">
+                  <div className="border-t border-border mt-8 pt-5">
+                    <h3 className="eyebrow">Önce bakılacak ek veya madde</h3>
+                    <p className="measure mt-3 text-md leading-8">
                       {item.primaryAnnex}
                     </p>
                   </div>
                 )}
 
                 {item.obligations.length > 0 && (
-                  <div className="ruled mt-8 pt-5">
-                    <h3 className="label">Tipik yükümlülükler</h3>
-                    <ol className="record-list mt-3">
+                  <div className="border-t border-border mt-8 pt-5">
+                    <h3 className="eyebrow">Tipik yükümlülükler</h3>
+                    <ol className="grid gap-3 list-none mt-3">
                       {item.obligations.map((obligation, index) => (
                         <li key={obligation}>
-                          <div className="hanging py-3">
-                            <span className="hanging-num">
+                          <div className="card p-4">
+                            <span className="gazette text-muted-foreground">
                               {String(index + 1).padStart(2, '0')}
                             </span>
                             <span className="text-md leading-8">
@@ -190,22 +190,22 @@ export default async function LegislationDetailPage({
               </section>
 
               {/* sürüm zinciri */}
-              <section className="ruled-strong mt-12 pt-8">
-                <h2 className="display-md">Sürüm ve değişiklikler</h2>
+              <section className="border-t border-border mt-12 pt-8">
+                <h2 className="text-xl">Sürüm ve değişiklikler</h2>
                 {hasChanges ? (
-                  <ol className="record-list mt-6">
+                  <ol className="grid gap-3 list-none mt-6">
                     <li>
-                      <div className="hanging py-4">
+                      <div className="card p-4">
                         <time
                           dateTime={item.publicationDate}
-                          className="hanging-num"
+                          className="gazette text-muted-foreground"
                         >
                           {item.publicationDate.slice(0, 4)}
                         </time>
-                        <p className="font-display text-md font-semibold">
+                        <p className="text-md font-semibold">
                           İlk yayım
                         </p>
-                        <p className="record mt-1 text-xs text-muted-foreground">
+                        <p className="gazette mt-1 text-xs text-muted-foreground">
                           {item.publicationLabel} · {item.gazetteNumber} sayılı
                           Resmî Gazete
                         </p>
@@ -213,19 +213,19 @@ export default async function LegislationDetailPage({
                     </li>
                     {item.changes?.map((change) => (
                       <li key={change.sourceUrl}>
-                        <div className="hanging py-4">
-                          <span className="hanging-num">
+                        <div className="card p-4">
+                          <span className="gazette text-muted-foreground">
                             {change.date.slice(-4)}
                           </span>
-                          <p className="font-display text-md font-semibold leading-snug">
+                          <p className="text-md font-semibold leading-snug">
                             {change.label}
                           </p>
-                          <p className="record mt-1 text-xs text-muted-foreground">
+                          <p className="gazette mt-1 text-xs text-muted-foreground">
                             {change.date}
                           </p>
                           <ExternalLink
                             href={change.sourceUrl}
-                            className="mt-2 inline-flex items-center gap-1.5 text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                            className="mt-2 inline-flex items-center gap-1.5 text-sm text-primary hover:underline hover:decoration-seal"
                             iconClassName="size-3"
                           >
                             Değişiklik kaynağı
@@ -235,8 +235,8 @@ export default async function LegislationDetailPage({
                     ))}
                   </ol>
                 ) : (
-                  <div className="mt-6 border-l-2 border-ochre pl-5">
-                    <p className="font-display text-md font-semibold">
+                  <div className="mt-6 border-l-2 border-attention pl-5">
+                    <p className="text-md font-semibold">
                       Bu kayıtta değişiklik zinciri henüz işlenmedi
                     </p>
                     <p className="measure mt-2 leading-8 text-muted-foreground">
@@ -251,24 +251,24 @@ export default async function LegislationDetailPage({
 
               {/* aynı nüsha */}
               {sameGazette.length > 0 && (
-                <section className="ruled-strong mt-12 pt-8">
-                  <h2 className="display-md">Aynı nüshadaki diğer kayıtlar</h2>
+                <section className="border-t border-border mt-12 pt-8">
+                  <h2 className="text-xl">Aynı nüshadaki diğer kayıtlar</h2>
                   <p className="measure mt-4 leading-8 text-muted-foreground">
                     {item.gazetteNumber} sayılı Resmî Gazete&apos;de bu
                     düzenlemeyle birlikte {sameGazette.length} düzenleme daha
                     yayımlandı. Aynı nüsha, ayrı kayıtlardır.
                   </p>
-                  <ul className="record-list mt-5">
+                  <ul className="grid gap-3 list-none mt-5">
                     {sameGazette.map((other) => (
                       <li key={other.slug}>
                         <Link
                           href={`/mevzuat/${other.slug}`}
-                          className="record-row flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-4"
+                          className="card p-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-4"
                         >
-                          <span className="font-display max-w-2xl text-base font-semibold">
+                          <span className="max-w-2xl text-base font-semibold">
                             {other.title}
                           </span>
-                          <span className="record text-xs text-muted-foreground">
+                          <span className="gazette text-xs text-muted-foreground">
                             {other.type}
                           </span>
                         </Link>
@@ -281,8 +281,8 @@ export default async function LegislationDetailPage({
 
             {/* ---- künye sütunu ---- */}
             <aside>
-              <h2 className="label">Resmî Gazete</h2>
-              <dl className="kunye mt-4">
+              <h2 className="eyebrow">Resmî Gazete</h2>
+              <dl className="kv mt-4">
                 <div>
                   <dt>Tarih</dt>
                   <dd>{item.publicationLabel}</dd>
@@ -307,7 +307,7 @@ export default async function LegislationDetailPage({
 
               <ExternalLink
                 href={item.consolidatedUrl ?? item.sourceUrl}
-                className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 bg-seal px-4 text-sm font-medium text-primary-foreground hover:bg-ink"
+                className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
                 iconClassName="size-3.5"
               >
                 {item.consolidatedUrl ? 'Güncel metni aç' : 'Resmî kaynağı aç'}
@@ -315,7 +315,7 @@ export default async function LegislationDetailPage({
               {item.consolidatedUrl && (
                 <ExternalLink
                   href={item.sourceUrl}
-                  className="mt-3 flex items-center justify-center gap-1.5 text-sm text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
+                  className="mt-3 flex items-center justify-center gap-1.5 text-sm text-muted-foreground hover:underline hover:text-ink hover:decoration-seal"
                   iconClassName="size-3"
                 >
                   İlk yayım kaynağı
@@ -327,8 +327,8 @@ export default async function LegislationDetailPage({
                 </p>
               )}
 
-              <div className="ruled mt-8 pt-5">
-                <h2 className="label">Kaynak niteliği</h2>
+              <div className="border-t border-border mt-8 pt-5">
+                <h2 className="eyebrow">Kaynak niteliği</h2>
                 <p className="mt-3 text-sm leading-7 text-muted-foreground">
                   {item.status === 'Yürürlükten kaldırıldı'
                     ? 'Bu kayıt tarihsel iz için tutulur ve güncel okuma rotasına eklenmez.'
@@ -338,21 +338,21 @@ export default async function LegislationDetailPage({
                 </p>
                 <Link
                   href="/metodoloji"
-                  className="mt-3 inline-block text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                  className="mt-3 inline-block text-sm text-primary hover:underline hover:decoration-seal"
                 >
                   Kaynak ve yöntem
                 </Link>
               </div>
 
-              <div className="ruled mt-8 pt-5">
-                <h2 className="label">Kapsam kararı</h2>
+              <div className="border-t border-border mt-8 pt-5">
+                <h2 className="eyebrow">Kapsam kararı</h2>
                 <p className="mt-3 text-sm leading-7 text-muted-foreground">
                   Faaliyet adı, proses, kapasite ve konum bilgileri ilgili madde
                   veya ekle karşılaştırılmadan yükümlülük sonucu verilmez.
                 </p>
                 <Link
                   href="/#alanlar"
-                  className="mt-3 inline-flex items-center gap-1.5 text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary hover:underline hover:decoration-seal"
                 >
                   Tesisime göre rota oluştur
                   <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -361,7 +361,7 @@ export default async function LegislationDetailPage({
 
               <Link
                 href="/mevzuat"
-                className="ruled mt-8 flex items-center gap-2 pt-5 text-sm text-muted-foreground hover:text-ink"
+                className="border-t border-border mt-8 flex items-center gap-2 pt-5 text-sm text-muted-foreground hover:text-ink"
               >
                 <ArrowLeft className="size-4" aria-hidden="true" />
                 Mevzuat dizinine dön

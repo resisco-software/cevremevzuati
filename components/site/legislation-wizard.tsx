@@ -713,8 +713,8 @@ export function LegislationWizard({
       <div className="pb-6">
         <div className="flex items-start justify-between gap-6">
           <div>
-            <p className="label mb-3">Şimdi başlayın</p>
-            <h2 className="display-md">
+            <p className="eyebrow mb-3">Şimdi başlayın</p>
+            <h2 className="text-xl">
               Tesisinize göre okuma rotası
             </h2>
             <p className="mt-2 max-w-lg text-sm leading-6 text-muted-foreground">
@@ -740,11 +740,11 @@ export function LegislationWizard({
                   current
                     ? 'border-seal'
                     : complete
-                      ? 'border-ink'
-                      : 'border-rule'
+                      ? 'border-input'
+                      : 'border-border'
                 }`}
               >
-                <span className="record flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="gazette flex items-center gap-1.5 text-xs text-muted-foreground">
                   {complete ? (
                     <>
                       <Check className="size-3 text-primary" aria-hidden="true" />
@@ -770,7 +770,7 @@ export function LegislationWizard({
           aria-hidden="true"
         >
           <span
-            className="block h-full bg-seal transition-[width] duration-300"
+            className="block h-full bg-primary transition-[width] duration-300"
             style={{ width: `${((step - 1) / (wizardSteps.length - 1)) * 100}%` }}
           />
         </div>
@@ -783,10 +783,10 @@ export function LegislationWizard({
 
         {step === 1 && (
           <section aria-labelledby="wizard-step-one">
-            <p className="label mb-3">1. adım</p>
+            <p className="eyebrow mb-3">1. adım</p>
             <h3
               id="wizard-step-one"
-              className="display-md"
+              className="text-xl"
             >
               Tüm kapsamı mı, belirli bir alanı mı tarayalım?
             </h3>
@@ -799,7 +799,7 @@ export function LegislationWizard({
               aria-pressed={topic === 'all'}
               className="topic-option mt-6 flex w-full items-center gap-4 px-4 py-4 text-left"
             >
-              <span className="grid size-10 shrink-0 place-items-center border border-rule text-ink">
+              <span className="grid size-10 shrink-0 place-items-center border border-border text-ink">
                 <ScanSearch className="size-5" aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
@@ -816,7 +816,7 @@ export function LegislationWizard({
               )}
             </button>
 
-            <p className="label mt-8 mb-3">Ya da tek alanla başlayın</p>
+            <p className="eyebrow mt-8 mb-3">Ya da tek alanla başlayın</p>
             <ul className="grid gap-2 sm:grid-cols-2">
               {visibleTopics.map((category) => {
                 const Icon = categoryIcons[category.id] ?? Layers3;
@@ -845,7 +845,7 @@ export function LegislationWizard({
               type="button"
               onClick={() => setShowAllTopics((current) => !current)}
               aria-expanded={showAllTopics}
-              className="mt-3 inline-flex items-center gap-1.5 text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary hover:underline hover:decoration-seal"
             >
               {showAllTopics
                 ? 'Daha az alan göster'
@@ -856,7 +856,7 @@ export function LegislationWizard({
               />
             </button>
 
-            <div className="ruled mt-8 flex flex-wrap items-center justify-between gap-4 pt-6">
+            <div className="border-t border-border mt-8 flex flex-wrap items-center justify-between gap-4 pt-6">
               <p className="text-sm">
                 <span className="text-muted-foreground">Seçiminiz: </span>
                 <strong className="font-semibold">{selectedCategory.label}</strong>
@@ -875,10 +875,10 @@ export function LegislationWizard({
 
         {step === 2 && (
           <section aria-labelledby="wizard-step-two">
-            <p className="label mb-3">2. adım</p>
+            <p className="eyebrow mb-3">2. adım</p>
             <h3
               id="wizard-step-two"
-              className="display-md"
+              className="text-xl"
             >
               Tesisin temel profilini seçin
             </h3>
@@ -897,7 +897,7 @@ export function LegislationWizard({
                   id="facility-stage"
                   value={stage}
                   onChange={(event) => setStage(event.target.value)}
-                  className="w-full [&>select]:h-12 [&>select]:border-rule [&>select]:bg-card"
+                  className="w-full [&>select]:h-12 [&>select]:border-border [&>select]:bg-card"
                 >
                   {stageOptions.map((option) => (
                     <NativeSelectOption key={option.id} value={option.id}>
@@ -915,7 +915,7 @@ export function LegislationWizard({
                   id="facility-sector"
                   value={sector}
                   onChange={(event) => setSector(event.target.value)}
-                  className="w-full [&>select]:h-12 [&>select]:border-rule [&>select]:bg-card"
+                  className="w-full [&>select]:h-12 [&>select]:border-border [&>select]:bg-card"
                 >
                   {sectorOptions.map((option) => (
                     <NativeSelectOption key={option.id} value={option.id}>
@@ -938,7 +938,7 @@ export function LegislationWizard({
                 </p>
               </div>
             </div>
-            <div className="ruled mt-8 flex flex-wrap items-center justify-between gap-3 pt-6">
+            <div className="border-t border-border mt-8 flex flex-wrap items-center justify-between gap-3 pt-6">
               <Button
                 type="button"
                 variant="ghost"
@@ -962,10 +962,10 @@ export function LegislationWizard({
 
         {step === 3 && (
           <section aria-labelledby="wizard-step-three">
-            <p className="label mb-3">3. adım</p>
+            <p className="eyebrow mb-3">3. adım</p>
             <h3
               id="wizard-step-three"
-              className="display-md"
+              className="text-xl"
             >
               Tesiste hangi koşullar var?
             </h3>
@@ -978,7 +978,7 @@ export function LegislationWizard({
                 <legend className="mb-3 w-full text-sm font-semibold">
                   <span className="flex items-center justify-between gap-3">
                     <span>Proses ve çevresel çıkışlar</span>
-                    <span className="record text-xs text-muted-foreground">
+                    <span className="gazette text-xs text-muted-foreground">
                       {visibleFeatureOptions.length} seçenek
                     </span>
                   </span>
@@ -1002,7 +1002,7 @@ export function LegislationWizard({
                     ))}
                   </div>
                 ) : (
-                  <p className="border border-dashed border-rule-strong px-4 py-6 text-sm leading-7 text-muted-foreground">
+                  <p className="border border-dashed border-input px-4 py-6 text-sm leading-7 text-muted-foreground">
                     Bu alanda proses koşulu sorulmuyor. Kapsam, aşağıdaki konum
                     bilgileri ve tesis profiliyle belirlenir.
                   </p>
@@ -1012,7 +1012,7 @@ export function LegislationWizard({
                 <legend className="mb-3 w-full text-sm font-semibold">
                   <span className="flex items-center justify-between gap-3">
                     <span>Konum bilgileri</span>
-                    <span className="record text-xs text-muted-foreground">
+                    <span className="gazette text-xs text-muted-foreground">
                       {locationOptions.length} seçenek
                     </span>
                   </span>
@@ -1040,7 +1040,7 @@ export function LegislationWizard({
                 </p>
               </fieldset>
             </div>
-            <div className="ruled mt-8 flex flex-wrap items-center justify-between gap-3 pt-6">
+            <div className="border-t border-border mt-8 flex flex-wrap items-center justify-between gap-3 pt-6">
               <Button
                 type="button"
                 variant="ghost"
@@ -1066,10 +1066,10 @@ export function LegislationWizard({
           <section aria-labelledby="wizard-step-four">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="label mb-3">4. adım · ön okuma listesi</p>
+                <p className="eyebrow mb-3">4. adım · ön okuma listesi</p>
                 <h3
                   id="wizard-step-four"
-                  className="display-md"
+                  className="text-xl"
                 >
                   {selectedCategory.label} için başlangıç rotası
                 </h3>
@@ -1085,7 +1085,7 @@ export function LegislationWizard({
             </div>
 
             {missingAnswers.length > 0 ? (
-              <div className="mt-6 border-l-2 border-ochre pl-5">
+              <div className="mt-6 border-l-2 border-attention pl-5">
                 <TriangleAlert
                   className="mt-0.5 size-4 shrink-0 text-accent-foreground dark:text-accent"
                   aria-hidden="true"
@@ -1123,7 +1123,7 @@ export function LegislationWizard({
                 <section key={group.key} aria-labelledby={`group-${group.key}`}>
                   <h4
                     id={`group-${group.key}`}
-                    className="font-display text-lg font-semibold"
+                    className="text-lg font-semibold"
                   >
                     {group.title}
                     <span className="ml-2 text-sm font-normal text-muted-foreground">
@@ -1138,13 +1138,13 @@ export function LegislationWizard({
                       const item = getLegislation(slug);
                       if (!item) return null;
                       return (
-                        <li key={slug} className="ruled py-4">
+                        <li key={slug} className="border-t border-border py-4">
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div className="min-w-0 flex-1">
                               <h5 className="text-base font-semibold leading-6">
                                 <Link
                                   href={`/mevzuat/${item.slug}`}
-                                  className="hover:text-seal hover:underline hover:decoration-seal decoration-rule underline-offset-4"
+                                  className="hover:text-primary hover:underline hover:decoration-seal decoration-border underline-offset-4"
                                 >
                                   {item.title}
                                 </Link>
@@ -1180,7 +1180,7 @@ export function LegislationWizard({
                               )}
                               <ExternalLink
                                 href={item.consolidatedUrl ?? item.sourceUrl}
-                                className="inline-flex items-center gap-1.5 text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                                className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline hover:decoration-seal"
                                 iconClassName="size-3"
                               >
                                 {item.consolidatedUrl
@@ -1197,7 +1197,7 @@ export function LegislationWizard({
               ))}
             </div>
 
-            <div className="ruled mt-8 flex flex-wrap items-center gap-3 pt-6">
+            <div className="border-t border-border mt-8 flex flex-wrap items-center gap-3 pt-6">
               <Button
                 type="button"
                 variant="ghost"
@@ -1211,7 +1211,7 @@ export function LegislationWizard({
                 type="button"
                 variant="outline"
                 onClick={copyLink}
-                className="h-11 gap-2 border border-rule-strong px-4"
+                className="h-11 gap-2 border border-input px-4"
               >
                 <Copy className="size-4" aria-hidden="true" />
                 {copied ? 'Bağlantı kopyalandı' : 'Bağlantıyı kopyala'}
@@ -1220,7 +1220,7 @@ export function LegislationWizard({
                 type="button"
                 variant="outline"
                 onClick={() => window.print()}
-                className="h-11 gap-2 border border-rule-strong px-4"
+                className="h-11 gap-2 border border-input px-4"
               >
                 <Printer className="size-4" aria-hidden="true" />
                 Yazdır

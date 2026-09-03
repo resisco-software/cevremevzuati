@@ -114,9 +114,18 @@
   color-scheme: dark;
 }
 
-/* Alan rengi temaya göre çözülür; bileşen tek değişken geçer. */
-.dark [style*='--area'] {
-  --area: var(--area-dark);
+/*
+  Alan rengi temaya göre çözülür.
+  --area her zaman stil sayfasından atanır; bileşen yalnızca iki adayı
+  (--area-l / --area-d) satır içi geçer. Böylece satır içi stil önceliği
+  tema seçimini bozmaz.
+*/
+[style*='--area-l'] {
+  --area: var(--area-l);
+}
+
+.dark [style*='--area-l'] {
+  --area: var(--area-d);
 }
 
 @layer base {
@@ -285,7 +294,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  min-height: 2.25rem;
+  min-height: 2.5rem;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--card);
@@ -315,10 +324,13 @@
   color: var(--card);
 }
 
+/*
+  .btn yalnızca görünümü verir; yerleşimi (display/hizalama) işaretlemedeki
+  yardımcı sınıflar belirler. Daha önce burada `display: inline-flex` vardı
+  ve Tailwind'in `hidden` sınıfını eziyordu: masaüstüne ait düğme mobilde
+  görünüp yatay taşmaya yol açıyordu.
+*/
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: 0.5rem;
   border-radius: var(--radius-lg);
   font-weight: 550;
@@ -375,6 +387,33 @@
   color: var(--accent-foreground);
 }
 
+/* ---------- anahtar-değer künyesi ---------- */
+
+/** Resmî Gazete künyesi gibi kısa veri listeleri. */
+.kv > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--text-sm);
+}
+
+.kv > div:last-child {
+  border-bottom: 0;
+}
+
+.kv dt {
+  color: var(--lead);
+}
+
+.kv dd {
+  font-weight: 550;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- yoğunluk ölçüsü ---------- */
 
 .meter {
@@ -393,8 +432,17 @@
 
 /* ---------- kaydırıcılar ---------- */
 
+/*
+  fieldset, içeriğinin min-content genişliğinin altına inmez; bu yüzden
+  içindeki yatay kaydırıcı sayfayı taşırıyordu. min-width sıfırlanır.
+*/
+fieldset:has(> .chip-scroller) {
+  min-width: 0;
+}
+
 .chip-scroller {
   display: flex;
+  min-width: 0;
   gap: 0.5rem;
   overflow-x: auto;
   padding-bottom: 0.4rem;

@@ -26,13 +26,16 @@ const fallback = { light: '#5C646A', dark: '#9AA3A9' };
 
 /**
  * Alan rengini CSS değişkeni olarak verir.
- * Bileşen bunu `style` ile geçer, CSS `var(--area)` ile okur; böylece
- * 15 rengin hepsi için ayrı sınıf üretmeye gerek kalmaz.
+ *
+ * İki ayrı değişken geçilir (`--area-l`, `--area-d`) ve kullanılacak olan
+ * `--area` değeri stil sayfasında seçilir. Doğrudan `--area` geçmek
+ * çalışmıyordu: satır içi stil, `.dark` kuralından daha güçlü olduğu için
+ * koyu temada renk açılmıyordu.
  */
 export function areaStyle(id: string) {
   const color = areaColors[id] ?? fallback;
   return {
-    '--area': color.light,
-    '--area-dark': color.dark,
+    '--area-l': color.light,
+    '--area-d': color.dark,
   } as React.CSSProperties;
 }

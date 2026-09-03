@@ -1,10 +1,11 @@
 'use client';
 
-import { ArrowRight, Search } from 'lucide-react';
+import { ArrowRight, Search, SlidersHorizontal, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { ExternalLink } from '@/components/site/external-link';
+import { areaStyle } from '@/lib/area-theme';
 import {
   categories,
   lastSourceCheck,
@@ -21,11 +22,14 @@ const documentTypes = Array.from(new Set(legislation.map((item) => item.type)));
 const recordStatuses = Array.from(
   new Set(legislation.map((item) => item.status)),
 );
+const categoryLabel = new Map(
+  categories.map((category) => [category.id, category.shortLabel]),
+);
 
 /**
  * Arama dizinleri bir kez kurulur.
- * Başlık/kısaltma eşleşmesi ile konu eşleşmesi ayrı tutulur, böylece
- * "SKHKKY" araması tek kaydı; "atıksu" araması konu kayıtlarını getirir.
+ * Ad/kısaltma eşleşmesi konu eşleşmesinden ayrı tutulur; "SKHKKY" tek
+ * kaydı, "atıksu" konu kayıtlarını getirir ve adı geçenler üstte kalır.
  */
 const primaryIndex = new Map(
   legislation.map((item) => [item.slug, fold(primarySearchText(item))]),
@@ -51,6 +55,7 @@ export function LegislationBrowser({
   );
   const [documentType, setDocumentType] = useState<'all' | DocumentType>('all');
   const [recordStatus, setRecordStatus] = useState<'all' | RecordStatus>('all');
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Filtre durumu adres çubuğuna yazılır; liste paylaşılabilir olur.
@@ -121,111 +126,134 @@ export function LegislationBrowser({
   return (
     <div>
       {/* ---- arama ---- */}
-      <label htmlFor="legislation-search" className="block">
-        <span className="label">Kayıt ara</span>
-        <span className="search-field mt-3">
-          <Search
-            className="size-5 shrink-0 text-lead"
-            aria-hidden="true"
-          />
-          <input
-            id="legislation-search"
-            value={query}
-            onChange={(event) => changeQuery(event.target.value)}
-            autoFocus
-            className="min-w-0 flex-1 bg-transparent font-display text-xl outline-none placeholder:text-lead/70"
-            placeholder="SKHKKY, atıksu, GEKAP, 32029…"
-          />
-        </span>
-      </label>
+      <div className="relative">
+        <label htmlFor="legislation-search" className="sr-only">
+          Mevzuatta ara
+        </label>
+        <Search
+          className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground"
+          aria-hidden="true"
+        />
+        <input
+          id="legislation-search"
+          type="search"
+          value={query}
+          onChange={(event) => changeQuery(event.target.value)}
+          className="field h-14 pr-11 pl-12 text-md"
+          placeholder="SKHKKY, atiksu, GEKAP, 32029…"
+        />
+        {query && (
+          <button
+            type="button"
+            onClick={() => changeQuery('')}
+            aria-label="Aramayı temizle"
+            className="absolute top-1/2 right-2.5 grid size-9 -translate-y-1/2 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-ink"
+          >
+            <X className="size-4" aria-hidden="true" />
+          </button>
+        )}
+      </div>
       <p className="mt-2 text-sm text-muted-foreground">
-        Ad, kısaltma veya Resmî Gazete sayısı. Türkçe karakter kullanmanız
-        gerekmez.
+        Kısaltma, Türkçe karaktersiz yazım ve Resmî Gazete sayısı çalışır.
       </p>
 
-      {/* ---- filtreler ---- */}
-      <div className="mt-8 grid gap-5">
-        <fieldset>
-          <legend className="label mb-2.5">Alan</legend>
-          <div className="chip-scroller">
+      {/* ---- alan filtresi ---- */}
+      <fieldset className="mt-6">
+        <legend className="eyebrow mb-2.5">Çevre alanı</legend>
+        <div className="chip-scroller">
+          <button
+            type="button"
+            onClick={() => changeCategory('all')}
+            aria-pressed={category === 'all'}
+            className="pill"
+          >
+            Tümü
+          </button>
+          {categories.map((item) => (
             <button
+              key={item.id}
               type="button"
-              onClick={() => changeCategory('all')}
-              aria-pressed={category === 'all'}
-              className="filter-chip"
+              onClick={() => changeCategory(item.id)}
+              aria-pressed={category === item.id}
+              style={areaStyle(item.id)}
+              className="pill pill-area"
             >
-              Tümü
+              <span className="area-dot" aria-hidden="true" />
+              {item.shortLabel}
             </button>
-            {categories.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => changeCategory(item.id)}
-                aria-pressed={category === item.id}
-                className="filter-chip"
-              >
-                {item.shortLabel}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-
-        <div className="grid gap-5 sm:grid-cols-2">
-          <fieldset>
-            <legend className="label mb-2.5">Belge türü</legend>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => changeDocumentType('all')}
-                aria-pressed={documentType === 'all'}
-                className="filter-chip"
-              >
-                Tümü
-              </button>
-              {documentTypes.map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => changeDocumentType(type)}
-                  aria-pressed={documentType === type}
-                  className="filter-chip"
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend className="label mb-2.5">Yürürlük</legend>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => changeRecordStatus('all')}
-                aria-pressed={recordStatus === 'all'}
-                className="filter-chip"
-              >
-                Tümü
-              </button>
-              {recordStatuses.map((status) => (
-                <button
-                  key={status}
-                  type="button"
-                  onClick={() => changeRecordStatus(status)}
-                  aria-pressed={recordStatus === status}
-                  className="filter-chip"
-                >
-                  {status}
-                </button>
-              ))}
-            </div>
-          </fieldset>
+          ))}
         </div>
+      </fieldset>
+
+      {/* ---- ek filtreler, katlanır ---- */}
+      <div className="mt-4">
+        <button
+          type="button"
+          onClick={() => setShowMoreFilters((current) => !current)}
+          aria-expanded={showMoreFilters}
+          className="pill"
+        >
+          <SlidersHorizontal className="size-4" aria-hidden="true" />
+          Belge türü ve yürürlük
+        </button>
+        {showMoreFilters && (
+          <div className="mt-4 grid gap-5 sm:grid-cols-2">
+            <fieldset>
+              <legend className="eyebrow mb-2.5">Belge türü</legend>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => changeDocumentType('all')}
+                  aria-pressed={documentType === 'all'}
+                  className="pill"
+                >
+                  Tümü
+                </button>
+                {documentTypes.map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => changeDocumentType(type)}
+                    aria-pressed={documentType === type}
+                    className="pill"
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend className="eyebrow mb-2.5">Yürürlük</legend>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => changeRecordStatus('all')}
+                  aria-pressed={recordStatus === 'all'}
+                  className="pill"
+                >
+                  Tümü
+                </button>
+                {recordStatuses.map((status) => (
+                  <button
+                    key={status}
+                    type="button"
+                    onClick={() => changeRecordStatus(status)}
+                    aria-pressed={recordStatus === status}
+                    className="pill"
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+        )}
       </div>
 
-      {/* ---- sonuç künyesi ---- */}
-      <div className="ruled mt-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 pt-4">
-        <p className="record text-sm">
-          <span className="text-ink">{filtered.length}</span>{' '}
+      {/* ---- sonuç sayacı ---- */}
+      <div className="mt-7 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-border pb-4">
+        <p className="text-sm">
+          <span className="font-semibold">{filtered.length}</span>{' '}
           <span className="text-muted-foreground">kayıt</span>
           {query.trim() && filtered.length > exactCount && (
             <span className="text-muted-foreground">
@@ -241,12 +269,12 @@ export function LegislationBrowser({
             <button
               type="button"
               onClick={clearFilters}
-              className="text-sm text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+              className="text-sm font-medium text-primary hover:underline"
             >
               Filtreleri temizle
             </button>
           )}
-          <p className="record text-xs text-muted-foreground">
+          <p className="gazette text-muted-foreground">
             Kontrol: {lastSourceCheck()}
           </p>
         </div>
@@ -255,91 +283,101 @@ export function LegislationBrowser({
         {filtered.length} kayıt bulundu.
       </p>
 
-      {/* ---- sicil ---- */}
+      {/* ---- sonuçlar ---- */}
       {shown.length > 0 ? (
         <>
-          <ol className="record-list mt-1">
-            {shown.map((item, index) => (
-              <li key={item.slug}>
-                <div className="record-row hanging">
-                  <span className="hanging-num">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                    <h3 className="font-display max-w-2xl text-md font-semibold leading-snug">
+          <ul className="mt-5 grid gap-3">
+            {shown.map((item) => {
+              const areaId = item.categories[0] ?? 'izin';
+              return (
+                <li key={item.slug} style={areaStyle(areaId)}>
+                  <div className="card area-edge p-5">
+                    <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                      <span className="area-dot" aria-hidden="true" />
+                      <span className="text-sm text-muted-foreground">
+                        {categoryLabel.get(areaId) ?? item.type} · {item.type}
+                      </span>
+                      <span
+                        className={`badge ml-auto ${
+                          item.status === 'Yürürlükte'
+                            ? 'badge-live'
+                            : 'badge-repealed'
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </div>
+                    <h3 className="mt-2.5 text-md font-semibold leading-snug">
                       <Link
                         href={`/mevzuat/${item.slug}`}
-                        className="hover:text-seal"
+                        className="hover:text-primary hover:underline"
                       >
                         {item.title}
                       </Link>
                     </h3>
-                    <span className="record shrink-0 text-xs text-muted-foreground">
-                      {item.type} · RG {item.gazetteNumber}
-                    </span>
-                  </div>
-                  <p className="measure mt-2 text-sm leading-7 text-muted-foreground">
-                    {item.appliesTo}
-                  </p>
-                  {item.primaryAnnex && (
-                    <p className="measure mt-1.5 text-sm leading-7">
-                      <span className="label">Önce</span>{' '}
-                      <span className="text-muted-foreground">
-                        {item.primaryAnnex}
-                      </span>
+                    <p className="measure mt-2 text-sm leading-7 text-muted-foreground">
+                      {item.appliesTo}
                     </p>
-                  )}
-                  <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-                    <span
-                      className={
-                        item.status === 'Yürürlükte'
-                          ? 'status'
-                          : 'status status-repealed'
-                      }
-                    >
-                      {item.status}
-                    </span>
-                    <Link
-                      href={`/mevzuat/${item.slug}`}
-                      className="underline decoration-rule underline-offset-4 hover:text-seal hover:decoration-seal"
-                    >
-                      Kayıt sayfası
-                    </Link>
-                    <ExternalLink
-                      href={item.consolidatedUrl ?? item.sourceUrl}
-                      className="inline-flex items-center gap-1.5 text-muted-foreground underline decoration-rule underline-offset-4 hover:text-ink hover:decoration-seal"
-                      iconClassName="size-3"
-                    >
-                      {item.consolidatedUrl ? 'Güncel metin' : 'Resmî kaynak'}
-                    </ExternalLink>
+                    {item.primaryAnnex && (
+                      <p className="measure mt-2.5 text-sm leading-6">
+                        <span className="eyebrow">Önce bakın</span>{' '}
+                        <span className="text-muted-foreground">
+                          {item.primaryAnnex}
+                        </span>
+                      </p>
+                    )}
+                    <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                      <Link
+                        href={`/mevzuat/${item.slug}`}
+                        className="font-medium text-primary hover:underline"
+                      >
+                        Kayıt sayfası
+                      </Link>
+                      <ExternalLink
+                        href={item.consolidatedUrl ?? item.sourceUrl}
+                        className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-ink hover:underline"
+                        iconClassName="size-3.5"
+                      >
+                        {item.consolidatedUrl ? 'Güncel metin' : 'Resmî kaynak'}
+                      </ExternalLink>
+                      <span className="gazette ml-auto text-muted-foreground">
+                        RG {item.gazetteNumber} · {item.publicationLabel}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </ol>
+                </li>
+              );
+            })}
+          </ul>
           {shown.length < filtered.length && (
             <button
               type="button"
               onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
-              className="mt-8 inline-flex h-11 items-center gap-2 border border-rule-strong px-4 text-sm hover:border-ink"
+              className="btn inline-flex items-center justify-center btn-quiet mt-6 h-12 px-5"
             >
               {Math.min(PAGE_SIZE, filtered.length - shown.length)} kayıt daha
+              göster
               <ArrowRight className="size-4 rotate-90" aria-hidden="true" />
             </button>
           )}
         </>
       ) : (
-        <div className="ruled mt-1 py-16 text-center">
-          <h3 className="font-display text-lg font-semibold">
+        <div className="card mt-5 px-6 py-14 text-center">
+          <Search
+            className="mx-auto size-6 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <h3 className="mt-4 text-md font-semibold">
             Eşleşen kayıt bulunamadı
           </h3>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Kısaltma da deneyebilirsiniz: SKHKKY, ÇİLY, AYY, GEKAP, SEÖS.
+          <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-muted-foreground">
+            Kısaltma da deneyebilirsiniz: SKHKKY, ÇİLY, AYY, GEKAP, SEÖS. Ya da
+            filtreleri temizleyip konudan başlayın.
           </p>
           <button
             type="button"
             onClick={clearFilters}
-            className="mt-5 inline-flex h-11 items-center border border-rule-strong px-4 text-sm hover:border-ink"
+            className="btn inline-flex items-center justify-center btn-quiet mt-5 h-11 px-4 text-sm"
           >
             Filtreleri temizle
           </button>

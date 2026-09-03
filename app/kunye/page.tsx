@@ -12,12 +12,12 @@ export const metadata: Metadata = {
   title: 'Künye ve iletişim',
   description:
     'Sitenin amacı, içerik politikası, düzeltme talebi süreci ve iletişim bilgileri.',
-  alternates: { canonical: '/kunye' },
+  alternates: { canonical: '/kv' },
   openGraph: openGraphFor({
     title: 'Künye ve iletişim',
     description:
       'Sitenin amacı, içerik politikası, düzeltme talebi süreci ve iletişim bilgileri.',
-    path: '/kunye',
+    path: '/kv',
   }),
 };
 
@@ -39,8 +39,8 @@ export default function ImprintPage() {
                 { label: 'Künye ve iletişim' },
               ]}
             />
-            <p className="label mt-8">Çevre Mevzuatı</p>
-            <h1 className="display-xl measure mt-4">
+            <p className="eyebrow mt-8">Çevre Mevzuatı</p>
+            <h1 className="text-3xl measure mt-4">
               Künye ve iletişim
             </h1>
             <p className="mt-6 text-base leading-7 text-muted-foreground">
@@ -54,8 +54,8 @@ export default function ImprintPage() {
         <section className="site-frame max-w-[900px] py-12 lg:py-16">
           <div className="grid gap-10">
             <div>
-              <h2 className="flex items-center gap-2.5 display-md">
-                <FileCheck2 className="size-5 text-seal" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 text-xl">
+                <FileCheck2 className="size-5 text-primary" aria-hidden="true" />
                 Sitenin amacı
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -71,7 +71,7 @@ export default function ImprintPage() {
               </p>
             </div>
 
-            <div className="border-l-2 border-ochre pl-5">
+            <div className="border-l-2 border-attention pl-5">
               <h2 className="flex items-center gap-2.5 text-lg font-semibold">
                 <AlertTriangle
                   className="size-5 text-accent-foreground dark:text-accent"
@@ -89,8 +89,8 @@ export default function ImprintPage() {
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 display-md">
-                <ScrollText className="size-5 text-seal" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 text-xl">
+                <ScrollText className="size-5 text-primary" aria-hidden="true" />
                 İçerik politikası
               </h2>
               <ul className="mt-4 grid gap-3 text-base leading-7 text-muted-foreground">
@@ -117,15 +117,15 @@ export default function ImprintPage() {
               </ul>
               <Link
                 href="/metodoloji"
-                className="mt-5 inline-flex rounded text-sm font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                className="mt-5 inline-flex rounded text-sm font-semibold text-primary hover:underline hover:decoration-seal"
               >
                 Kaynak ve yöntemin ayrıntısı
               </Link>
             </div>
 
             <div>
-              <h2 className="flex items-center gap-2.5 display-md">
-                <Mail className="size-5 text-seal" aria-hidden="true" />
+              <h2 className="flex items-center gap-2.5 text-xl">
+                <Mail className="size-5 text-primary" aria-hidden="true" />
                 Düzeltme talebi ve iletişim
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -133,8 +133,8 @@ export default function ImprintPage() {
                 gördüğünüzde bildirin. Bildirimde kaydın adını, hatalı gördüğünüz
                 bilgiyi ve varsa doğru kaynağı belirtmeniz düzeltmeyi hızlandırır.
               </p>
-              <dl className="mt-5 grid gap-3 border border-rule p-5 text-base">
-                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-rule pb-3">
+              <dl className="mt-5 grid gap-3 border border-border p-5 text-base">
+                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-border pb-3">
                   <dt className="font-medium">Yayıncı</dt>
                   <dd className="text-muted-foreground">{publisherName}</dd>
                 </div>
@@ -143,7 +143,7 @@ export default function ImprintPage() {
                   <dd>
                     <a
                       href={`mailto:${publisherEmail}`}
-                      className="rounded font-semibold text-seal underline decoration-rule underline-offset-4 hover:decoration-seal"
+                      className="rounded font-semibold text-primary hover:underline hover:decoration-seal"
                     >
                       {publisherEmail}
                     </a>

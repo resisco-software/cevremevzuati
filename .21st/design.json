@@ -1,0 +1,55 @@
+{
+  "project": "cevremevzuati.com",
+  "updated": "2026-09-03",
+  "intent": "Sanayi tesislerinin çevre mevzuatını mevzuat.gov.tr'ye göre daha kolay bulmasını sağlayan araç. Resmî portalın taklidi değil, alternatifi.",
+  "decisions": [
+    {
+      "date": "2026-09-03",
+      "choice": "urun-yonu",
+      "title": "Ürün arayüzü yönü",
+      "rationale": "Kâğıt-mürekkep sicil yönü iyi işlenmişti ama tam olarak kaçılmak istenen şeye, resmî belge arayüzüne yakınsıyordu. Hedef mevzuat.gov.tr'den ayrışmak olduğu için ürün diline geçildi.",
+      "supersedes": "resmi-sicil",
+      "tokens": {
+        "light": {
+          "background": "#F7F8F7",
+          "card": "#FFFFFF",
+          "ink": "#191D1F",
+          "lead": "#5C646A",
+          "primary": "#0F6E5A",
+          "attention": "#A15C0B",
+          "line": "#E4E7E6"
+        },
+        "dark": {
+          "background": "#14171A",
+          "card": "#1C2125",
+          "ink": "#E9EDEE",
+          "lead": "#9AA3A9",
+          "primary": "#4FC2A5",
+          "attention": "#E0A458",
+          "line": "#272D31"
+        }
+      },
+      "typography": {
+        "body": "Geist Sans, 17px, 1.7",
+        "mono": "IBM Plex Mono (yalnızca Resmî Gazete sayısı ve tarih)",
+        "note": "Serif başlık denemesi kaldırıldı; belge görünümünü pekiştiriyordu."
+      },
+      "signature": [
+        "15 çevre alanının her birine sabit kimlik rengi ve ikonu (lib/area-theme.ts, lib/category-icons.ts)",
+        "Ana sayfada anında arama: kısaltma, Türkçe karaktersiz yazım ve RG sayısı ile yazarken sonuç",
+        "Sonuç kartında kimi kapsadığı ve önce bakılacak ek görünür",
+        "Kart sol kenarında alan rengi şeridi (.area-edge)",
+        "Alan renkleri temaya göre stil sayfasında çözülür: --area-l / --area-d"
+      ],
+      "verified": {
+        "contrast": "Açık ve koyu temada tüm sayfalarda sıfır WCAG AA hatası",
+        "areaColors": "15 rengin hepsi kendi temasının zemininde >= 4.5:1",
+        "mobile": "375 px'te hiçbir sayfada yatay taşma yok"
+      }
+    }
+  ],
+  "notes": [
+    "21st MCP ve CLI kimlik doğrulaması yapılmadı; katalog ve üretim özellikleri kullanılmadı.",
+    "denetim-duzeltmeleri dalında eş zamanlı bir Cursor oturumu kâğıt-mürekkep yönünü sürdürüyor. Bu yön tasarim-urun-yonu dalında."
+  ]
+}

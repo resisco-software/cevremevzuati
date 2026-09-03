@@ -26,19 +26,23 @@ function subscribe(listener: () => void) {
   };
 }
 
+/*
+  Kayıt yoksa sistem tercihi izlenir. Bu, head'deki satır içi betikle
+  aynı varsayımdır; ikisi ayrışırsa düğme yanlış tema adını gösterir.
+*/
 function readChoice(): ThemeChoice {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     return stored === 'dark' || stored === 'light' || stored === 'system'
       ? stored
-      : 'light';
+      : 'system';
   } catch {
-    return 'light';
+    return 'system';
   }
 }
 
 function serverChoice(): ThemeChoice {
-  return 'light';
+  return 'system';
 }
 
 function applyTheme(choice: ThemeChoice) {
@@ -77,7 +81,7 @@ export function ThemeToggle() {
       type="button"
       onClick={selectNext}
       suppressHydrationWarning
-      className="btn btn-quiet h-10 gap-2 px-2.5 text-sm text-muted-foreground hover:text-ink sm:px-3"
+      className="btn inline-flex items-center justify-center btn-quiet h-10 gap-2 px-2.5 text-sm text-muted-foreground hover:text-ink sm:px-3"
       aria-label={`Tema: ${current.long}. Değiştirmek için tıklayın.`}
       title={`Tema: ${current.long}`}
     >

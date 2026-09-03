@@ -19,8 +19,8 @@ export default function NotFound() {
       <SiteHeader />
       <main id="icerik">
         <div className="site-frame max-w-3xl py-20 lg:py-28">
-          <p className="label">Hata 404</p>
-          <h1 className="display-xl measure mt-4">
+          <p className="eyebrow">Hata 404</p>
+          <h1 className="text-3xl measure mt-4">
             Bu sayfa bulunamadı.
           </h1>
           <p className="mt-5 text-base leading-7 text-muted-foreground">
@@ -32,7 +32,7 @@ export default function NotFound() {
             <Button
               nativeButton={false}
               render={<Link href="/mevzuat" />}
-              className="inline-flex h-11 items-center gap-2 bg-seal px-4 text-sm font-medium text-primary-foreground hover:bg-ink"
+              className="inline-flex h-11 items-center gap-2 bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
               <Search className="size-4" aria-hidden="true" />
               Mevzuat dizininde ara
@@ -41,19 +41,19 @@ export default function NotFound() {
               nativeButton={false}
               render={<Link href="/kapsam" />}
               variant="outline"
-              className="inline-flex h-11 items-center gap-2 border border-rule-strong px-4 text-sm hover:border-ink"
+              className="inline-flex h-11 items-center gap-2 border border-input px-4 text-sm hover:border-input"
             >
               <Compass className="size-4" aria-hidden="true" />
               Kapsam haritası
             </Button>
           </div>
-          <div className="mt-10 border-t border-rule pt-6">
+          <div className="mt-10 border-t border-border pt-6">
             <p className="text-sm font-semibold">Sık kullanılan sayfalar</p>
             <ul className="mt-3 grid gap-2 text-sm">
               <li>
                 <Link
                   href="/#alanlar"
-                  className="inline-flex items-center gap-1.5 text-seal hover:underline"
+                  className="inline-flex items-center gap-1.5 text-primary hover:underline"
                 >
                   Tesisime göre okuma rotası
                   <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -62,7 +62,7 @@ export default function NotFound() {
               <li>
                 <Link
                   href="/sozluk"
-                  className="inline-flex items-center gap-1.5 text-seal hover:underline"
+                  className="inline-flex items-center gap-1.5 text-primary hover:underline"
                 >
                   Mevzuat sözlüğü
                   <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -71,7 +71,7 @@ export default function NotFound() {
               <li>
                 <Link
                   href="/metodoloji"
-                  className="inline-flex items-center gap-1.5 text-seal hover:underline"
+                  className="inline-flex items-center gap-1.5 text-primary hover:underline"
                 >
                   Kaynak ve yöntem
                   <ArrowRight className="size-3.5" aria-hidden="true" />

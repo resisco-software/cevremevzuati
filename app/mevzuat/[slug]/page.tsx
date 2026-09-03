@@ -14,6 +14,7 @@ import {
   legislation,
   sameGazetteRecords,
 } from '@/lib/legislation-data';
+import { officialSourceUrl } from '@/lib/official-url';
 import { absoluteUrl, openGraphFor, siteName } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -60,6 +61,9 @@ export default async function LegislationDetailPage({
   const primaryCategory = itemCategories[0];
   const hasChanges = (item.changes?.length ?? 0) > 0;
   const sameGazette = sameGazetteRecords(item.slug);
+  const sameAs =
+    officialSourceUrl(item.consolidatedUrl) ??
+    officialSourceUrl(item.sourceUrl);
 
   return (
     <>
@@ -76,7 +80,7 @@ export default async function LegislationDetailPage({
           inLanguage: 'tr-TR',
           jurisdiction: 'Türkiye',
           url: absoluteUrl(`/mevzuat/${item.slug}`),
-          sameAs: item.consolidatedUrl ?? item.sourceUrl,
+          ...(sameAs ? { sameAs } : {}),
           description: item.summary,
           publisher: { '@type': 'Organization', name: siteName },
         }}

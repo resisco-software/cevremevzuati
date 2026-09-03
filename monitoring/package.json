@@ -1,0 +1,18 @@
+{
+  "name": "cevremevzuati-monitor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:worker": "node --test test/worker.integration.mjs",
+    "db:generate": "drizzle-kit generate",
+    "build": "wrangler deploy --config wrangler.jsonc --dry-run --outdir dist"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.44.7",
+    "parse5": "^7.3.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.4"
+  }
+}

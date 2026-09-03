@@ -1,8 +1,11 @@
 import { ExternalLink as ExternalLinkIcon } from 'lucide-react';
 
+import { isOfficialSourceUrl } from '@/lib/official-url';
+
 /**
  * Tüm dış bağlantılar bu bileşenden geçer: yeni sekme, güvenli rel,
  * görünür ikon ve ekran okuyucu için "yeni sekmede açılır" uyarısı.
+ * javascript:/data: ve resmî olmayan adresler bağlantı olarak basılmaz.
  */
 export function ExternalLink({
   href,
@@ -17,6 +20,10 @@ export function ExternalLink({
   showIcon?: boolean;
   iconClassName?: string;
 }) {
+  if (!isOfficialSourceUrl(href)) {
+    return <span className={className}>{children}</span>;
+  }
+
   return (
     <a
       href={href}

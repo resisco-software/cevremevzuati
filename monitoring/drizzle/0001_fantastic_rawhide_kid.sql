@@ -1,0 +1,1 @@
+CREATE INDEX `idx_reviews_event` ON `reviews` (`event_id`);

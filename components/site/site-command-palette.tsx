@@ -1,12 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
 import {
-  CommandPalette,
-  type CommandItem,
-} from '@/components/ui/command-palette';
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import type { CommandItem } from '@/components/ui/command-palette';
 import {
   categories,
   glossary,
@@ -27,6 +31,15 @@ const pages = [
 const categoryLabel = new Map(
   categories.map((category) => [category.id, category.shortLabel]),
 );
+
+/*
+  Palet kök düzende duruyor, yani modülü her sayfaya girerdi. Animasyon
+  paketi (motion) yalnızca palet ilk kez açıldığında indirilsin diye
+  tembel yükleniyor; ilk boyama maliyeti sıfır.
+*/
+const CommandPalette = lazy(async () => ({
+  default: (await import('@/components/ui/command-palette')).CommandPalette,
+}));
 
 /**
  * Site geneli komut paleti.
@@ -128,16 +141,18 @@ export function SiteCommandPalette() {
   if (!open) return null;
 
   return (
-    <CommandPalette
-      open={open}
-      items={items}
-      onSelect={onSelect}
-      onDismiss={() => setOpen(false)}
-      focusOnOpen
-      maxRows={7}
-      label="Site araması"
-      placeholder="Kayıt, terim veya sayfa ara…"
-      emptyLabel="Eşleşme yok. Kısaltma deneyin: SKHKKY, ÇİLY, GEKAP."
-    />
+    <Suspense fallback={null}>
+      <CommandPalette
+        open={open}
+        items={items}
+        onSelect={onSelect}
+        onDismiss={() => setOpen(false)}
+        focusOnOpen
+        maxRows={7}
+        label="Site araması"
+        placeholder="Kayıt, terim veya sayfa ara…"
+        emptyLabel="Eşleşme yok. Kısaltma deneyin: SKHKKY, ÇİLY, GEKAP."
+      />
+    </Suspense>
   );
 }

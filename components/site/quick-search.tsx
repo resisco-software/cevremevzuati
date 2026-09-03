@@ -27,14 +27,6 @@ const categoryLabel = new Map(
   categories.map((category) => [category.id, category.shortLabel]),
 );
 
-/** Kullanıcıya aramanın ne kabul ettiğini gösteren gerçek örnekler. */
-const examples = [
-  { label: 'SKHKKY', query: 'SKHKKY' },
-  { label: 'Atıksu', query: 'Atıksu' },
-  { label: 'GEKAP', query: 'GEKAP' },
-  { label: 'Sıfır Atık', query: 'Sıfır Atık' },
-];
-
 const MAX_RESULTS = 6;
 
 /**
@@ -162,36 +154,6 @@ export function QuickSearch() {
           <ArrowRight className="hidden size-4 md:block" aria-hidden="true" />
         </Button>
       </form>
-
-      {/*
-        Örnek sorgular aramanın neyi kabul ettiğini gösterir.
-        "Deneyin:" artık pill'lerle aynı satırda değil, üstünde küçük
-        bir açıklama satırında: 15 piksel metni 40 piksel yüksekliğindeki
-        pill'lerin yanına koymak optik olarak kayık duruyordu.
-      */}
-      {!open && (
-        <div className="mt-4">
-          <p className="text-sm leading-6 text-muted-foreground">
-            Tam adını bilmeniz gerekmez. Kısaltma, Türkçe karaktersiz yazım ve
-            Resmî Gazete sayısı da çalışır.
-          </p>
-          <div className="mt-2.5 flex flex-wrap gap-2">
-            {examples.map((example) => (
-              <button
-                key={example.label}
-                type="button"
-                onClick={() => {
-                  setQuery(example.query);
-                  inputRef.current?.focus();
-                }}
-                className="pill"
-              >
-                {example.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* anında sonuç */}
       {open && (

@@ -14,6 +14,7 @@ import {
   legislation,
   sameGazetteRecords,
 } from '@/lib/legislation-data';
+import { getLegislationGuide } from '@/lib/legislation-guides';
 import { officialSourceUrl } from '@/lib/official-url';
 import { absoluteUrl, openGraphFor, siteName } from '@/lib/site';
 
@@ -52,6 +53,7 @@ export default async function LegislationDetailPage({
   const { slug } = await params;
   const item = getLegislation(slug);
   if (!item) notFound();
+  const guide = getLegislationGuide(item.slug);
 
   const itemCategories = item.categories
     .map((id) => categories.find((category) => category.id === id))
@@ -152,13 +154,24 @@ export default async function LegislationDetailPage({
                 className="card mt-8 p-3 shadow-none"
               >
                 <p className="eyebrow px-2 pt-1 pb-2">Bu sayfada</p>
-                <div className="grid gap-1 sm:grid-cols-2 xl:grid-cols-4">
-                  {[
-                    ['01', 'Kapsam atfı', '#kapsam-atfi'],
-                    ['02', 'Metin haritası', '#metin-haritasi'],
-                    ['03', 'Sürüm zinciri', '#surum-zinciri'],
-                    ['04', 'Resmî kaynak', '#resmi-kaynak'],
-                  ].map(([number, label, href]) => (
+                <div className="grid gap-1 sm:grid-cols-2 xl:grid-cols-3">
+                  {(guide
+                    ? [
+                        ['01', 'Neden var?', '#neden-var'],
+                        ['02', 'Kim bilmeli?', '#kim-bilmeli'],
+                        ['03', 'Neye karar verir?', '#karar-alanlari'],
+                        ['04', 'Nasıl okunur?', '#okuma-rotasi'],
+                        ['05', 'Kapsam atfı', '#kapsam-atfi'],
+                        ['06', 'Madde ve ekler', '#metin-haritasi'],
+                        ['08', 'Resmî kaynak', '#resmi-kaynak'],
+                      ]
+                    : [
+                        ['01', 'Kapsam atfı', '#kapsam-atfi'],
+                        ['02', 'Metin haritası', '#metin-haritasi'],
+                        ['03', 'Sürüm zinciri', '#surum-zinciri'],
+                        ['04', 'Resmî kaynak', '#resmi-kaynak'],
+                      ]
+                  ).map(([number, label, href]) => (
                     <a
                       key={href}
                       href={href}
@@ -173,12 +186,163 @@ export default async function LegislationDetailPage({
                 </div>
               </nav>
 
+              {guide && (
+                <>
+                  <section
+                    id="neden-var"
+                    className="border-t border-border mt-12 scroll-mt-24 pt-8"
+                  >
+                    <p className="eyebrow">01 · Genel çerçeve</p>
+                    <h2 className="text-xl mt-3">Neyi düzenler, neden var?</h2>
+                    <p className="measure mt-5 text-lg leading-8 font-medium">
+                      {guide.purpose.lead}
+                    </p>
+                    <p className="measure mt-3 text-md leading-8 text-muted-foreground">
+                      {guide.purpose.detail}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {guide.purpose.references.map((reference) => (
+                        <span key={reference} className="badge badge-live">
+                          {reference}
+                        </span>
+                      ))}
+                    </div>
+
+                    {guide.boundary && (
+                      <div className="card mt-7 border-l-2 border-l-attention p-5 shadow-none">
+                        <h3 className="text-md font-semibold">
+                          {guide.boundary.title}
+                        </h3>
+                        <p className="measure mt-2 text-sm leading-7 text-muted-foreground">
+                          {guide.boundary.text}
+                        </p>
+                        <div className="mt-4 flex flex-wrap items-center gap-3">
+                          {guide.boundary.references.map((reference) => (
+                            <span key={reference} className="pill h-8 text-xs">
+                              {reference}
+                            </span>
+                          ))}
+                          {guide.boundary.relatedSlug && (
+                            <Link
+                              href={`/mevzuat/${guide.boundary.relatedSlug}`}
+                              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                            >
+                              {guide.boundary.relatedLabel}
+                              <ArrowRight
+                                className="size-3.5"
+                                aria-hidden="true"
+                              />
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </section>
+
+                  <section
+                    id="kim-bilmeli"
+                    className="border-t border-border mt-12 scroll-mt-24 pt-8"
+                  >
+                    <p className="eyebrow">02 · Kullanım alanı</p>
+                    <h2 className="text-xl mt-3">
+                      Kim, hangi nedenle bilmelidir?
+                    </h2>
+                    <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                      {guide.audiences.map((entry) => (
+                        <article
+                          key={entry.title}
+                          className="card p-5 shadow-none"
+                        >
+                          <h3 className="text-base font-semibold">
+                            {entry.title}
+                          </h3>
+                          <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                            {entry.text}
+                          </p>
+                          <p className="gazette mt-4 text-xs text-primary">
+                            {entry.references.join(' · ')}
+                          </p>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+
+                  <section
+                    id="karar-alanlari"
+                    className="border-t border-border mt-12 scroll-mt-24 pt-8"
+                  >
+                    <p className="eyebrow">03 · Etkilediği kararlar</p>
+                    <h2 className="text-xl mt-3">Neye karar verir?</h2>
+                    <p className="measure mt-4 text-sm leading-7 text-muted-foreground">
+                      Yönetmelik tek bir sınır değer tablosu değildir. Bir
+                      tesisin hava emisyonu yönetiminde aşağıdaki karar
+                      alanlarını birlikte kurar.
+                    </p>
+                    <div className="mt-6 overflow-hidden rounded-xl border border-border bg-card">
+                      {guide.decisions.map((entry, index) => (
+                        <article
+                          key={entry.title}
+                          className="grid gap-3 border-b border-border p-5 last:border-b-0 sm:grid-cols-[2rem_12rem_1fr]"
+                        >
+                          <span className="gazette text-xs text-muted-foreground">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                          <div>
+                            <h3 className="text-sm font-semibold">
+                              {entry.title}
+                            </h3>
+                            <p className="gazette mt-2 text-xs text-primary">
+                              {entry.references.join(' · ')}
+                            </p>
+                          </div>
+                          <p className="text-sm leading-7 text-muted-foreground">
+                            {entry.text}
+                          </p>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+
+                  <section
+                    id="okuma-rotasi"
+                    className="border-t border-border mt-12 scroll-mt-24 pt-8"
+                  >
+                    <p className="eyebrow">04 · Uygulama sırası</p>
+                    <h2 className="text-xl mt-3">Nasıl okunmalıdır?</h2>
+                    <ol className="mt-6 grid gap-3 list-none">
+                      {guide.readingOrder.map((entry, index) => (
+                        <li key={entry.title} className="card p-5 shadow-none">
+                          <div className="grid gap-3 sm:grid-cols-[2.5rem_1fr]">
+                            <span className="gazette text-lg text-primary">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                            <div>
+                              <h3 className="text-base font-semibold">
+                                {entry.title}
+                              </h3>
+                              <p className="measure mt-2 text-sm leading-7 text-muted-foreground">
+                                {entry.text}
+                              </p>
+                              <p className="gazette mt-3 text-xs text-primary">
+                                {entry.references.join(' · ')}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                </>
+              )}
+
               {/* kapsam */}
               <section
                 id="kapsam-atfi"
                 className="border-t border-border mt-12 scroll-mt-24 pt-8"
               >
-                <p className="eyebrow">01 · Başlangıç noktası</p>
+                <p className="eyebrow">
+                  {guide ? '05 · Doğrudan atıf' : '01 · Başlangıç noktası'}
+                </p>
                 <h2 className="text-xl mt-3">Kapsamı belirleyen atıf</h2>
                 <p className="measure mt-4 text-sm leading-7 text-muted-foreground">
                   Bu bölüm yalnızca ilgili hükme yönlendirir. Kapsam kararı,
@@ -207,7 +371,9 @@ export default async function LegislationDetailPage({
                 id="metin-haritasi"
                 className="border-t border-border mt-12 scroll-mt-24 pt-8"
               >
-                <p className="eyebrow">02 · Resmî metin</p>
+                <p className="eyebrow">
+                  {guide ? '06 · Resmî metin' : '02 · Resmî metin'}
+                </p>
                 <h2 className="text-xl mt-3">Hızlı okuma haritası</h2>
                 <p className="measure mt-4 text-sm leading-7 text-muted-foreground">
                   Atıflar yorum içermez; madde, ek ve tablo başlıklarını okuma
@@ -221,11 +387,7 @@ export default async function LegislationDetailPage({
                         key={`${entry.reference}-${entry.title}`}
                         className="border-b border-border last:border-b-0"
                       >
-                        <ExternalLink
-                          href={item.consolidatedUrl ?? item.sourceUrl}
-                          className="group grid gap-2 px-5 py-4 hover:bg-muted sm:grid-cols-[8.5rem_1fr_auto] sm:items-center"
-                          iconClassName="size-3.5 text-muted-foreground group-hover:text-primary"
-                        >
+                        <div className="grid gap-2 px-5 py-4 sm:grid-cols-[8.5rem_1fr] sm:items-center">
                           <span className="flex items-baseline gap-3">
                             <span className="gazette text-xs text-muted-foreground">
                               {String(index + 1).padStart(2, '0')}
@@ -237,7 +399,7 @@ export default async function LegislationDetailPage({
                           <span className="text-sm leading-6 font-medium">
                             {entry.title}
                           </span>
-                        </ExternalLink>
+                        </div>
                       </li>
                     ))}
                   </ol>
@@ -266,7 +428,9 @@ export default async function LegislationDetailPage({
                 id="surum-zinciri"
                 className="border-t border-border mt-12 scroll-mt-24 pt-8"
               >
-                <p className="eyebrow">03 · Zaman çizgisi</p>
+                <p className="eyebrow">
+                  {guide ? '07 · Zaman çizgisi' : '03 · Zaman çizgisi'}
+                </p>
                 <h2 className="text-xl mt-3">Sürüm ve değişiklikler</h2>
                 {hasChanges ? (
                   <ol className="grid gap-3 list-none mt-6">
@@ -323,6 +487,27 @@ export default async function LegislationDetailPage({
                 )}
               </section>
 
+              <section
+                id="resmi-kaynak"
+                className="border-t border-border mt-12 scroll-mt-24 pt-8"
+              >
+                <p className="eyebrow">
+                  {guide ? '08 · Kaynak' : '04 · Kaynak'}
+                </p>
+                <h2 className="text-xl mt-3">Resmî metin</h2>
+                <p className="measure mt-4 text-sm leading-7 text-muted-foreground">
+                  {item.publicationLabel} tarihli, {item.gazetteNumber} sayılı
+                  Resmî Gazete kaydı.
+                </p>
+                <ExternalLink
+                  href={item.consolidatedUrl ?? item.sourceUrl}
+                  className="mt-5 inline-flex h-12 items-center justify-center gap-2 bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                  iconClassName="size-3.5"
+                >
+                  {item.consolidatedUrl ? 'Güncel metni aç' : 'Resmî metni aç'}
+                </ExternalLink>
+              </section>
+
               {/* aynı nüsha */}
               {sameGazette.length > 0 && (
                 <section className="border-t border-border mt-12 pt-8">
@@ -354,11 +539,7 @@ export default async function LegislationDetailPage({
             </article>
 
             {/* ---- künye sütunu ---- */}
-            <aside
-              id="resmi-kaynak"
-              className="scroll-mt-24 lg:sticky lg:top-24 lg:self-start"
-            >
-              <p className="eyebrow mb-3">04 · Kaynak</p>
+            <aside className="lg:sticky lg:top-24 lg:self-start">
               <h2 className="eyebrow">Resmî Gazete</h2>
               <dl className="kv mt-4">
                 <div>
@@ -411,7 +592,7 @@ export default async function LegislationDetailPage({
                   {item.status === 'Yürürlükten kaldırıldı'
                     ? 'Bu kayıt tarihsel iz için tutulur ve güncel okuma rotasına eklenmez.'
                     : item.verification === 'doğrulandı'
-                      ? 'Yayım tarihi ve resmî ad, Resmî Gazete kaydıyla karşılaştırıldı. Kaynak bağlantısı madde düzeyinde açılıyor.'
+                      ? 'Yayım tarihi ve resmî ad, Resmî Gazete kaydıyla karşılaştırıldı. Bağlantı resmî yayım kaydını açar.'
                       : 'Kayıt eklendi, künye doğrulaması sürüyor. Yükümlülük sonucu olarak kullanmadan önce resmî kaynaktan teyit edin.'}
                 </p>
                 <Link

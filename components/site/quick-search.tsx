@@ -33,7 +33,6 @@ const examples = [
   { label: 'Atıksu', query: 'Atıksu' },
   { label: 'GEKAP', query: 'GEKAP' },
   { label: 'Sıfır Atık', query: 'Sıfır Atık' },
-  { label: 'RG No: 32029', query: '32029' },
 ];
 
 const MAX_RESULTS = 6;

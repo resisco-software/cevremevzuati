@@ -155,7 +155,7 @@ export function LegislationBrowser({
           value={query}
           onChange={(event) => changeQuery(event.target.value)}
           className="field h-14 pr-11 pl-12 text-md"
-          placeholder="SKHKKY, Atıksu, GEKAP, RG No: 32029…"
+          placeholder="SKHKKY, Atıksu, GEKAP, Sıfır Atık…"
         />
         {query && (
           <button

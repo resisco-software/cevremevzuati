@@ -6,6 +6,13 @@ export const publisherName = 'Resisco Mühendislik A.Ş.';
 
 export const publisherEmail = 'info@resisco.com';
 
+export const publisherKvkkEmail = 'ai@resisco.com';
+
+export const publisherUrl = 'https://www.resisco.com';
+
+export const publisherAddress =
+  'Mustafa Kemal Mah. 2126. Sk. Gökçen Prestij İş Merkezi No:4 İç Kapı No:4, Çankaya / Ankara';
+
 export const siteDescription =
   'Sanayi tesisleri için resmî kaynağa dayalı çevre mevzuatı navigasyonu, mevzuat kütüphanesi ve sözlük.';
 

@@ -70,6 +70,20 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="border-t border-border">
+        <p className="site-frame py-5 text-sm leading-7 text-muted-foreground">
+          Bu siteyi {publisherName} yayımlar. Sayfaları sunmak ve toplu ziyaret
+          sayımı yapmak için teknik bağlantı verisi Vercel üzerinden işlenir;
+          çerez kullanılmaz. İşlenen veri, saklama süreleri ve haklarınız:{' '}
+          <Link
+            href="/gizlilik"
+            className="font-semibold text-primary hover:underline"
+          >
+            Gizlilik ve KVKK Aydınlatma Metni
+          </Link>
+          .
+        </p>
+      </div>
+      <div className="border-t border-border">
         <div className="site-frame flex flex-col gap-2 py-5 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>
             © {new Date().getFullYear()} {publisherName}

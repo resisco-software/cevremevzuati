@@ -13,29 +13,43 @@ const nav = [
   { href: '/metodoloji', label: 'Kaynak' },
 ];
 
+/**
+ * Üst bar.
+ *
+ * Önce üç grup `justify-between` ile diziliyordu; bu, menüyü ne sola
+ * dayalı ne ortalı bırakan iki tane 136 pikselli ölü boşluk üretiyordu.
+ * Artık marka ve menü tek grup olarak sola çapalı, eylemler `ml-auto`
+ * ile sağa itiliyor: tek ve amaçlı bir esnek boşluk kalıyor.
+ *
+ * Bütün denetimler 40 piksel yüksekliğinde ve aynı köşe yarıçapında;
+ * eskiden 36, 37 ve 40 karışıktı.
+ */
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-      <div className="site-frame flex h-16 items-center justify-between gap-5">
+      <div className="site-frame flex h-16 items-center gap-8">
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2.5"
+          className="flex h-10 shrink-0 items-center gap-2.5 rounded-lg"
           aria-label="Çevre Mevzuatı ana sayfa"
         >
-          <span className="grid size-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-            <Leaf className="size-4.5" aria-hidden="true" />
+          <span className="grid size-8 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground">
+            <Leaf className="size-4" aria-hidden="true" />
           </span>
-          <span className="text-md font-semibold tracking-[-0.02em]">
+          <span className="text-base font-semibold tracking-[-0.015em] whitespace-nowrap">
             Çevre Mevzuatı
           </span>
         </Link>
 
         <NavLinks items={nav} />
 
-        <div className="flex shrink-0 items-center gap-2">
-          <ThemeToggle />
+        <div className="ml-auto flex shrink-0 items-center gap-2">
           <PaletteButton />
-          <Link href="/#alanlar" className="btn btn-primary hidden h-10 px-4 text-sm lg:inline-flex">
+          <ThemeToggle />
+          <Link
+            href="/#alanlar"
+            className="hidden h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 lg:inline-flex"
+          >
             Tesisime göre
           </Link>
           <MobileNav items={nav} />

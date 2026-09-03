@@ -9,10 +9,10 @@ type ThemeChoice = 'light' | 'dark' | 'system';
 
 const order: ThemeChoice[] = ['system', 'light', 'dark'];
 
-const meta: Record<ThemeChoice, { short: string; long: string }> = {
-  system: { short: 'Sistem', long: 'sistem temasını izliyor' },
-  light: { short: 'Açık', long: 'açık tema' },
-  dark: { short: 'Koyu', long: 'koyu tema' },
+const meta: Record<ThemeChoice, { long: string }> = {
+  system: { long: 'sistem temasını izliyor' },
+  light: { long: 'açık tema' },
+  dark: { long: 'koyu tema' },
 };
 
 const listeners = new Set<() => void>();
@@ -81,14 +81,11 @@ export function ThemeToggle() {
       type="button"
       onClick={selectNext}
       suppressHydrationWarning
-      className="btn inline-flex items-center justify-center btn-quiet h-10 gap-2 px-2.5 text-sm text-muted-foreground hover:text-ink sm:px-3"
+      className="grid size-10 shrink-0 place-items-center rounded-lg border border-input bg-card text-muted-foreground hover:border-primary hover:text-ink"
       aria-label={`Tema: ${current.long}. Değiştirmek için tıklayın.`}
       title={`Tema: ${current.long}`}
     >
-      <Icon className="size-4 shrink-0" aria-hidden="true" />
-      <span className="hidden sm:inline" aria-hidden="true">
-        Tema: <span className="text-ink">{current.short}</span>
-      </span>
+      <Icon className="size-4" aria-hidden="true" />
     </button>
   );
 }

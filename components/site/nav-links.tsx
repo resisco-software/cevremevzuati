@@ -3,6 +3,10 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+/**
+ * Ana menü. Yükseklik 40 piksele sabitlendi; üst bardaki diğer
+ * denetimlerle aynı optik satırda durması için.
+ */
 export function NavLinks({
   items,
 }: {
@@ -12,7 +16,7 @@ export function NavLinks({
 
   return (
     <nav
-      className="hidden min-w-0 items-center gap-1 text-sm lg:flex"
+      className="hidden min-w-0 items-center gap-1 text-sm md:flex"
       aria-label="Ana menü"
     >
       {items.map((item) => {
@@ -26,7 +30,7 @@ export function NavLinks({
             key={item.href}
             href={item.href}
             aria-current={active ? 'page' : undefined}
-            className={`rounded-lg px-3 py-2 whitespace-nowrap transition-colors ${
+            className={`flex h-10 items-center rounded-lg px-3 whitespace-nowrap transition-colors ${
               active
                 ? 'bg-secondary font-medium text-ink'
                 : 'text-muted-foreground hover:bg-secondary hover:text-ink'

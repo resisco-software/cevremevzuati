@@ -88,10 +88,16 @@ export function QuickSearch() {
 
   return (
     <div>
-      <label htmlFor="quick-search" className="eyebrow">
-        Adını, kısaltmasını veya Resmî Gazete sayısını yazın
+      {/*
+        Etiket görünür bir başlık değil: büyük harf, geniş harf aralıklı
+        ve yer tutucuyla aynı şeyi söyleyen uzun bir satırdı, hem demode
+        duruyor hem de hero'da ikinci bir sol eksen açıyordu. Metin
+        ekran okuyucu için duruyor, açıklama alanın altına indi.
+      */}
+      <label htmlFor="quick-search" className="sr-only">
+        Adını, kısaltmasını veya Resmî Gazete sayısını yazarak mevzuatta ara
       </label>
-      <div className="relative mt-2.5">
+      <div className="relative">
         <Search
           className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground"
           aria-hidden="true"
@@ -127,23 +133,33 @@ export function QuickSearch() {
         )}
       </div>
 
-      {/* örnek sorgular: aramanın neyi kabul ettiğini gösterir */}
+      {/*
+        Örnek sorgular aramanın neyi kabul ettiğini gösterir.
+        "Deneyin:" artık pill'lerle aynı satırda değil, üstünde küçük
+        bir açıklama satırında: 15 piksel metni 40 piksel yüksekliğindeki
+        pill'lerin yanına koymak optik olarak kayık duruyordu.
+      */}
       {!open && (
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="text-sm text-muted-foreground">Deneyin:</span>
-          {examples.map((example) => (
-            <button
-              key={example}
-              type="button"
-              onClick={() => {
-                setQuery(example);
-                inputRef.current?.focus();
-              }}
-              className="pill"
-            >
-              {example}
-            </button>
-          ))}
+        <div className="mt-4">
+          <p className="text-sm text-muted-foreground">
+            Kısaltma, Türkçe karaktersiz yazım ve Resmî Gazete sayısı çalışır.
+            Deneyin:
+          </p>
+          <div className="mt-2.5 flex flex-wrap gap-2">
+            {examples.map((example) => (
+              <button
+                key={example}
+                type="button"
+                onClick={() => {
+                  setQuery(example);
+                  inputRef.current?.focus();
+                }}
+                className="pill"
+              >
+                {example}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 

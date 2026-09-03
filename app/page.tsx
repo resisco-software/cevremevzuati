@@ -105,25 +105,30 @@ export default function HomePage() {
         }}
       />
       <main id="icerik">
-        {/* ---- arama önce ---- */}
-        <section className="site-frame pt-12 pb-14 lg:pt-16">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl">
-              Çevre mevzuatında aradığınızı bulun.
-            </h1>
-            <p className="mt-5 text-md leading-8 text-muted-foreground">
-              {categories.length} çevre alanı, {legislation.length} düzenleme,{' '}
-              {glossary.length} tanım. Hepsi resmî kaynağına bağlı, hepsi
-              aranabilir.
-            </p>
-          </div>
+        {/*
+          ---- arama önce ----
+          Tek sol eksen. Önce başlık ve alt başlık ortalıydı, altındaki
+          form ise 768 piksellik ortalanmış bir blokta sola dayalıydı;
+          üstteki bar ve aşağıdaki bölümler ise sayfa kenarında.
+          Yani sayfada üç ayrı sol kenar vardı. Hepsi artık aynı
+          kenardan başlıyor, metin genişliği okunabilirlikle sınırlı.
+        */}
+        <section className="site-frame pt-14 pb-16 lg:pt-20 lg:pb-20">
+          <h1 className="max-w-[19ch] text-3xl">
+            Çevre mevzuatında aradığınızı bulun.
+          </h1>
+          <p className="measure mt-6 text-md leading-8 text-muted-foreground">
+            {categories.length} çevre alanı, {legislation.length} düzenleme,{' '}
+            {glossary.length} tanım. Hepsi resmî kaynağına bağlı, hepsi
+            aranabilir.
+          </p>
 
-          <div className="mx-auto mt-9 max-w-3xl">
+          <div className="mt-10 max-w-2xl">
             <QuickSearch />
           </div>
 
           {/* iki kapı: adını biliyorum / bilmiyorum */}
-          <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
+          <div className="mt-12 grid max-w-3xl gap-3 sm:grid-cols-2">
             <Link
               href="#alanlar"
               className="card card-link flex items-start gap-4 p-5"

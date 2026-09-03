@@ -1,22 +1,41 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Mono } from 'next/font/google';
-import { GeistSans } from 'geist/font/sans';
+import localFont from 'next/font/local';
 
 import { SiteCommandPalette } from '@/components/site/site-command-palette';
 import { siteDescription, siteName, siteUrl } from '@/lib/site';
 import './globals.css';
 
 /**
- * Tipografi: gövde ve başlıklar Geist Sans.
- * Serif başlık denemesi kaldırıldı; resmî belge görünümünü pekiştiriyordu,
- * oysa hedef mevzuat.gov.tr'den ayrışmak. Monospace yalnızca Resmî Gazete
- * sayısı ve tarih gibi hizalanması gereken verilerde kalır.
+ * Tipografi.
+ *
+ * Yazı tipleri depo içinden yükleniyor. Önce `geist` paketinin kendi
+ * yükleyicisi kullanılıyordu; geliştirme sunucusu
+ * /fonts/geist-sans/Geist-Variable.woff2 adresini 404 döndürdüğü için
+ * site aylardır yedek yığınla, yani sistem sans'ıyla render oluyordu.
+ * Tasarım da farkında olmadan o yedek fontla değerlendirilmiş.
+ *
+ * Değişken eksen 100-900; başlıkta 620, gövdede 400 kullanılıyor.
+ * Monospace yalnızca Resmî Gazete sayısı, tarih ve kısayol tuşu gibi
+ * hizalanması gereken verilerde.
  */
-const recordMono = IBM_Plex_Mono({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600'],
-  variable: '--font-record',
+const sans = localFont({
+  src: './fonts/Geist-Variable.woff2',
+  weight: '100 900',
+  style: 'normal',
+  variable: '--font-sans-local',
   display: 'swap',
+  fallback: ['ui-sans-serif', 'system-ui', 'Segoe UI', 'sans-serif'],
+  adjustFontFallback: false,
+});
+
+const mono = localFont({
+  src: './fonts/GeistMono-Variable.woff2',
+  weight: '100 900',
+  style: 'normal',
+  variable: '--font-mono-local',
+  display: 'swap',
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace'],
+  adjustFontFallback: false,
 });
 
 /*
@@ -63,7 +82,7 @@ export default function RootLayout({
   return (
     <html
       lang="tr"
-      className={`${GeistSans.variable} ${recordMono.variable}`}
+      className={`${sans.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <head>

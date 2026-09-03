@@ -55,8 +55,10 @@
   Yeşil güven rengi, kehribar dikkat, alan renkleri yön bulma için.
 */
 :root {
-  --font-sans-ui: var(--font-geist-sans), 'Inter', 'Segoe UI', sans-serif;
-  --font-mono-ui: var(--font-record), 'SFMono-Regular', Consolas, monospace;
+  --font-sans-ui:
+    var(--font-sans-local), ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+  --font-mono-ui:
+    var(--font-mono-local), ui-monospace, SFMono-Regular, Consolas, monospace;
 
   --ink: #191d1f;
   --lead: #5c646a;

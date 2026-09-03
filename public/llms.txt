@@ -2,18 +2,18 @@
 
 > Türkiye'deki çevre mevzuatını sanayi tesisleri için bulunabilir ve izlenebilir hâle getiren, resmî kaynaklara dayalı navigasyon platformu.
 
-Ana adres: https://www.cevremevzuati.com/
+Ana adres: https://cevremevzuati.com/
 Yayıncı ve geliştirici: Resisco Mühendislik A.Ş. — https://www.resisco.com/
 Dil: Türkçe
 
 ## Temel bölümler
 
-- Mevzuat dizini: https://www.cevremevzuati.com/mevzuat
-- Konu ve kapsam haritası: https://www.cevremevzuati.com/kapsam
-- Mevzuat sözlüğü: https://www.cevremevzuati.com/sozluk
-- Kaynak ve yöntem: https://www.cevremevzuati.com/metodoloji
-- Güncellik izleme: https://www.cevremevzuati.com/izleme
-- Künye ve iletişim: https://www.cevremevzuati.com/kunye
+- Mevzuat dizini: https://cevremevzuati.com/mevzuat
+- Konu ve kapsam haritası: https://cevremevzuati.com/kapsam
+- Mevzuat sözlüğü: https://cevremevzuati.com/sozluk
+- Kaynak ve yöntem: https://cevremevzuati.com/metodoloji
+- Güncellik izleme: https://cevremevzuati.com/izleme
+- Künye ve iletişim: https://cevremevzuati.com/kunye
 
 ## Kullanım ve atıf ilkesi
 

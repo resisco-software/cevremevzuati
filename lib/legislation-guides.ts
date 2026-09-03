@@ -1,3 +1,5 @@
+import type { Legislation } from '@/lib/legislation-data';
+
 export type GuideItem = {
   title: string;
   text: string;
@@ -131,6 +133,169 @@ const guides: Record<string, LegislationGuide> = {
   },
 };
 
-export function getLegislationGuide(slug: string) {
-  return guides[slug];
+const categoryAudience: Record<string, { title: string; text: string }> = {
+  kurulus: {
+    title: 'Yatırım, proje ve planlama ekibi',
+    text: 'Yeni yatırım, kapasite artışı, alan genişlemesi ve faaliyet değişikliği kararlarında kapsamı belirleyen eşik, liste ve süreçleri doğru sırada kontrol etmek için bu düzenlemeyi kullanır.',
+  },
+  izin: {
+    title: 'İzin, lisans ve denetim ekibi',
+    text: 'Başvuru, belge, yenileme, bildirim ve denetim adımlarının hangi hükümlere dayandığını izlemek için bu düzenlemeyi kullanır.',
+  },
+  hava: {
+    title: 'Proses, baca ve ölçüm ekibi',
+    text: 'Emisyon kaynakları, teknik önlemler, ölçüm düzeni ve raporlama başlıklarını tesisin proses bilgileriyle eşleştirmek için bu düzenlemeyi kullanır.',
+  },
+  su: {
+    title: 'Su yönetimi ve proses ekibi',
+    text: 'Su kaynağı, havza, kalite hedefi, kullanım ve izleme başlıklarını faaliyet ve konum bilgileriyle birlikte değerlendirmek için bu düzenlemeyi kullanır.',
+  },
+  atiksu: {
+    title: 'Arıtma, altyapı ve deşarj ekibi',
+    text: 'Atıksu kaynağı, bağlantı veya deşarj noktası, arıtma ihtiyacı, sınır değer ve izleme düzenini kurmak için bu düzenlemeyi kullanır.',
+  },
+  atik: {
+    title: 'Atık yönetimi ve saha operasyonu',
+    text: 'Atığın sınıflandırılması, sahada yönetimi, taşınması ve uygun işleme gönderilmesi arasındaki kayıt ve uygulama zincirini kurmak için bu düzenlemeyi kullanır.',
+  },
+  urun: {
+    title: 'Üretim, satın alma ve ürün uyumu ekibi',
+    text: 'Piyasaya arz, ithalat, ürün sınıfı, beyan, toplama ve geri kazanım başlıklarının ürüne etkisini belirlemek için bu düzenlemeyi kullanır.',
+  },
+  toprak: {
+    title: 'Saha, bakım ve iyileştirme ekibi',
+    text: 'Kirlenme şüphesi, saha incelemesi, numune, bildirim ve iyileştirme adımlarını arazi ve proses geçmişiyle eşleştirmek için bu düzenlemeyi kullanır.',
+  },
+  gurultu: {
+    title: 'Akustik, proje ve işletme ekibi',
+    text: 'Gürültü kaynağı, kullanım alanı, ölçüm veya modelleme ve kontrol tedbirlerini birlikte değerlendirmek için bu düzenlemeyi kullanır.',
+  },
+  kimyasal: {
+    title: 'Kimyasal uyum ve proses güvenliği ekibi',
+    text: 'Madde, karışım, tonaj, tehlike sınıfı ve kullanım biçimini kayıt, bildirim, kısıtlama veya güvenlik yükümlülükleriyle eşleştirmek için bu düzenlemeyi kullanır.',
+  },
+  deniz: {
+    title: 'Kıyı tesisi ve deniz operasyonu ekibi',
+    text: 'Tesis konumu, deniz faaliyeti, kabul veya boşaltım işlemi ile acil durum ve izleme gerekliliklerini birlikte kontrol etmek için bu düzenlemeyi kullanır.',
+  },
+  doga: {
+    title: 'Yer seçimi, planlama ve saha ekibi',
+    text: 'Koruma statüsü, alan sınırı, izin mercii ve yasak veya koşullu faaliyet hükümlerini yatırım kararı öncesinde kontrol etmek için bu düzenlemeyi kullanır.',
+  },
+  maden: {
+    title: 'Maden planlama ve saha rehabilitasyonu ekibi',
+    text: 'Faaliyet, atık yönetimi, depolama, kapatma ve doğaya yeniden kazandırma adımlarını işletme planıyla birlikte kurmak için bu düzenlemeyi kullanır.',
+  },
+  entegre: {
+    title: 'Üretim, teknoloji ve dönüşüm ekibi',
+    text: 'Faaliyetin bütün çevresel etkilerini, mevcut en iyi teknikleri ve izleme şartlarını tek bir yatırım ve işletme planında buluşturmak için bu düzenlemeyi kullanır.',
+  },
+  olcum: {
+    title: 'Ölçüm, laboratuvar ve raporlama ekibi',
+    text: 'Numune alma, analiz, cihaz, kalite güvencesi, veri geçerliliği ve raporlamaya ilişkin teknik başlıkları doğru kaynaktan izlemek için bu düzenlemeyi kullanır.',
+  },
+};
+
+function uniqueReferences(references: Array<string | undefined>) {
+  return [
+    ...new Set(
+      references.filter((reference): reference is string => Boolean(reference)),
+    ),
+  ];
+}
+
+function createDefaultGuide(item: Legislation): LegislationGuide {
+  const officialReferences = item.officialReferences ?? [];
+  const scopeReference =
+    item.primaryAnnex ?? officialReferences[0]?.reference ?? 'Kapsam hükümleri';
+  const applicationReferences = uniqueReferences([
+    ...officialReferences.slice(0, 3).map((entry) => entry.reference),
+    item.primaryAnnex,
+  ]).slice(0, 3);
+  const operationalAudience =
+    item.categories
+      .map((category) => categoryAudience[category])
+      .find(Boolean) ??
+    ({
+      title: 'Uygulama ve belge hazırlayan ekip',
+      text: 'Kapsam, yükümlülük, belge, süre ve istisna başlıklarını somut faaliyet bilgileriyle eşleştirmek için bu düzenlemeyi kullanır.',
+    } satisfies { title: string; text: string });
+  const obligationSummary = item.obligations.slice(0, 4).join(', ');
+  const decisionReferences =
+    applicationReferences.length > 0
+      ? applicationReferences
+      : ['İlgili uygulama hükümleri'];
+
+  return {
+    purpose: {
+      lead: item.summary,
+      detail: `${item.appliesTo} Düzenlemenin uygulamadaki ana kontrol alanları ${obligationSummary.toLocaleLowerCase('tr-TR')} başlıklarıdır; kesin yükümlülük, resmî metindeki kapsam, istisna, süre ve geçiş hükümleri birlikte okunarak belirlenir.`,
+      references: ['Amaç hükmü', 'Kapsam hükmü'],
+    },
+    audiences: [
+      {
+        title: 'Tesis sahibi ve sorumlu yönetim',
+        text: 'Faaliyetin kapsama girip girmediğini, hangi iş ve belgelerin yönetim sorumluluğunda olduğunu ve kararların hangi resmî hükümlere dayanacağını görmek için bu düzenlemeyi bilmelidir.',
+        references: [scopeReference],
+      },
+      {
+        title: 'Çevre yönetimi ve mevzuat uyum ekibi',
+        text: `${obligationSummary} başlıklarını takip planına, sorumlu kişilere ve kanıtlayıcı kayıtlara bağlamak için bu düzenlemeyi kullanır.`,
+        references: decisionReferences,
+      },
+      {
+        title: operationalAudience.title,
+        text: operationalAudience.text,
+        references: [scopeReference],
+      },
+      {
+        title: 'Denetim, ölçüm ve belge hazırlayan taraflar',
+        text: 'İncelenecek kayıtların, teknik belgelerin ve uygunluk kanıtlarının hangi kapsam ve uygulama hükümlerine karşılık geldiğini görmek için bu düzenlemeyi kullanır.',
+        references: decisionReferences,
+      },
+    ],
+    decisions: [
+      {
+        title: 'Kapsama girer mi?',
+        text: item.appliesTo,
+        references: [scopeReference],
+      },
+      ...item.obligations.slice(0, 4).map((obligation) => ({
+        title: obligation,
+        text: `“${obligation}” başlığında aranacak işlem, belge, süre, eşik ve istisnalar resmî metindeki ilgili hükümlerden kontrol edilir.`,
+        references: decisionReferences,
+      })),
+    ],
+    readingOrder: [
+      {
+        title: 'Amaç, kapsam ve tanımlarla başlayın',
+        text: 'Düzenlemenin sınırını ve kullandığı kavramları belirleyin; faaliyet adını yalnızca günlük kullanımıyla değil, resmî metindeki tanımıyla karşılaştırın.',
+        references: ['Amaç', 'Kapsam', 'Tanımlar'],
+      },
+      {
+        title: 'Kapsamı belirleyen atfı kontrol edin',
+        text: `${scopeReference}. Faaliyet, kapasite, proses, ürün, konum ve istisna koşullarından ilgili olanları birlikte okuyun.`,
+        references: [scopeReference],
+      },
+      {
+        title: 'Uygulama başlıklarını faaliyetle eşleştirin',
+        text: `${obligationSummary} başlıklarından hangilerinin somut faaliyetle ilişkili olduğunu belirleyin; sonucu ilgili hüküm ve ek üzerinden doğrulayın.`,
+        references: decisionReferences,
+      },
+      {
+        title: 'İstisna, süre ve geçiş hükümlerini ayırın',
+        text: 'Ana yükümlülükle birlikte istisnaları, başvuru veya yenileme sürelerini, geçici maddeleri ve yürürlük hükümlerini ayrıca kontrol edin.',
+        references: ['İstisnalar', 'Geçici maddeler', 'Yürürlük'],
+      },
+      {
+        title: 'Güncel metin ve değişiklik zinciriyle kapatın',
+        text: `${item.publicationLabel} tarihli ilk yayımı, sayfadaki değişiklik kayıtlarını ve varsa konsolide güncel metni birlikte kontrol edin.`,
+        references: ['İlk yayım', 'Değişiklikler', 'Güncel metin'],
+      },
+    ],
+  };
+}
+
+export function getLegislationGuide(item: Legislation) {
+  return guides[item.slug] ?? createDefaultGuide(item);
 }

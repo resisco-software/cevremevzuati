@@ -147,51 +147,140 @@ export default async function LegislationDetailPage({
                 ))}
               </div>
 
+              <nav
+                aria-label="Bu sayfadaki bölümler"
+                className="card mt-8 p-3 shadow-none"
+              >
+                <p className="eyebrow px-2 pt-1 pb-2">Bu sayfada</p>
+                <div className="grid gap-1 sm:grid-cols-2 xl:grid-cols-4">
+                  {[
+                    ['01', 'Kapsam atfı', '#kapsam-atfi'],
+                    ['02', 'Metin haritası', '#metin-haritasi'],
+                    ['03', 'Sürüm zinciri', '#surum-zinciri'],
+                    ['04', 'Resmî kaynak', '#resmi-kaynak'],
+                  ].map(([number, label, href]) => (
+                    <a
+                      key={href}
+                      href={href}
+                      className="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium hover:bg-muted"
+                    >
+                      <span className="gazette text-xs text-muted-foreground">
+                        {number}
+                      </span>
+                      <span className="group-hover:text-primary">{label}</span>
+                    </a>
+                  ))}
+                </div>
+              </nav>
+
               {/* kapsam */}
-              <section className="border-t border-border mt-12 pt-8">
-                <h2 className="text-xl">Bu düzenleme kimi kapsar?</h2>
-                <p className="measure mt-5 text-md leading-8">
-                  {item.appliesTo}
+              <section
+                id="kapsam-atfi"
+                className="border-t border-border mt-12 scroll-mt-24 pt-8"
+              >
+                <p className="eyebrow">01 · Başlangıç noktası</p>
+                <h2 className="text-xl mt-3">Kapsamı belirleyen atıf</h2>
+                <p className="measure mt-4 text-sm leading-7 text-muted-foreground">
+                  Bu bölüm yalnızca ilgili hükme yönlendirir. Kapsam kararı,
+                  resmî metindeki faaliyet, kapasite, proses ve istisna şartları
+                  birlikte okunarak verilir.
                 </p>
 
                 {item.primaryAnnex && (
-                  <div className="border-t border-border mt-8 pt-5">
-                    <h3 className="eyebrow">Önce bakılacak ek veya madde</h3>
-                    <p className="measure mt-3 text-md leading-8">
+                  <div className="card mt-6 border-l-2 border-l-primary p-5 shadow-none">
+                    <h3 className="eyebrow">İlk kontrol</h3>
+                    <p className="measure mt-2 text-md leading-8 font-medium">
                       {item.primaryAnnex}
                     </p>
-                  </div>
-                )}
-
-                {item.obligations.length > 0 && (
-                  <div className="border-t border-border mt-8 pt-5">
-                    <h3 className="eyebrow">Tipik yükümlülükler</h3>
-                    <ol className="grid gap-3 list-none mt-3">
-                      {item.obligations.map((obligation, index) => (
-                        <li key={obligation}>
-                          <div className="card p-4">
-                            <span className="gazette text-muted-foreground">
-                              {String(index + 1).padStart(2, '0')}
-                            </span>
-                            <span className="text-md leading-8">
-                              {obligation}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                    </ol>
-                    <p className="measure mt-4 text-sm leading-7 text-muted-foreground">
-                      Bu başlıklar yönlendirme amaçlıdır. Hangi yükümlülüğün
-                      tesisinize düştüğü, yukarıdaki ek ve eşik değerlerle
-                      doğrulanmalıdır.
-                    </p>
+                    <ExternalLink
+                      href={item.consolidatedUrl ?? item.sourceUrl}
+                      className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline hover:decoration-seal"
+                      iconClassName="size-3"
+                    >
+                      Atfı resmî metinde aç
+                    </ExternalLink>
                   </div>
                 )}
               </section>
 
+              <section
+                id="metin-haritasi"
+                className="border-t border-border mt-12 scroll-mt-24 pt-8"
+              >
+                <p className="eyebrow">02 · Resmî metin</p>
+                <h2 className="text-xl mt-3">Hızlı okuma haritası</h2>
+                <p className="measure mt-4 text-sm leading-7 text-muted-foreground">
+                  Atıflar yorum içermez; madde, ek ve tablo başlıklarını okuma
+                  sırasına dizer.
+                </p>
+
+                {item.officialReferences?.length ? (
+                  <ol className="mt-6 overflow-hidden rounded-xl border border-border bg-card">
+                    {item.officialReferences.map((entry, index) => (
+                      <li
+                        key={`${entry.reference}-${entry.title}`}
+                        className="border-b border-border last:border-b-0"
+                      >
+                        <ExternalLink
+                          href={item.consolidatedUrl ?? item.sourceUrl}
+                          className="group grid gap-2 px-5 py-4 hover:bg-muted sm:grid-cols-[8.5rem_1fr_auto] sm:items-center"
+                          iconClassName="size-3.5 text-muted-foreground group-hover:text-primary"
+                        >
+                          <span className="flex items-baseline gap-3">
+                            <span className="gazette text-xs text-muted-foreground">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                            <span className="text-sm font-semibold text-primary">
+                              {entry.reference}
+                            </span>
+                          </span>
+                          <span className="text-sm leading-6 font-medium">
+                            {entry.title}
+                          </span>
+                        </ExternalLink>
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  <ol className="mt-6 grid gap-3 list-none">
+                    {[
+                      [
+                        'Başlangıç hükümleri',
+                        'Amaç · Kapsam · Dayanak · Tanımlar',
+                      ],
+                      [
+                        'İlgili hükümler',
+                        item.obligations.length > 0
+                          ? item.obligations.join(' · ')
+                          : 'Düzenlemenin madde başlıkları',
+                      ],
+                      ['Son hükümler', 'Geçici maddeler · Yürürlük · Yürütme'],
+                    ].map(([label, description], index) => (
+                      <li key={label} className="card p-4 shadow-none">
+                        <div className="flex gap-4">
+                          <span className="gazette text-xs text-muted-foreground">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                          <div>
+                            <h3 className="text-sm font-semibold">{label}</h3>
+                            <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                              {description}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </section>
+
               {/* sürüm zinciri */}
-              <section className="border-t border-border mt-12 pt-8">
-                <h2 className="text-xl">Sürüm ve değişiklikler</h2>
+              <section
+                id="surum-zinciri"
+                className="border-t border-border mt-12 scroll-mt-24 pt-8"
+              >
+                <p className="eyebrow">03 · Zaman çizgisi</p>
+                <h2 className="text-xl mt-3">Sürüm ve değişiklikler</h2>
                 {hasChanges ? (
                   <ol className="grid gap-3 list-none mt-6">
                     <li>
@@ -202,9 +291,7 @@ export default async function LegislationDetailPage({
                         >
                           {item.publicationDate.slice(0, 4)}
                         </time>
-                        <p className="text-md font-semibold">
-                          İlk yayım
-                        </p>
+                        <p className="text-md font-semibold">İlk yayım</p>
                         <p className="gazette mt-1 text-xs text-muted-foreground">
                           {item.publicationLabel} · {item.gazetteNumber} sayılı
                           Resmî Gazete
@@ -241,8 +328,8 @@ export default async function LegislationDetailPage({
                     </p>
                     <p className="measure mt-2 leading-8 text-muted-foreground">
                       Kayıtta yalnızca ilk yayım künyesi bulunuyor:{' '}
-                      {item.publicationLabel}, {item.gazetteNumber} sayılı
-                      Resmî Gazete. Düzenlemenin sonradan değişmiş olabileceğini
+                      {item.publicationLabel}, {item.gazetteNumber} sayılı Resmî
+                      Gazete. Düzenlemenin sonradan değişmiş olabileceğini
                       varsayın ve güncel metni resmî kaynağından kontrol edin.
                     </p>
                   </div>
@@ -280,7 +367,11 @@ export default async function LegislationDetailPage({
             </article>
 
             {/* ---- künye sütunu ---- */}
-            <aside>
+            <aside
+              id="resmi-kaynak"
+              className="scroll-mt-24 lg:sticky lg:top-24 lg:self-start"
+            >
+              <p className="eyebrow mb-3">04 · Kaynak</p>
               <h2 className="eyebrow">Resmî Gazete</h2>
               <dl className="kv mt-4">
                 <div>

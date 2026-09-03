@@ -44,6 +44,11 @@ export type Legislation = {
   appliesTo: string;
   /** Önce bakılacak ek, liste veya madde. */
   primaryAnnex?: string;
+  /** Resmî metindeki madde, ek ve tablo başlıklarından oluşan okuma rotası. */
+  officialReferences?: Array<{
+    reference: string;
+    title: string;
+  }>;
   /** Tipik yükümlülük başlıkları. */
   obligations: string[];
   status: RecordStatus;
@@ -364,6 +369,24 @@ export const legislation: Legislation[] = [
     summary: 'Çevre izni ve çevre lisansına tabi işletmelerin başvuru ve yükümlülüklerini düzenler.',
     appliesTo: 'Ek-1 (çevresel etkisi yüksek) ve Ek-2 (çevresel etkisi az) listelerinde yer alan işletmeler; liste dışı tesisler kapsam dışıdır.',
     primaryAnnex: 'Ek-1 ve Ek-2 faaliyet listeleri; Ek-3C çevre izin belgesi konuları',
+    officialReferences: [
+      {
+        reference: 'Madde 5',
+        title: 'Çevre izni veya çevre izin ve lisansına tabi işletmeler',
+      },
+      {
+        reference: 'Ek-1 / Ek-2',
+        title: 'Çevresel etkilerine göre sınıflandırılan işletmeler',
+      },
+      {
+        reference: 'Ek-3B',
+        title: 'Geçici faaliyet belgesi başvuru formu ekleri',
+      },
+      {
+        reference: 'Ek-3C',
+        title: 'İzin veya lisans sürecinin tamamlanmasında sunulan bilgi ve belgeler',
+      },
+    ],
     obligations: [
       'Geçici faaliyet belgesi',
       'Çevre izni veya çevre izin ve lisans belgesi',
@@ -483,6 +506,20 @@ export const legislation: Legislation[] = [
     summary: 'Endüstriyel emisyonların entegre biçimde önlenmesi ve kontrolünü düzenler.',
     appliesTo: 'Yönetmelik ekindeki faaliyet listesinde yer alan ve eşik kapasiteyi aşan tesisler; entegre çevre izni bu tesisler için zorunludur.',
     primaryAnnex: 'Kapsamdaki faaliyetler eki ve mevcut en iyi teknikler sonuç belgeleri',
+    officialReferences: [
+      {
+        reference: 'Madde 4',
+        title: 'Tanımlar',
+      },
+      {
+        reference: 'Ek-1',
+        title: 'Yönetmelik kapsamındaki faaliyetler',
+      },
+      {
+        reference: 'MET sonuç belgeleri',
+        title: 'Sektörel mevcut en iyi teknikler referansları',
+      },
+    ],
     obligations: [
       'Entegre çevre izni',
       'MET uyum değerlendirmesi',
@@ -546,8 +583,26 @@ export const legislation: Legislation[] = [
     gazetteNumber: '27277',
     sourceUrl: 'https://www.resmigazete.gov.tr/eskiler/2009/07/20090703-20..htm',
     summary: 'Sanayi ve enerji üretim tesislerinden kaynaklanan hava emisyonlarını düzenler.',
-    appliesTo: 'Ek-1 (A ve B grubu) tesis listesinde yer alan sanayi tesisleri; ısıl güç, kapasite ve proses türü kapsamı belirler.',
-    primaryAnnex: 'Ek-1 tesis listesi, Ek-2 emisyon sınır değerleri, Ek-4 baca yüksekliği',
+    appliesTo: 'Sanayi ve enerji üretim tesisleri için emisyon, hava kalitesi, ölçüm ve baca hükümlerinin bulunduğu düzenlemedir.',
+    primaryAnnex: 'Ek-1 genel emisyon sınırları, Ek-2 tesis etki alanı, Ek-4 baca yüksekliği',
+    officialReferences: [
+      {
+        reference: 'Ek-1',
+        title: 'Toz, gaz ve buhar emisyonları için genel sınırlar',
+      },
+      {
+        reference: 'Ek-2',
+        title: 'Tesis etki alanında hava kalitesi ölçümü ve modelleme esasları',
+      },
+      {
+        reference: 'Ek-3',
+        title: 'Emisyonun tespiti',
+      },
+      {
+        reference: 'Ek-4',
+        title: 'Baca yüksekliği esasları',
+      },
+    ],
     obligations: [
       'Emisyon ölçümü ve raporu',
       'Emisyon sınır değerlerine uyum',
@@ -692,6 +747,20 @@ export const legislation: Legislation[] = [
     summary: 'Su kirliliğinin önlenmesi, deşarj standartları ve alıcı ortam esaslarını düzenler.',
     appliesTo: 'Alıcı ortama veya kanalizasyona atıksu deşarj eden tüm tesisler; sektör tablosu tesisin faaliyetine göre seçilir.',
     primaryAnnex: 'Tablo 5-21 sektör bazlı deşarj standartları; Tablo 1-4 alıcı ortam sınıfları',
+    officialReferences: [
+      {
+        reference: 'Madde 3',
+        title: 'Tanımlar',
+      },
+      {
+        reference: 'Tablo 1-4',
+        title: 'Alıcı ortam ve su kalite tabloları',
+      },
+      {
+        reference: 'Tablo 5-21',
+        title: 'Sektör bazlı atıksu deşarj standartları',
+      },
+    ],
     obligations: [
       'Deşarj izni',
       'Atıksu arıtma',
@@ -1048,6 +1117,24 @@ export const legislation: Legislation[] = [
     summary: 'Atıkların oluşumundan bertarafına kadar yönetimine ilişkin genel çerçeveyi kurar.',
     appliesTo: 'Atık üreten, taşıyan, işleyen veya bertaraf eden tüm tesisler; atık listesi ve tehlikelilik özellikleri kapsamı belirler.',
     primaryAnnex: 'Ek-4 atık listesi (atık kodları); Ek-3A/3B tehlikelilik özellikleri',
+    officialReferences: [
+      {
+        reference: 'Madde 9',
+        title: 'Atık üreticisinin ve atık sahibinin yükümlülükleri',
+      },
+      {
+        reference: 'Madde 11',
+        title: 'Atık listesi ve atığın tehlikelilik özelliklerinin belirlenmesi',
+      },
+      {
+        reference: 'Madde 13',
+        title: 'Atıkların geçici depolanması',
+      },
+      {
+        reference: 'Ek-3/A · Ek-3/B · Ek-4',
+        title: 'Tehlikelilik özellikleri, eşikler ve atık listesi',
+      },
+    ],
     obligations: [
       'Atık beyan sistemi bildirimi',
       'Geçici depolama koşulları',
@@ -1078,6 +1165,24 @@ export const legislation: Legislation[] = [
     summary: 'Sıfır atık yönetim sisteminin kurulması ve belgelendirilmesini düzenler.',
     appliesTo: 'Yönetmelik ekindeki bina ve yerleşkeler ile belirli çalışan sayısının üzerindeki sanayi tesisleri; sistem kurma takvimi eklerde yer alır.',
     primaryAnnex: 'Sıfır atık yönetim sistemi kurma yükümlülüğü ekleri ve belge kriterleri',
+    officialReferences: [
+      {
+        reference: 'Madde 10',
+        title: 'Sıfır atık yönetim sistemi kuran bina ve yerleşkelerin yükümlülükleri',
+      },
+      {
+        reference: 'Madde 11',
+        title: 'Organize sanayi bölgeleri ve havalimanlarının yükümlülükleri',
+      },
+      {
+        reference: 'Madde 17',
+        title: 'Sıfır atık belgesine başvuru ve başvurunun değerlendirilmesi',
+      },
+      {
+        reference: 'Ek-1 / Ek-3',
+        title: 'Uygulama takvimi ve belge kriterleri',
+      },
+    ],
     obligations: [
       'Sıfır atık yönetim sistemi',
       'Sıfır atık belgesi',

@@ -28,7 +28,13 @@ const categoryLabel = new Map(
 );
 
 /** Kullanıcıya aramanın ne kabul ettiğini gösteren gerçek örnekler. */
-const examples = ['SKHKKY', 'atiksu', 'GEKAP', 'sıfır atık', '32029'];
+const examples = [
+  { label: 'SKHKKY', query: 'SKHKKY' },
+  { label: 'Atıksu', query: 'Atıksu' },
+  { label: 'GEKAP', query: 'GEKAP' },
+  { label: 'Sıfır Atık', query: 'Sıfır Atık' },
+  { label: 'RG No: 32029', query: '32029' },
+];
 
 const MAX_RESULTS = 6;
 
@@ -173,15 +179,15 @@ export function QuickSearch() {
           <div className="mt-2.5 flex flex-wrap gap-2">
             {examples.map((example) => (
               <button
-                key={example}
+                key={example.label}
                 type="button"
                 onClick={() => {
-                  setQuery(example);
+                  setQuery(example.query);
                   inputRef.current?.focus();
                 }}
                 className="pill"
               >
-                {example}
+                {example.label}
               </button>
             ))}
           </div>

@@ -1,10 +1,14 @@
 'use client';
 
-import { ArrowRight, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowRight, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { ExternalLink } from '@/components/site/external-link';
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from '@/components/ui/native-select';
 import { areaStyle } from '@/lib/area-theme';
 import {
   categories,
@@ -67,7 +71,6 @@ export function LegislationBrowser({
       ? (initialRecordStatus as RecordStatus)
       : 'all',
   );
-  const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Filtre durumu adres çubuğuna yazılır; liste paylaşılabilir olur.
@@ -152,7 +155,7 @@ export function LegislationBrowser({
           value={query}
           onChange={(event) => changeQuery(event.target.value)}
           className="field h-14 pr-11 pl-12 text-md"
-          placeholder="SKHKKY, atiksu, GEKAP, 32029…"
+          placeholder="SKHKKY, Atıksu, GEKAP, RG No: 32029…"
         />
         {query && (
           <button
@@ -169,128 +172,94 @@ export function LegislationBrowser({
         Kısaltma, Türkçe karaktersiz yazım ve Resmî Gazete sayısı çalışır.
       </p>
 
-      {/* ---- alan filtresi ---- */}
-      <fieldset className="mt-6">
-        <legend className="eyebrow mb-2.5">Çevre alanı</legend>
-        <div className="chip-scroller">
-          <button
-            type="button"
-            onClick={() => changeCategory('all')}
-            aria-pressed={category === 'all'}
-            className="pill"
-          >
-            Tümü
-          </button>
-          {categories.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => changeCategory(item.id)}
-              aria-pressed={category === item.id}
-              style={areaStyle(item.id)}
-              className="pill pill-area"
+      {/* ---- tek satırlık filtre paneli ---- */}
+      <section
+        aria-label="Mevzuat filtreleri"
+        className="card mt-5 p-4 shadow-none"
+      >
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.8fr_0.9fr_auto] lg:items-end">
+          <label className="block">
+            <span className="eyebrow mb-2 block">Çevre alanı</span>
+            <NativeSelect
+              value={category}
+              onChange={(event) => changeCategory(event.target.value)}
+              className="w-full [&>select]:h-11 [&>select]:bg-background"
             >
-              <span className="area-dot" aria-hidden="true" />
-              {item.shortLabel}
-            </button>
-          ))}
-        </div>
-      </fieldset>
+              <NativeSelectOption value="all">
+                Tüm çevre alanları
+              </NativeSelectOption>
+              {categories.map((item) => (
+                <NativeSelectOption key={item.id} value={item.id}>
+                  {item.shortLabel}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </label>
 
-      {/* ---- ek filtreler, katlanır ---- */}
-      <div className="mt-4">
-        <button
-          type="button"
-          onClick={() => setShowMoreFilters((current) => !current)}
-          aria-expanded={showMoreFilters}
-          className="pill"
-        >
-          <SlidersHorizontal className="size-4" aria-hidden="true" />
-          Belge türü ve yürürlük
-        </button>
-        {showMoreFilters && (
-          <div className="mt-4 grid gap-5 sm:grid-cols-2">
-            <fieldset>
-              <legend className="eyebrow mb-2.5">Belge türü</legend>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => changeDocumentType('all')}
-                  aria-pressed={documentType === 'all'}
-                  className="pill"
-                >
-                  Tümü
-                </button>
-                {documentTypes.map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => changeDocumentType(type)}
-                    aria-pressed={documentType === type}
-                    className="pill"
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="eyebrow mb-2.5">Yürürlük</legend>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => changeRecordStatus('all')}
-                  aria-pressed={recordStatus === 'all'}
-                  className="pill"
-                >
-                  Tümü
-                </button>
-                {recordStatuses.map((status) => (
-                  <button
-                    key={status}
-                    type="button"
-                    onClick={() => changeRecordStatus(status)}
-                    aria-pressed={recordStatus === status}
-                    className="pill"
-                  >
-                    {status}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
+          <label className="block">
+            <span className="eyebrow mb-2 block">Belge türü</span>
+            <NativeSelect
+              value={documentType}
+              onChange={(event) =>
+                changeDocumentType(event.target.value as 'all' | DocumentType)
+              }
+              className="w-full [&>select]:h-11 [&>select]:bg-background"
+            >
+              <NativeSelectOption value="all">Tüm türler</NativeSelectOption>
+              {documentTypes.map((type) => (
+                <NativeSelectOption key={type} value={type}>
+                  {type}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </label>
+
+          <label className="block">
+            <span className="eyebrow mb-2 block">Yürürlük</span>
+            <NativeSelect
+              value={recordStatus}
+              onChange={(event) =>
+                changeRecordStatus(event.target.value as 'all' | RecordStatus)
+              }
+              className="w-full [&>select]:h-11 [&>select]:bg-background"
+            >
+              <NativeSelectOption value="all">Tüm durumlar</NativeSelectOption>
+              {recordStatuses.map((status) => (
+                <NativeSelectOption key={status} value={status}>
+                  {status}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </label>
+
+          <div className="flex min-h-11 items-center justify-between gap-4 sm:col-span-2 lg:col-span-1 lg:justify-end">
+            <p className="whitespace-nowrap text-sm">
+              <span className="font-semibold">{filtered.length}</span>{' '}
+              <span className="text-muted-foreground">kayıt</span>
+            </p>
+            {hasFilters && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm font-medium text-primary hover:bg-muted"
+              >
+                <X className="size-3.5" aria-hidden="true" />
+                Temizle
+              </button>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* ---- sonuç sayacı ---- */}
-      <div className="mt-7 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-border pb-4">
-        <p className="text-sm">
-          <span className="font-semibold">{filtered.length}</span>{' '}
-          <span className="text-muted-foreground">kayıt</span>
-          {query.trim() && filtered.length > exactCount && (
-            <span className="text-muted-foreground">
-              {' · '}
-              {exactCount > 0
-                ? `${exactCount} tanesi adında geçiyor`
-                : 'tamamı konu eşleşmesi'}
-            </span>
-          )}
-        </p>
-        <div className="flex items-baseline gap-5">
-          {hasFilters && (
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              Filtreleri temizle
-            </button>
-          )}
-          <p className="gazette text-muted-foreground">
-            Kontrol: {lastSourceCheck()}
-          </p>
         </div>
-      </div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
+          <p>
+            {query.trim() && filtered.length > exactCount
+              ? exactCount > 0
+                ? `${exactCount} kayıt ad eşleşmesi; diğerleri konu eşleşmesi.`
+                : 'Sonuçların tamamı konu eşleşmesi.'
+              : 'Seçimler anında uygulanır ve bağlantıya kaydedilir.'}
+          </p>
+          <p className="gazette">Son kaynak kontrolü: {lastSourceCheck()}</p>
+        </div>
+      </section>
       <p className="sr-only" aria-live="polite">
         {filtered.length} kayıt bulundu.
       </p>

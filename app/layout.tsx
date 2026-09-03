@@ -2,7 +2,13 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import { SiteCommandPalette } from '@/components/site/site-command-palette';
-import { siteDescription, siteName, siteUrl } from '@/lib/site';
+import {
+  publisherName,
+  publisherUrl,
+  siteDescription,
+  siteName,
+  siteUrl,
+} from '@/lib/site';
 import './globals.css';
 
 /**
@@ -52,6 +58,9 @@ export const metadata: Metadata = {
   },
   description: siteDescription,
   applicationName: siteName,
+  authors: [{ name: publisherName, url: publisherUrl }],
+  creator: publisherName,
+  publisher: publisherName,
   icons: {
     icon: '/logo.png',
     shortcut: '/logo.png',

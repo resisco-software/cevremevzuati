@@ -32,6 +32,8 @@ import {
 import {
   absoluteUrl,
   openGraphFor,
+  publisherName,
+  publisherUrl,
   siteDescription,
   siteName,
 } from '@/lib/site';
@@ -109,7 +111,24 @@ export default function HomePage() {
           url: absoluteUrl('/'),
           inLanguage: 'tr-TR',
           description: siteDescription,
-          publisher: { '@type': 'Organization', name: siteName },
+          publisher: {
+            '@type': 'Organization',
+            name: publisherName,
+            url: publisherUrl,
+            knowsAbout: [
+              'Çevre mevzuatı',
+              'Çevre izin ve lisans',
+              'Sürekli Emisyon Ölçüm Sistemleri',
+              'Sera gazı emisyonları',
+              'Atık yönetimi',
+              'Sürdürülebilirlik',
+            ],
+          },
+          creator: {
+            '@type': 'Organization',
+            name: publisherName,
+            url: publisherUrl,
+          },
           potentialAction: {
             '@type': 'SearchAction',
             target: `${absoluteUrl('/mevzuat')}?q={search_term_string}`,

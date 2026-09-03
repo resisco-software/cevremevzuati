@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowUpRight, Building2 } from 'lucide-react';
 
 import { ExternalLink } from '@/components/site/external-link';
 import { lastSourceCheck, legislation } from '@/lib/legislation-data';
-import { publisherName } from '@/lib/site';
+import { publisherName, publisherUrl } from '@/lib/site';
 
 const columns = [
   {
@@ -28,6 +29,35 @@ const columns = [
 export function SiteFooter() {
   return (
     <footer className="mt-16 border-t border-border">
+      <div className="site-frame pt-10">
+        <div className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)] sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="flex items-start gap-4">
+            <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <Building2 className="size-5" aria-hidden="true" />
+            </span>
+            <div>
+              <p className="eyebrow">Resisco Mühendislik</p>
+              <p className="mt-1 font-semibold">
+                Mevzuattan tesis uygulamasına
+              </p>
+              <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
+                Çevre izin ve lisans, emisyon, SEÖS, atık yönetimi, sera gazı ve
+                sürdürülebilirlik süreçlerinde profesyonel destek.
+              </p>
+            </div>
+          </div>
+          <a
+            href={`${publisherUrl}/services`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg border border-input bg-background px-4 text-sm font-semibold hover:border-primary hover:text-primary"
+          >
+            Uzmanlık alanlarını inceleyin
+            <ArrowUpRight className="size-4" aria-hidden="true" />
+            <span className="sr-only"> (yeni sekmede açılır)</span>
+          </a>
+        </div>
+      </div>
       <div className="site-frame grid gap-10 py-12 lg:grid-cols-[1.4fr_repeat(2,0.7fr)]">
         <div className="measure">
           <p className="flex items-center gap-3 text-md font-semibold">
@@ -71,9 +101,19 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-border">
         <p className="site-frame py-5 text-sm leading-7 text-muted-foreground">
-          Bu siteyi {publisherName} yayımlar. Sayfaları sunmak ve toplu ziyaret
-          sayımı yapmak için teknik bağlantı verisi Vercel üzerinden işlenir;
-          çerez kullanılmaz. İşlenen veri, saklama süreleri ve haklarınız:{' '}
+          Bu siteyi{' '}
+          <a
+            href={publisherUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-primary hover:underline"
+          >
+            {publisherName}
+            <span className="sr-only"> (yeni sekmede açılır)</span>
+          </a>{' '}
+          geliştirir ve yayımlar. Sayfaları sunmak ve toplu ziyaret sayımı
+          yapmak için teknik bağlantı verisi Vercel üzerinden işlenir; çerez
+          kullanılmaz. İşlenen veri, saklama süreleri ve haklarınız:{' '}
           <Link
             href="/gizlilik"
             className="font-semibold text-primary hover:underline"

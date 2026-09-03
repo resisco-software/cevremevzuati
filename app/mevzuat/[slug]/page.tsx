@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -16,7 +16,12 @@ import {
 } from '@/lib/legislation-data';
 import { getLegislationGuide } from '@/lib/legislation-guides';
 import { officialSourceUrl } from '@/lib/official-url';
-import { absoluteUrl, openGraphFor, siteName } from '@/lib/site';
+import {
+  absoluteUrl,
+  openGraphFor,
+  publisherName,
+  publisherUrl,
+} from '@/lib/site';
 
 export function generateStaticParams() {
   return legislation.map((item) => ({ slug: item.slug }));
@@ -96,7 +101,11 @@ export default async function LegislationDetailPage({
           url: absoluteUrl(`/mevzuat/${item.slug}`),
           ...(sameAs ? { sameAs } : {}),
           description: item.summary,
-          publisher: { '@type': 'Organization', name: siteName },
+          publisher: {
+            '@type': 'Organization',
+            name: publisherName,
+            url: publisherUrl,
+          },
         }}
       />
       <main id="icerik">
@@ -594,6 +603,25 @@ export default async function LegislationDetailPage({
                   Tesisime göre rota oluştur
                   <ArrowRight className="size-3.5" aria-hidden="true" />
                 </Link>
+              </div>
+
+              <div className="border-t border-border mt-8 pt-5">
+                <h2 className="eyebrow">Uygulama desteği</h2>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  Bu düzenlemenin tesisinizdeki karşılığını; proses, kapasite ve
+                  mevcut izinlerinizle birlikte ele almak için Resisco&apos;nun
+                  çevre danışmanlığı hizmetlerini inceleyin.
+                </p>
+                <a
+                  href={`${publisherUrl}/services`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline hover:decoration-seal"
+                >
+                  Resisco hizmetleri
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                  <span className="sr-only"> (yeni sekmede açılır)</span>
+                </a>
               </div>
 
               <Link

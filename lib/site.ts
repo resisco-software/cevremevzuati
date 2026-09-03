@@ -1,4 +1,4 @@
-export const siteUrl = 'https://cevremevzuati.com';
+export const siteUrl = 'https://www.cevremevzuati.com';
 
 export const siteName = 'Çevre Mevzuatı';
 

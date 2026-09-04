@@ -246,7 +246,11 @@
 
 /** Sonuç kartı: tarama kolaylığı için; süs değil. */
 .card {
-  background: var(--card);
+  background: color-mix(
+    in srgb,
+    var(--area, var(--primary)) 4%,
+    var(--card)
+  );
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   box-shadow: 0 1px 1px rgb(25 29 31 / 0.025);
@@ -256,7 +260,7 @@
 .soft-panel {
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  background: var(--card);
+  background: color-mix(in srgb, var(--primary) 3%, var(--card));
   box-shadow: 0 1px 1px rgb(25 29 31 / 0.025);
 }
 
@@ -269,7 +273,7 @@
 
 .card-link:hover {
   border-color: color-mix(in srgb, var(--area, var(--primary)) 30%, var(--border));
-  background: color-mix(in srgb, var(--area, var(--primary)) 2.5%, var(--card));
+  background: color-mix(in srgb, var(--area, var(--primary)) 7%, var(--card));
 }
 
 /** Koyu vurgu kutuları: tek parça, mat bir yüzey. */
@@ -282,13 +286,18 @@
 
 /** Konu dizini ayrı kartlar yerine tek bir editoryal liste gibi davranır. */
 .area-index-link {
+  background: color-mix(
+    in srgb,
+    var(--area, var(--primary)) 7%,
+    var(--card)
+  );
   transition:
     background-color 140ms ease,
     color 140ms ease;
 }
 
 .area-index-link:hover {
-  background: color-mix(in srgb, var(--area, var(--primary)) 4%, var(--card));
+  background: color-mix(in srgb, var(--area, var(--primary)) 11%, var(--card));
 }
 
 /** Alan şeridi: kartın solunda o alanın kimlik rengi. */
@@ -545,7 +554,7 @@ fieldset:has(> .chip-scroller) {
 .topic-option {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--card);
+  background: color-mix(in srgb, var(--primary) 4%, var(--card));
   transition:
     border-color 140ms ease,
     background-color 140ms ease;
@@ -553,7 +562,7 @@ fieldset:has(> .chip-scroller) {
 
 .topic-option:hover {
   border-color: var(--line-strong);
-  background: color-mix(in srgb, var(--primary) 2.5%, var(--card));
+  background: color-mix(in srgb, var(--primary) 7%, var(--card));
 }
 
 .topic-option[aria-pressed='true'] {
@@ -564,7 +573,7 @@ fieldset:has(> .chip-scroller) {
 .choice-row {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--card);
+  background: color-mix(in srgb, var(--primary) 3.5%, var(--card));
 }
 
 .choice-row:hover {

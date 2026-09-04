@@ -106,7 +106,7 @@ export function SiteFooter() {
             href={publisherUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-primary hover:underline"
+            className="font-semibold text-brand hover:underline"
           >
             {publisherName}
             <span className="sr-only"> (yeni sekmede açılır)</span>

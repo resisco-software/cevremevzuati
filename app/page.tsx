@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   FileSearch,
   FolderSearch2,
-  Layers,
   ListChecks,
   Compass,
   RadioTower,
@@ -19,15 +18,14 @@ import { QuickSearch } from '@/components/site/quick-search';
 import Link from '@/components/site/safe-link';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
+import FeatureShaderCards from '@/components/ui/feature-shader-cards';
 import { areaStyle } from '@/lib/area-theme';
-import { categoryIcons } from '@/lib/category-icons';
 import {
   categories,
   categoryRecordCount,
   glossary,
   lastSourceCheck,
   legislation,
-  maxCategoryRecordCount,
 } from '@/lib/legislation-data';
 import {
   absoluteUrl,
@@ -98,7 +96,10 @@ const documentTypes = [
 }));
 
 export default function HomePage() {
-  const maxCount = maxCategoryRecordCount();
+  const mapAreas = categories.map((category) => ({
+    ...category,
+    count: categoryRecordCount(category.id),
+  }));
 
   return (
     <>
@@ -272,65 +273,35 @@ export default function HomePage() {
               <div>
                 <p className="eyebrow">Mevzuat haritası</p>
                 <h2 className="mt-2.5 text-xl">
-                  Çalışma alanınıza göre keşfedin.
+                  Önce tesisinizdeki çevre başlığını seçin.
                 </h2>
                 <p className="measure mt-3 leading-8 text-muted-foreground">
-                  Hava, su, atık, kimyasallar ve diğer çevre başlıklarını alt
-                  konularıyla birlikte tarayın. Her kart doğrudan ilgili kayıt
-                  kümesini açar.
+                  Bir izin, emisyon, deşarj veya atık sürecinden başlayın. Her
+                  başlık, o alandaki düzenlemeleri ve önce bakılacak maddeleri
+                  aynı listede açar.
                 </p>
               </div>
-              <Link
-                href="/mevzuat"
-                className="btn inline-flex items-center justify-center btn-quiet h-11 px-4 text-sm"
-              >
-                Tüm dizin
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <span>
+                  <strong className="font-semibold text-foreground">
+                    {categories.length}
+                  </strong>{' '}
+                  çalışma alanı
+                </span>
+                <span className="h-4 w-px bg-border" aria-hidden="true" />
+                <Link
+                  href="/mevzuat"
+                  className="group inline-flex items-center gap-2 font-semibold text-primary"
+                >
+                  Tüm dizin
+                  <ArrowRight
+                    className="size-4 transition-transform group-hover:translate-x-1"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </div>
             </div>
-
-            <ul className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {categories.map((category) => {
-                const count = categoryRecordCount(category.id);
-                const Icon = categoryIcons[category.id] ?? Layers;
-                return (
-                  <li key={category.id} style={areaStyle(category.id)}>
-                    <Link
-                      href={`/mevzuat?alan=${category.id}`}
-                      className="card card-link area-edge flex min-h-52 h-full flex-col p-6"
-                    >
-                      <span className="flex items-start gap-3">
-                        <Icon
-                          className="mt-0.5 size-5 shrink-0 text-area"
-                          aria-hidden="true"
-                        />
-                        <span className="font-semibold leading-snug">
-                          {category.label}
-                        </span>
-                      </span>
-                      <span className="mt-3 block text-sm leading-7 text-muted-foreground">
-                        {category.description}
-                      </span>
-                      <span className="mt-3 block text-sm leading-6 text-muted-foreground">
-                        {category.subtopics.slice(0, 3).join(' · ')}
-                      </span>
-                      <span className="mt-4 flex items-center gap-3">
-                        <span className="meter flex-1" aria-hidden="true">
-                          <span
-                            style={{
-                              width: `${Math.max(6, (count / maxCount) * 100)}%`,
-                            }}
-                          />
-                        </span>
-                        <span className="gazette shrink-0 text-muted-foreground">
-                          {count} kayıt
-                        </span>
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <FeatureShaderCards areas={mapAreas} />
           </div>
         </section>
 

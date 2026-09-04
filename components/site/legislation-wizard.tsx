@@ -859,7 +859,7 @@ export function LegislationWizard({
         </button>
       </aside>
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-[var(--shadow-lift)]">
+      <div className="soft-panel overflow-hidden rounded-2xl">
         <div className="p-5 sm:p-8 lg:p-10">
           <p className="sr-only" aria-live="polite">
             {`Adım ${step} / ${wizardSteps.length}: ${wizardSteps[step - 1]}`}
@@ -1008,7 +1008,7 @@ export function LegislationWizard({
               </p>
               <div className="mt-7 grid gap-4 sm:grid-cols-2">
                 <label
-                  className="rounded-xl border border-border bg-card p-4 transition-colors focus-within:border-primary"
+                  className="soft-panel p-4 transition-colors focus-within:border-primary"
                   htmlFor="facility-stage"
                 >
                   <span className="flex items-start gap-3">
@@ -1038,7 +1038,7 @@ export function LegislationWizard({
                   </NativeSelect>
                 </label>
                 <label
-                  className="rounded-xl border border-border bg-card p-4 transition-colors focus-within:border-primary"
+                  className="soft-panel p-4 transition-colors focus-within:border-primary"
                   htmlFor="facility-sector"
                 >
                   <span className="flex items-start gap-3">

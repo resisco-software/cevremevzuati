@@ -253,14 +253,39 @@
 
 /** Sonuç kartı: tarama kolaylığı için; süs değil. */
 .card {
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--area, var(--primary)) 5%, var(--card)),
-    var(--card) 68%
-  );
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--area, var(--primary)) 9%, transparent),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--area, var(--primary)) 8%, var(--card)),
+      var(--card) 72%
+    );
   border: 1px solid
-    color-mix(in srgb, var(--area, var(--primary)) 14%, var(--border));
+    color-mix(in srgb, var(--area, var(--primary)) 21%, var(--border));
   border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+/** Kart olmayan bilgi grupları için aynı yüzeyin sade sürümü. */
+.soft-panel {
+  border: 1px solid
+    color-mix(in srgb, var(--area, var(--primary)) 18%, var(--border));
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--area, var(--primary)) 7%, transparent),
+      transparent 44%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--area, var(--primary)) 6%, var(--card)),
+      var(--card) 74%
+    );
   box-shadow: var(--shadow-card);
 }
 
@@ -289,12 +314,18 @@
 /** Küçük dizin kutuları da aynı mat ve alan renkli yüzey dilini kullanır. */
 .soft-area-tile {
   border: 1px solid
-    color-mix(in srgb, var(--area, var(--primary)) 15%, var(--border));
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--area, var(--primary)) 7%, var(--card)),
-    color-mix(in srgb, var(--area, var(--primary)) 2%, var(--card)) 70%
-  );
+    color-mix(in srgb, var(--area, var(--primary)) 22%, var(--border));
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      color-mix(in srgb, var(--area, var(--primary)) 12%, transparent),
+      transparent 58%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--area, var(--primary)) 10%, var(--card)),
+      color-mix(in srgb, var(--area, var(--primary)) 3%, var(--card)) 72%
+    );
   box-shadow: var(--shadow-card);
   transition:
     border-color 140ms ease,

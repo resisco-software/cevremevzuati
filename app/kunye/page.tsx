@@ -147,7 +147,7 @@ export default function ImprintPage() {
                 <Building2 className="size-5 text-primary" aria-hidden="true" />
                 Platformun arkasında
               </h2>
-              <div className="mt-4 rounded-xl border border-border bg-card p-5 sm:p-6">
+              <div className="soft-panel mt-4 p-5 sm:p-6">
                 <p className="text-base leading-7 text-muted-foreground">
                   Çevre Mevzuatı, 2015 yılında Ankara&apos;da kurulan{' '}
                   <strong className="font-semibold text-foreground">

@@ -172,7 +172,7 @@ export default async function LegislationDetailPage({
 
               <nav
                 aria-label="Bu sayfadaki bölümler"
-                className="card mt-8 p-3 shadow-none"
+                className="card mt-8 p-3"
               >
                 <p className="eyebrow px-2 pt-1 pb-2">Bu sayfada</p>
                 <div className="grid gap-1 sm:grid-cols-2 xl:grid-cols-3">
@@ -223,7 +223,7 @@ export default async function LegislationDetailPage({
                     </div>
 
                     {guide.boundary && (
-                      <div className="card mt-7 border-l-2 border-l-attention p-5 shadow-none">
+                      <div className="card mt-7 border-l-2 border-l-attention p-5">
                         <h3 className="text-md font-semibold">
                           {guide.boundary.title}
                         </h3>
@@ -265,7 +265,7 @@ export default async function LegislationDetailPage({
                       {guide.audiences.map((entry) => (
                         <article
                           key={entry.title}
-                          className="card p-5 shadow-none"
+                          className="card p-5"
                         >
                           <h3 className="text-base font-semibold">
                             {entry.title}
@@ -292,7 +292,7 @@ export default async function LegislationDetailPage({
                       kontrol alanları aşağıda, dayanak noktalarıyla birlikte
                       gösterilir.
                     </p>
-                    <div className="mt-6 overflow-hidden rounded-xl border border-border bg-card">
+                    <div className="soft-panel mt-6 overflow-hidden">
                       {guide.decisions.map((entry, index) => (
                         <article
                           key={entry.title}
@@ -325,7 +325,7 @@ export default async function LegislationDetailPage({
                     <h2 className="text-xl mt-3">Nasıl okunmalıdır?</h2>
                     <ol className="mt-6 grid gap-3 list-none">
                       {guide.readingOrder.map((entry, index) => (
-                        <li key={entry.title} className="card p-5 shadow-none">
+                        <li key={entry.title} className="card p-5">
                           <div className="grid gap-3 sm:grid-cols-[2.5rem_1fr]">
                             <span className="gazette text-lg text-primary">
                               {String(index + 1).padStart(2, '0')}
@@ -363,7 +363,7 @@ export default async function LegislationDetailPage({
                 </p>
 
                 {item.primaryAnnex && (
-                  <div className="card mt-6 border-l-2 border-l-primary p-5 shadow-none">
+                  <div className="card mt-6 border-l-2 border-l-primary p-5">
                     <h3 className="eyebrow">İlk kontrol</h3>
                     <p className="measure mt-2 text-md leading-8 font-medium">
                       {item.primaryAnnex}
@@ -390,7 +390,7 @@ export default async function LegislationDetailPage({
                   kayıtlarda resmî metinde aranacak başlık gösterilir.
                 </p>
 
-                <ol className="mt-6 overflow-hidden rounded-xl border border-border bg-card">
+                <ol className="soft-panel mt-6 overflow-hidden">
                   {referenceEntries.map((entry, index) => (
                     <li
                       key={`${entry.reference}-${entry.title}`}

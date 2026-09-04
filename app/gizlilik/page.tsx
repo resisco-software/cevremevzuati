@@ -136,7 +136,7 @@ export default function PrivacyPage() {
                     value: publisherKvkkEmail,
                   },
                 ].map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="precision-card bg-card p-5">
+                  <div key={label} className="soft-panel p-5">
                     <Icon className="size-5 text-primary" aria-hidden="true" />
                     <p className="eyebrow mt-4">{label}</p>
                     <p className="mt-2 text-sm font-semibold leading-6">

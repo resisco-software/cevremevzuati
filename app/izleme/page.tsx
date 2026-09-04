@@ -105,7 +105,7 @@ export default async function MonitoringPage() {
           </div>
         </section>
         <section className="site-frame max-w-[1180px] py-10 lg:py-14">
-          <div className="precision-card border-primary/25 bg-card p-6 sm:p-8">
+          <div className="soft-panel border-primary/25 p-6 sm:p-8">
             <div className="flex items-start gap-4">
               <CircleAlert
                 className="mt-1 size-5 shrink-0 text-primary"
@@ -144,7 +144,7 @@ export default async function MonitoringPage() {
             {routes.map(({ icon: Icon, ...route }) => (
               <article
                 key={route.number}
-                className="precision-card bg-card p-6"
+                className="soft-panel p-6"
               >
                 <div className="flex items-center justify-between">
                   <span className="grid size-11 place-items-center rounded-lg bg-secondary text-primary">

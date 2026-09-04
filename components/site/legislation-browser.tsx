@@ -175,7 +175,7 @@ export function LegislationBrowser({
       {/* ---- tek satırlık filtre paneli ---- */}
       <section
         aria-label="Mevzuat filtreleri"
-        className="card mt-5 p-4 shadow-none"
+        className="card mt-5 p-4"
       >
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.8fr_0.9fr_auto] lg:items-end">
           <label className="block">

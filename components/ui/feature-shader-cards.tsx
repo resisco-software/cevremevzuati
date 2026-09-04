@@ -27,12 +27,12 @@ const featuredIds = [
 ];
 
 const shaderColors: Record<string, string[]> = {
-  kurulus: ['#11142e', '#494ea0', '#24275a', '#777cd0'],
-  izin: ['#071f19', '#0f6e5a', '#123b31', '#42a88f'],
-  hava: ['#071c26', '#1c6e8c', '#103c50', '#54a8c5'],
-  atiksu: ['#061e20', '#0f6b70', '#104044', '#48a6ab'],
-  atik: ['#241705', '#8a5a0f', '#4b3209', '#c18a31'],
-  entegre: ['#171027', '#5b3c8c', '#322052', '#9475c5'],
+  kurulus: ['#101b1c', '#263938', '#172827', '#3e5350'],
+  izin: ['#0b1f1a', '#24463b', '#17322b', '#416557'],
+  hava: ['#0d2022', '#29474a', '#183235', '#466164'],
+  atiksu: ['#0c211f', '#28504a', '#183733', '#456a62'],
+  atik: ['#1b1f17', '#4a4930', '#303326', '#6a6545'],
+  entegre: ['#191c20', '#3c4148', '#292e34', '#5d646c'],
 };
 
 function useShaderEffects() {
@@ -75,41 +75,41 @@ export default function FeatureShaderCards({
             <li key={area.id} style={areaStyle(area.id)}>
               <Link
                 href={`/mevzuat?alan=${area.id}`}
-                className="group relative isolate flex h-full min-h-64 overflow-hidden rounded-2xl border border-white/12 bg-[#10201c] p-6 text-white shadow-[0_18px_50px_-32px_rgba(10,20,18,0.8)] transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-white"
+                className="group soft-dark-surface relative isolate flex h-full min-h-64 overflow-hidden rounded-2xl p-6 text-white transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-white"
               >
                 <span
-                  className="absolute inset-0 bg-[radial-gradient(circle_at_85%_10%,color-mix(in_srgb,var(--area)_45%,transparent),transparent_45%),linear-gradient(145deg,#10201c,#08110f)]"
+                  className="absolute inset-0 bg-[radial-gradient(circle_at_85%_8%,color-mix(in_srgb,var(--area)_22%,transparent),transparent_48%),linear-gradient(145deg,#142621,#0d1917)]"
                   aria-hidden="true"
                 />
                 {shadersEnabled && (
-                  <span className="absolute inset-0 opacity-80" aria-hidden="true">
+                  <span className="absolute inset-0 opacity-30" aria-hidden="true">
                     <Warp
                       style={{ height: '100%', width: '100%' }}
                       proportion={0.34 + (index % 3) * 0.04}
-                      softness={0.9}
-                      distortion={0.14}
-                      swirl={0.42 + (index % 2) * 0.1}
+                      softness={1.2}
+                      distortion={0.08}
+                      swirl={0.24 + (index % 2) * 0.06}
                       swirlIterations={8}
                       shape={index % 2 === 0 ? 'checks' : 'stripes'}
                       shapeScale={0.09}
                       scale={1}
                       rotation={0}
-                      speed={0.32}
+                      speed={0.2}
                       colors={shaderColors[area.id]}
                     />
                   </span>
                 )}
                 <span
-                  className="absolute inset-0 bg-[linear-gradient(145deg,rgba(6,14,12,0.55),rgba(6,14,12,0.9)_76%)]"
+                  className="absolute inset-0 bg-[linear-gradient(145deg,rgba(8,18,16,0.68),rgba(8,18,16,0.92)_78%)]"
                   aria-hidden="true"
                 />
 
                 <span className="relative flex min-w-0 flex-1 flex-col">
                   <span className="flex items-start justify-between gap-4">
-                    <span className="grid size-10 place-items-center rounded-xl border border-white/15 bg-white/10 backdrop-blur-sm">
+                    <span className="grid size-10 place-items-center rounded-xl border border-white/10 bg-white/[0.07]">
                       <Icon className="size-5" aria-hidden="true" />
                     </span>
-                    <span className="rounded-full border border-white/15 bg-black/15 px-2.5 py-1 font-mono text-xs tabular-nums text-white/75 backdrop-blur-sm">
+                    <span className="rounded-full border border-white/10 bg-black/10 px-2.5 py-1 font-mono text-xs tabular-nums text-white/70">
                       {area.count} kayıt
                     </span>
                   </span>

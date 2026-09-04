@@ -768,29 +768,29 @@ export function LegislationWizard({
   return (
     <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start lg:gap-10">
       <aside className="lg:sticky lg:top-24">
-        <div className="overflow-hidden rounded-2xl bg-foreground p-6 text-background shadow-[0_18px_50px_-28px_rgb(15_110_90/0.55)]">
-          <span className="grid size-10 place-items-center rounded-xl bg-background/10 text-background">
+        <div className="soft-dark-surface overflow-hidden rounded-2xl p-6 text-white">
+          <span className="grid size-10 place-items-center rounded-xl border border-white/10 bg-white/[0.07] text-white">
             <ScanSearch className="size-5" aria-hidden="true" />
           </span>
-          <p className="mt-6 text-xs font-semibold tracking-[0.16em] text-background/60 uppercase">
+          <p className="mt-6 text-xs font-semibold tracking-[0.16em] text-white/60 uppercase">
             Tesis rehberi
           </p>
           <h2 className="mt-2 text-lg leading-tight">
             Tesisinize göre okuma rotası
           </h2>
-          <p className="mt-3 text-sm leading-6 text-background/65">
+          <p className="mt-3 text-sm leading-6 text-white/65">
             Dört kısa adımda tesisinizi tanımlayın. Bilmediğiniz alanları boş
             bırakabilirsiniz.
           </p>
-          <div className="mt-6 flex items-center justify-between text-xs font-medium text-background/70">
+          <div className="mt-6 flex items-center justify-between text-xs font-medium text-white/70">
             <span>
               Adım {step} / {wizardSteps.length}
             </span>
             <span>Yaklaşık 2 dakika</span>
           </div>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-background/15">
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
             <span
-              className="block h-full rounded-full bg-background transition-[width] duration-300"
+              className="block h-full rounded-full bg-white/85 transition-[width] duration-300"
               style={{ width: `${(step / wizardSteps.length) * 100}%` }}
             />
           </div>
@@ -859,7 +859,7 @@ export function LegislationWizard({
         </button>
       </aside>
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-[0_18px_55px_-38px_rgb(25_29_31/0.38)]">
+      <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-[var(--shadow-lift)]">
         <div className="p-5 sm:p-8 lg:p-10">
           <p className="sr-only" aria-live="polite">
             {`Adım ${step} / ${wizardSteps.length}: ${wizardSteps[step - 1]}`}

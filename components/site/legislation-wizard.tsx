@@ -9,6 +9,7 @@ import {
   Copy,
   Info,
   Layers3,
+  Plus,
   Printer,
   RotateCcw,
   ScanSearch,
@@ -528,8 +529,8 @@ export function LegislationWizard({
   initialTopic?: string;
 }) {
   const [step, setStep] = useState(1);
-  const [topic, setTopic] = useState(
-    categories.some((item) => item.id === initialTopic) ? initialTopic : 'all',
+  const [topics, setTopics] = useState<string[]>(
+    categories.some((item) => item.id === initialTopic) ? [initialTopic] : [],
   );
   const [stage, setStage] = useState('belirsiz');
   const [sector, setSector] = useState('belirsiz');
@@ -538,35 +539,44 @@ export function LegislationWizard({
   const [showAllTopics, setShowAllTopics] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const selectedCategory =
-    topic === 'all'
-      ? {
-          id: 'all',
-          label: 'Tüm çevre mevzuatı kapsamı',
-          shortLabel: 'Tüm çevre kapsamı',
-          description: 'Tesisin tüm çevre alanları birlikte taranır.',
-          subtopics: [],
-        }
-      : (categories.find((category) => category.id === topic) ?? {
-          id: 'all',
-          label: 'Tüm çevre mevzuatı kapsamı',
-          shortLabel: 'Tüm çevre kapsamı',
-          description: '',
-          subtopics: [],
-        });
-
+  const allTopicsSelected = topics.length === 0;
+  const selectedCategories = useMemo(
+    () => categories.filter((category) => topics.includes(category.id)),
+    [topics],
+  );
+  const selectionLabel = allTopicsSelected
+    ? 'Tüm çevre mevzuatı kapsamı'
+    : selectedCategories.length === 1
+      ? selectedCategories[0].label
+      : `${selectedCategories.length} çevre alanı`;
+  const selectionBadgeLabel = allTopicsSelected
+    ? 'Tüm çevre kapsamı'
+    : selectedCategories.length === 1
+      ? selectedCategories[0].shortLabel
+      : `${selectedCategories.length} alan`;
+  const routeHeading = allTopicsSelected
+    ? 'Tüm çevre mevzuatı için başlangıç rotası'
+    : selectedCategories.length === 1
+      ? `${selectedCategories[0].label} için başlangıç rotası`
+      : `Seçtiğiniz ${selectedCategories.length} alan için başlangıç rotası`;
   const SelectedIcon =
-    topic === 'all' ? ScanSearch : (categoryIcons[topic] ?? ScanSearch);
+    selectedCategories.length === 1
+      ? (categoryIcons[selectedCategories[0].id] ?? ScanSearch)
+      : allTopicsSelected
+        ? ScanSearch
+        : Layers3;
   const visibleTopics = showAllTopics ? categories : categories.slice(0, 6);
   const visibleFeatureOptions = featureOptions.filter(
-    (option) => topic === 'all' || option.topics.includes(topic),
+    (option) =>
+      allTopicsSelected ||
+      option.topics.some((topic) => topics.includes(topic)),
   );
 
   // Sonuç adres çubuğuna yazılır; okuma listesi paylaşılabilir olur.
   useEffect(() => {
     if (step < 4) return;
     const params = new URLSearchParams();
-    if (topic !== 'all') params.set('konu', topic);
+    if (topics.length) params.set('konu', topics.join(','));
     if (stage !== 'belirsiz') params.set('evre', stage);
     if (sector !== 'belirsiz') params.set('sektor', sector);
     if (features.length) params.set('kosul', features.join(','));
@@ -574,7 +584,7 @@ export function LegislationWizard({
     const search = params.toString();
     const next = `${window.location.pathname}${search ? `?${search}` : ''}#alanlar`;
     window.history.replaceState(null, '', next);
-  }, [features, locations, sector, stage, step, topic]);
+  }, [features, locations, sector, stage, step, topics]);
 
   const missingAnswers = [
     stage === 'belirsiz' ? 'tesisin yaşam evresi' : null,
@@ -638,18 +648,17 @@ export function LegislationWizard({
       (slug) => !baseline.includes(slug),
     );
 
-    const topicSlugs =
-      topic === 'all'
-        ? []
-        : legislation
-            .filter(
-              (item) =>
-                item.status !== 'Yürürlükten kaldırıldı' &&
-                item.categories.includes(topic) &&
-                !baseline.includes(item.slug) &&
-                !profileSlugs.includes(item.slug),
-            )
-            .map((item) => item.slug);
+    const topicSlugs = allTopicsSelected
+      ? []
+      : legislation
+          .filter(
+            (item) =>
+              item.status !== 'Yürürlükten kaldırıldı' &&
+              item.categories.some((topic) => topics.includes(topic)) &&
+              !baseline.includes(item.slug) &&
+              !profileSlugs.includes(item.slug),
+          )
+          .map((item) => item.slug);
 
     // Önce tesise özel eşleşmeler: kullanıcının bilmediği kısım budur.
     // Temel çerçeve altta durur; bilinen ve her tesiste aynı olan kısımdır.
@@ -675,15 +684,26 @@ export function LegislationWizard({
     if (topicSlugs.length) {
       groups.push({
         key: 'topic',
-        title: `${selectedCategory.shortLabel} alanındaki diğer kayıtlar`,
+        title:
+          selectedCategories.length === 1
+            ? `${selectedCategories[0].shortLabel} alanındaki diğer kayıtlar`
+            : 'Seçtiğiniz alanlardaki diğer kayıtlar',
         description:
-          'Seçtiğiniz alanda yer alan, cevaplarınızla henüz eşleşmemiş kayıtlar.',
+          'Seçtiğiniz alanlarda yer alan, cevaplarınızla henüz eşleşmemiş kayıtlar.',
         items: topicSlugs.map((slug) => ({ slug, reasons: [] })),
       });
     }
 
     return groups.filter((group) => group.items.length > 0);
-  }, [features, locations, sector, stage, topic, selectedCategory.shortLabel]);
+  }, [
+    allTopicsSelected,
+    features,
+    locations,
+    sector,
+    selectedCategories,
+    stage,
+    topics,
+  ]);
 
   const totalCount = grouped.reduce(
     (sum, group) => sum + group.items.length,
@@ -704,7 +724,7 @@ export function LegislationWizard({
 
   function reset() {
     setStep(1);
-    setTopic('all');
+    setTopics([]);
     setStage('belirsiz');
     setSector('belirsiz');
     setFeatures([]);
@@ -713,14 +733,23 @@ export function LegislationWizard({
     window.history.replaceState(null, '', window.location.pathname);
   }
 
-  function selectTopic(nextTopic: string) {
-    setTopic(nextTopic);
-    // Konu değişince o konuda geçerli olmayan koşullar düşer; kalanlar korunur.
+  function selectAllTopics() {
+    setTopics([]);
+  }
+
+  function toggleTopic(nextTopic: string) {
+    const nextTopics = topics.includes(nextTopic)
+      ? topics.filter((topic) => topic !== nextTopic)
+      : [...topics, nextTopic];
+    setTopics(nextTopics);
+    // Konu daralınca ilgisiz koşullar düşer; yeni alan eklenince kalanlar korunur.
     setFeatures((current) =>
       current.filter((id) => {
         const option = featureOptions.find((candidate) => candidate.id === id);
         return (
-          option && (nextTopic === 'all' || option.topics.includes(nextTopic))
+          option &&
+          (nextTopics.length === 0 ||
+            option.topics.some((topic) => nextTopics.includes(topic)))
         );
       }),
     );
@@ -819,6 +848,15 @@ export function LegislationWizard({
             );
           })}
         </ol>
+        <button
+          type="button"
+          onClick={reset}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-foreground lg:justify-start"
+        >
+          <RotateCcw className="size-4" aria-hidden="true" />
+          Başa dön
+          <span className="sr-only"> ve bütün seçimleri temizle</span>
+        </button>
       </aside>
 
       <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-[0_18px_55px_-38px_rgb(25_29_31/0.38)]">
@@ -836,18 +874,20 @@ export function LegislationWizard({
                 <p className="eyebrow">Konu seçimi</p>
               </div>
               <h3 id="wizard-step-one" className="text-xl">
-                Tüm kapsamı mı, belirli bir alanı mı tarayalım?
+                Tüm kapsamı tarayın veya ilgili alanları birlikte seçin
               </h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Emin değilseniz tüm çevre kapsamıyla başlayın.
+                Bir tesis birden fazla çevre alanına girebilir. İhtiyacınız olan
+                tüm alanları işaretleyebilir; emin değilseniz kapsamın tamamını
+                tarayabilirsiniz.
               </p>
               <button
                 type="button"
-                onClick={() => selectTopic('all')}
-                aria-pressed={topic === 'all'}
+                onClick={selectAllTopics}
+                aria-pressed={allTopicsSelected}
                 className="topic-option mt-6 flex w-full items-center gap-4 px-4 py-4 text-left"
               >
-                <span className="grid size-10 shrink-0 place-items-center border border-border text-ink">
+                <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-border text-ink">
                   <ScanSearch className="size-5" aria-hidden="true" />
                 </span>
                 <span className="min-w-0 flex-1">
@@ -859,7 +899,7 @@ export function LegislationWizard({
                     rotası
                   </span>
                 </span>
-                {topic === 'all' && (
+                {allTopicsSelected && (
                   <CheckCircle2
                     className="size-5 shrink-0 text-primary"
                     aria-hidden="true"
@@ -867,16 +907,24 @@ export function LegislationWizard({
                 )}
               </button>
 
-              <p className="eyebrow mt-8 mb-3">Ya da tek alanla başlayın</p>
+              <div className="mt-8 mb-3 flex flex-wrap items-center justify-between gap-2">
+                <p className="eyebrow">İlgili alanları seçin</p>
+                {!allTopicsSelected && (
+                  <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
+                    {selectedCategories.length} alan seçildi
+                  </span>
+                )}
+              </div>
               <ul className="grid gap-2 sm:grid-cols-2">
                 {visibleTopics.map((category) => {
                   const Icon = categoryIcons[category.id] ?? Layers3;
+                  const selected = topics.includes(category.id);
                   return (
                     <li key={category.id} className="contents">
                       <button
                         type="button"
-                        onClick={() => selectTopic(category.id)}
-                        aria-pressed={topic === category.id}
+                        onClick={() => toggleTopic(category.id)}
+                        aria-pressed={selected}
                         className="topic-option flex items-center gap-3 px-3.5 py-3.5 text-left"
                       >
                         <Icon
@@ -886,10 +934,17 @@ export function LegislationWizard({
                         <span className="min-w-0 flex-1 text-sm font-medium">
                           {category.label}
                         </span>
-                        <ArrowRight
-                          className="size-4 shrink-0 text-muted-foreground"
-                          aria-hidden="true"
-                        />
+                        {selected ? (
+                          <CheckCircle2
+                            className="size-4 shrink-0 text-primary"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <Plus
+                            className="size-4 shrink-0 text-muted-foreground"
+                            aria-hidden="true"
+                          />
+                        )}
                       </button>
                     </li>
                   );
@@ -911,12 +966,19 @@ export function LegislationWizard({
               </button>
 
               <div className="border-t border-border mt-8 flex flex-wrap items-center justify-between gap-4 pt-6">
-                <p className="text-sm">
-                  <span className="text-muted-foreground">Seçiminiz: </span>
-                  <strong className="font-semibold">
-                    {selectedCategory.label}
-                  </strong>
-                </p>
+                <div className="min-w-0 text-sm">
+                  <p>
+                    <span className="text-muted-foreground">Seçiminiz: </span>
+                    <strong className="font-semibold">{selectionLabel}</strong>
+                  </p>
+                  {!allTopicsSelected && selectedCategories.length > 1 && (
+                    <p className="mt-1 max-w-xl text-xs leading-5 text-muted-foreground">
+                      {selectedCategories
+                        .map((category) => category.shortLabel)
+                        .join(' · ')}
+                    </p>
+                  )}
+                </div>
                 <Button
                   type="button"
                   onClick={() => setStep(2)}
@@ -1158,7 +1220,7 @@ export function LegislationWizard({
                     <p className="eyebrow">Ön okuma listesi</p>
                   </div>
                   <h3 id="wizard-step-four" className="text-xl">
-                    {selectedCategory.label} için başlangıç rotası
+                    {routeHeading}
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
                     {totalCount} düzenleme, verdiğiniz bilgilerle birlikte
@@ -1168,7 +1230,7 @@ export function LegislationWizard({
                 </div>
                 <Badge variant="secondary" className="shrink-0 gap-1.5">
                   <SelectedIcon className="size-3.5" aria-hidden="true" />
-                  {selectedCategory.shortLabel}
+                  {selectionBadgeLabel}
                 </Badge>
               </div>
 
@@ -1339,13 +1401,15 @@ export function LegislationWizard({
                   render={
                     <Link
                       href={
-                        topic === 'all' ? '/mevzuat' : `/mevzuat?alan=${topic}`
+                        topics.length === 1
+                          ? `/mevzuat?alan=${topics[0]}`
+                          : '/mevzuat'
                       }
                     />
                   }
                   className="h-11 gap-2 px-4"
                 >
-                  Mevzuat dizininde aç
+                  Mevzuat dizinini aç
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Button>
               </div>

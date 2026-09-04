@@ -31,6 +31,8 @@ const categoryLabel = new Map(
   categories.map((category) => [category.id, category.shortLabel]),
 );
 
+const turkishCollator = new Intl.Collator('tr', { sensitivity: 'base' });
+
 /*
   Palet kök düzende duruyor, yani modülü her sayfaya girerdi. Animasyon
   paketi (motion) yalnızca palet ilk kez açıldığında indirilsin diye
@@ -57,12 +59,30 @@ function buildItems(): CommandItem[] {
     ].join(' '),
   }));
 
-  const terms: CommandItem[] = glossary.map((entry) => ({
-    id: `sozluk:${entry.term}|${entry.source}`,
-    label: entry.term,
-    hint: `Tanım · ${entry.article}`,
-    keywords: `tanım sözlük ${entry.term} ${entry.source} ${entry.tags.join(' ')}`,
-  }));
+  const definitionsByTerm = new Map<string, typeof glossary>();
+  for (const entry of glossary) {
+    const entries = definitionsByTerm.get(entry.term) ?? [];
+    entries.push(entry);
+    definitionsByTerm.set(entry.term, entries);
+  }
+
+  const terms: CommandItem[] = Array.from(definitionsByTerm).map(
+    ([term, entries]) => ({
+      id: `sozluk:${term}`,
+      label: term,
+      hint: `${entries.length} tanım`,
+      keywords: [
+        'tanım sözlük',
+        term,
+        ...entries.flatMap((entry) => [
+          entry.definition,
+          entry.source,
+          entry.article,
+          ...entry.tags,
+        ]),
+      ].join(' '),
+    }),
+  );
 
   const areas: CommandItem[] = categories.map((category) => ({
     id: `alan:${category.id}`,
@@ -78,7 +98,10 @@ function buildItems(): CommandItem[] {
     keywords: `sayfa ${page.keywords}`,
   }));
 
-  return [...records, ...areas, ...terms, ...routes];
+  return [...records, ...areas, ...terms, ...routes].sort(
+    (a, b) =>
+      turkishCollator.compare(a.label, b.label) || a.id.localeCompare(b.id),
+  );
 }
 
 export function SiteCommandPalette() {
@@ -121,21 +144,16 @@ export function SiteCommandPalette() {
     return () => window.removeEventListener('cevremevzuati:palet', onRequest);
   }, []);
 
-  const onSelect = useCallback(
-    (item: CommandItem) => {
-      setOpen(false);
-      const [kind, rest] = item.id.split(':');
-      if (kind === 'mevzuat') window.location.assign(`/mevzuat/${rest}`);
-      else if (kind === 'alan')
-        window.location.assign(`/mevzuat?alan=${rest}`);
-      else if (kind === 'sayfa') window.location.assign(rest);
-      else if (kind === 'sozluk') {
-        const term = rest.split('|')[0];
-        window.location.assign(`/sozluk?q=${encodeURIComponent(term)}`);
-      }
-    },
-    [],
-  );
+  const onSelect = useCallback((item: CommandItem) => {
+    setOpen(false);
+    const [kind, rest] = item.id.split(':');
+    if (kind === 'mevzuat') window.location.assign(`/mevzuat/${rest}`);
+    else if (kind === 'alan') window.location.assign(`/mevzuat?alan=${rest}`);
+    else if (kind === 'sayfa') window.location.assign(rest);
+    else if (kind === 'sozluk') {
+      window.location.assign(`/sozluk?q=${encodeURIComponent(rest)}`);
+    }
+  }, []);
 
   if (!open) return null;
 

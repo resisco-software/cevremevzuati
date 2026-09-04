@@ -335,7 +335,7 @@ export function CommandPalette({
                   </span>
 
                   {item.hint ? (
-                    <span className="hidden shrink-0 text-xs text-muted-foreground sm:inline">
+                    <span className="ml-auto max-w-[45%] shrink-0 truncate text-xs text-muted-foreground">
                       {item.hint}
                     </span>
                   ) : null}

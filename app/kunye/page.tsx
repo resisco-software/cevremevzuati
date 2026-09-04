@@ -158,7 +158,7 @@ export default function ImprintPage() {
                   uygulama, süreç yönetimi ve profesyonel destek
                   Resisco&apos;nun uzmanlık alanıdır.
                 </p>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                <p className="mt-4 text-base leading-7 text-muted-foreground">
                   Çevre izin ve lisans, emisyon ve SEÖS, atık yönetimi, sera
                   gazı emisyonları ve sürdürülebilirlik çalışmalarında kurumsal
                   hizmet sunulur.

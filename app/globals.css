@@ -253,9 +253,14 @@
 
 /** Sonuç kartı: tarama kolaylığı için; süs değil. */
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--area, var(--primary)) 5%, var(--card)),
+    var(--card) 68%
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--area, var(--primary)) 14%, var(--border));
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
 }
 
@@ -268,22 +273,48 @@
 }
 
 .card-link:hover {
-  border-color: color-mix(in srgb, var(--area) 45%, var(--border));
+  border-color: color-mix(in srgb, var(--area) 28%, var(--border));
   box-shadow: var(--shadow-lift);
 }
 
 /** Koyu vurgu kutuları: mat yüzey, düşük kontrastlı kenar ve yumuşak gölge. */
 .soft-dark-surface {
-  border: 1px solid rgb(255 255 255 / 0.09);
-  background: #10201c;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: #162923;
   box-shadow:
-    0 1px 1px rgb(4 12 10 / 0.2),
-    0 18px 42px -34px rgb(13 54 44 / 0.5);
+    0 1px 1px rgb(4 12 10 / 0.14),
+    0 16px 36px -32px rgb(13 54 44 / 0.34);
+}
+
+/** Küçük dizin kutuları da aynı mat ve alan renkli yüzey dilini kullanır. */
+.soft-area-tile {
+  border: 1px solid
+    color-mix(in srgb, var(--area, var(--primary)) 15%, var(--border));
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--area, var(--primary)) 7%, var(--card)),
+    color-mix(in srgb, var(--area, var(--primary)) 2%, var(--card)) 70%
+  );
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.soft-area-tile:hover {
+  border-color: color-mix(in srgb, var(--area) 30%, var(--border));
+  box-shadow: var(--shadow-lift);
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .card-link:hover {
     transform: translateY(-2px);
+  }
+
+  .soft-area-tile:hover {
+    transform: translateY(-1px);
   }
 }
 
@@ -539,9 +570,13 @@ fieldset:has(> .chip-scroller) {
 /* ---------- sihirbaz seçenekleri ---------- */
 
 .topic-option {
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--primary) 12%, var(--border));
   border-radius: var(--radius-lg);
-  background: var(--card);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--primary) 4%, var(--card)),
+    var(--card) 70%
+  );
   transition:
     border-color 140ms ease,
     box-shadow 140ms ease;
@@ -558,9 +593,13 @@ fieldset:has(> .chip-scroller) {
 }
 
 .choice-row {
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--primary) 10%, var(--border));
   border-radius: var(--radius-md);
-  background: var(--card);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--primary) 3%, var(--card)),
+    var(--card) 72%
+  );
 }
 
 .choice-row:hover {

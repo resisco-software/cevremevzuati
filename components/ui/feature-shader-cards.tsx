@@ -78,29 +78,29 @@ export default function FeatureShaderCards({
                 className="group soft-dark-surface relative isolate flex h-full min-h-64 overflow-hidden rounded-2xl p-6 text-white transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-white"
               >
                 <span
-                  className="absolute inset-0 bg-[radial-gradient(circle_at_85%_8%,color-mix(in_srgb,var(--area)_22%,transparent),transparent_48%),linear-gradient(145deg,#142621,#0d1917)]"
+                  className="absolute inset-0 bg-[radial-gradient(circle_at_85%_8%,color-mix(in_srgb,var(--area)_15%,transparent),transparent_50%),linear-gradient(145deg,#1b312b,#10211d)]"
                   aria-hidden="true"
                 />
                 {shadersEnabled && (
-                  <span className="absolute inset-0 opacity-30" aria-hidden="true">
+                  <span className="absolute inset-0 opacity-20" aria-hidden="true">
                     <Warp
                       style={{ height: '100%', width: '100%' }}
                       proportion={0.34 + (index % 3) * 0.04}
-                      softness={1.2}
-                      distortion={0.08}
-                      swirl={0.24 + (index % 2) * 0.06}
+                      softness={0.98}
+                      distortion={0.05}
+                      swirl={0.16 + (index % 2) * 0.04}
                       swirlIterations={8}
                       shape={index % 2 === 0 ? 'checks' : 'stripes'}
                       shapeScale={0.09}
                       scale={1}
                       rotation={0}
-                      speed={0.2}
+                      speed={0.14}
                       colors={shaderColors[area.id]}
                     />
                   </span>
                 )}
                 <span
-                  className="absolute inset-0 bg-[linear-gradient(145deg,rgba(8,18,16,0.68),rgba(8,18,16,0.92)_78%)]"
+                  className="absolute inset-0 bg-[linear-gradient(145deg,rgba(10,25,21,0.5),rgba(8,18,16,0.82)_78%)]"
                   aria-hidden="true"
                 />
 
@@ -144,18 +144,18 @@ export default function FeatureShaderCards({
               {otherAreas.length} başlık
             </span>
           </div>
-          <ul className="mt-3 grid border-y border-border sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {otherAreas.map((area) => {
               const Icon = categoryIcons[area.id] ?? Layers;
               return (
                 <li
                   key={area.id}
                   style={areaStyle(area.id)}
-                  className="border-b border-border last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0 lg:[&:nth-last-child(-n+3)]:border-b-0"
+                  className="contents"
                 >
                   <Link
                     href={`/mevzuat?alan=${area.id}`}
-                    className="group flex min-h-24 items-center gap-3 px-3 py-4 hover:bg-muted/60"
+                    className="soft-area-tile group flex min-h-24 items-center gap-3 rounded-xl px-4 py-4"
                   >
                     <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-area/10 text-area">
                       <Icon className="size-4" aria-hidden="true" />

@@ -84,7 +84,7 @@ export function GlossaryBrowser({
 
   return (
     <div>
-      <div className="rounded-xl border border-border bg-card p-3 sm:p-4">
+      <div className="card rounded-xl p-3 sm:p-4">
         <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_14rem]">
           <label className="block" htmlFor="glossary-search">
             <span className="eyebrow mb-1.5 block">Sözlükte ara</span>

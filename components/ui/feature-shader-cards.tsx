@@ -75,7 +75,7 @@ export default function FeatureShaderCards({
             <li key={area.id} style={areaStyle(area.id)}>
               <Link
                 href={`/mevzuat?alan=${area.id}`}
-                className="group relative isolate flex min-h-64 overflow-hidden rounded-2xl border border-white/12 bg-[#10201c] p-6 text-white shadow-[0_18px_50px_-32px_rgba(10,20,18,0.8)] transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-white"
+                className="group relative isolate flex h-full min-h-64 overflow-hidden rounded-2xl border border-white/12 bg-[#10201c] p-6 text-white shadow-[0_18px_50px_-32px_rgba(10,20,18,0.8)] transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-white"
               >
                 <span
                   className="absolute inset-0 bg-[radial-gradient(circle_at_85%_10%,color-mix(in_srgb,var(--area)_45%,transparent),transparent_45%),linear-gradient(145deg,#10201c,#08110f)]"

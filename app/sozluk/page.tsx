@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Quote } from 'lucide-react';
 
 import { Breadcrumbs } from '@/components/site/breadcrumbs';
 import { GlossaryBrowser } from '@/components/site/glossary-browser';
@@ -25,9 +24,9 @@ export const metadata: Metadata = {
 export default async function GlossaryPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; konu?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, konu } = await searchParams;
   const distinctTerms = new Set(glossary.map((entry) => entry.term));
 
   return (
@@ -49,43 +48,48 @@ export default async function GlossaryPage({
         }}
       />
       <main id="icerik">
-        <section>
-          <div className="site-frame py-10 lg:py-14">
+        <section className="border-b border-border">
+          <div className="site-frame py-7 lg:py-9">
             <Breadcrumbs
               items={[
                 { label: 'Ana sayfa', href: '/' },
                 { label: 'Mevzuat sözlüğü' },
               ]}
             />
-            <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_320px] lg:items-end">
-              <div>
-                <p className="eyebrow">Çevre mevzuatı</p>
-                <h1 className="text-3xl measure mt-4">
-                  Mevzuat sözlüğü
-                </h1>
-                <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-                  Tanımı, geçtiği maddeden ayırmayın. Terimler yalnızca
-                  mevzuattaki tanım kaynaklarıyla gösterilir; aynı terim farklı
-                  düzenlemelerde farklı tanımlanıyorsa kayıtlar ayrılır.
-                </p>
-              </div>
-              <div className="border-l-2 border-seal pl-5">
-                <Quote className="size-5 text-primary" aria-hidden="true" />
-                <p className="mt-4 text-base font-semibold">
-                  Tanım + düzenleme + madde
-                </p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Her sözlük kaydının değişmez üç bileşeni.
-                </p>
-                <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                  {glossary.length} tanım · {distinctTerms.size} terim
-                </p>
+            <div className="mt-5 max-w-3xl">
+              <p className="eyebrow">Çevre mevzuatı</p>
+              <h1 className="mt-2 text-3xl">Mevzuat sözlüğü</h1>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground sm:text-base">
+                Terimleri; tanımın geçtiği düzenleme, madde ve resmî kaynakla
+                birlikte inceleyin. Aynı terimin farklı düzenlemelerdeki
+                tanımları ayrı gösterilir.
+              </p>
+              <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-muted-foreground">
+                <span>
+                  <strong className="font-semibold text-foreground">
+                    {distinctTerms.size}
+                  </strong>{' '}
+                  terim
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  <strong className="font-semibold text-foreground">
+                    {glossary.length}
+                  </strong>{' '}
+                  kaynaklı tanım
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>Madde atıflarıyla</span>
               </div>
             </div>
           </div>
         </section>
-        <section className="site-frame py-10 lg:py-14">
-          <GlossaryBrowser key={q ?? ''} initialQuery={q} />
+        <section className="site-frame py-6 lg:py-8">
+          <GlossaryBrowser
+            key={`${q ?? ''}-${konu ?? ''}`}
+            initialQuery={q}
+            initialTag={konu}
+          />
         </section>
       </main>
       <SiteFooter />

@@ -139,9 +139,17 @@
     @apply border-border;
   }
 
+  /*
+    Burada `scroll-behavior: smooth` vardı ve çapa bağlantılarını
+    sessizce bozuyordu: hem ilk yüklemede (/#alanlar) hem sayfa içi
+    tıklamada tarayıcının hedefe atlaması animasyona dönüşüyor, akış
+    hâlindeki RSC içeriği yerleşimi değiştirdiği için animasyon iptal
+    oluyor ve sayfa 0'da kalıyordu. Kullanıcıya "düğme çalışmıyor"
+    olarak görünen davranış buydu. Atlama artık anlık; ilk yüklemedeki
+    çapa HashScroll bileşeninde ayrıca güvenceye alınıyor.
+  */
   html {
     @apply font-sans;
-    scroll-behavior: smooth;
   }
 
   [id] {

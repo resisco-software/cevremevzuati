@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { Analytics } from '@vercel/analytics/next';
 
+import { HashScroll } from '@/components/site/hash-scroll';
 import { SiteCommandPalette } from '@/components/site/site-command-palette';
 import {
   publisherName,
@@ -107,6 +108,7 @@ export default function RootLayout({
           İçeriğe atla
         </a>
         {children}
+        <HashScroll />
         <SiteCommandPalette />
         <Analytics />
       </body>

@@ -1,10 +1,9 @@
 'use client';
 
 import { ArrowRight, CornerDownLeft, Search, X } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useId, useMemo, useRef, useState } from 'react';
 
+import Link from '@/components/site/safe-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -39,7 +38,6 @@ export function QuickSearch() {
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
   const listId = useId();
 
   const results = useMemo(() => {
@@ -61,11 +59,11 @@ export function QuickSearch() {
 
   function openSearch() {
     if (active >= 0 && active < shown.length) {
-      router.push(`/mevzuat/${shown[active].slug}`);
+      window.location.assign(`/mevzuat/${shown[active].slug}`);
       return;
     }
     const trimmed = query.trim();
-    router.push(
+    window.location.assign(
       trimmed ? `/mevzuat?q=${encodeURIComponent(trimmed)}` : '/mevzuat',
     );
   }

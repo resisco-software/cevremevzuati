@@ -7,9 +7,9 @@ import {
   Mail,
   ScrollText,
 } from 'lucide-react';
-import Link from 'next/link';
 
 import { Breadcrumbs } from '@/components/site/breadcrumbs';
+import Link from '@/components/site/safe-link';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
 import {

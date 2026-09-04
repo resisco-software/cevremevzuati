@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { Breadcrumbs } from '@/components/site/breadcrumbs';
 import { ExternalLink } from '@/components/site/external-link';
 import { JsonLd } from '@/components/site/json-ld';
+import Link from '@/components/site/safe-link';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
 import {

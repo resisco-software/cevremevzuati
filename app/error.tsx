@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/site/safe-link';
 
 export default function Error({
   reset,

@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
+import Link from '@/components/site/safe-link';
 import { MobileNav } from '@/components/site/mobile-nav';
 import { NavLinks } from '@/components/site/nav-links';
 import { PaletteButton } from '@/components/site/palette-button';

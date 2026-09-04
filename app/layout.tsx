@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { Analytics } from '@vercel/analytics/next';
 
 import { SiteCommandPalette } from '@/components/site/site-command-palette';
 import {
@@ -107,6 +108,7 @@ export default function RootLayout({
         </a>
         {children}
         <SiteCommandPalette />
+        <Analytics />
       </body>
     </html>
   );

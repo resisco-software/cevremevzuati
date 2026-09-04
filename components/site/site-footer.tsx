@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { ArrowUpRight, Building2 } from 'lucide-react';
 
 import { ExternalLink } from '@/components/site/external-link';
+import Link from '@/components/site/safe-link';
 import { lastSourceCheck, legislation } from '@/lib/legislation-data';
 import { publisherName, publisherUrl } from '@/lib/site';
 

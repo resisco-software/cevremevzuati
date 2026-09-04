@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react';
-import Link from 'next/link';
+
+import Link from '@/components/site/safe-link';
 
 export type Crumb = { label: string; href?: string };
 

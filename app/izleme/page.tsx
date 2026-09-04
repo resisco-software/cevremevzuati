@@ -7,7 +7,7 @@ import {
   Clock3,
   CircleAlert,
 } from 'lucide-react';
-import Link from 'next/link';
+import Link from '@/components/site/safe-link';
 import { SiteHeader } from '@/components/site/site-header';
 import { SiteFooter } from '@/components/site/site-footer';
 import { Breadcrumbs } from '@/components/site/breadcrumbs';

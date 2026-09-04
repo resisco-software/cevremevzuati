@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import {
   lazy,
   Suspense,
@@ -84,7 +83,6 @@ function buildItems(): CommandItem[] {
 
 export function SiteCommandPalette() {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
   const items = useMemo(() => buildItems(), []);
 
   useEffect(() => {
@@ -127,15 +125,16 @@ export function SiteCommandPalette() {
     (item: CommandItem) => {
       setOpen(false);
       const [kind, rest] = item.id.split(':');
-      if (kind === 'mevzuat') router.push(`/mevzuat/${rest}`);
-      else if (kind === 'alan') router.push(`/mevzuat?alan=${rest}`);
-      else if (kind === 'sayfa') router.push(rest);
+      if (kind === 'mevzuat') window.location.assign(`/mevzuat/${rest}`);
+      else if (kind === 'alan')
+        window.location.assign(`/mevzuat?alan=${rest}`);
+      else if (kind === 'sayfa') window.location.assign(rest);
       else if (kind === 'sozluk') {
         const term = rest.split('|')[0];
-        router.push(`/sozluk?q=${encodeURIComponent(term)}`);
+        window.location.assign(`/sozluk?q=${encodeURIComponent(term)}`);
       }
     },
-    [router],
+    [],
   );
 
   if (!open) return null;

@@ -12,11 +12,11 @@ import {
   Route,
   ShieldCheck,
 } from 'lucide-react';
-import Link from 'next/link';
 
 import { JsonLd } from '@/components/site/json-ld';
 import { LegislationWizard } from '@/components/site/legislation-wizard';
 import { QuickSearch } from '@/components/site/quick-search';
+import Link from '@/components/site/safe-link';
 import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
 import { areaStyle } from '@/lib/area-theme';

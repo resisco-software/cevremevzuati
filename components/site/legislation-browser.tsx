@@ -1,10 +1,10 @@
 'use client';
 
 import { ArrowRight, Search, X } from 'lucide-react';
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { ExternalLink } from '@/components/site/external-link';
+import Link from '@/components/site/safe-link';
 import {
   NativeSelect,
   NativeSelectOption,

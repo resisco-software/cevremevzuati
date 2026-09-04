@@ -15,9 +15,9 @@ import {
   ScanSearch,
   TriangleAlert,
 } from 'lucide-react';
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
+import Link from '@/components/site/safe-link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';

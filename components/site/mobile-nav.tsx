@@ -1,9 +1,10 @@
 'use client';
 
 import { Menu, X } from 'lucide-react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+
+import Link from '@/components/site/safe-link';
 
 export function MobileNav({
   items,

@@ -27,12 +27,12 @@ const featuredIds = [
 ];
 
 const shaderColors: Record<string, string[]> = {
-  kurulus: ['#101b1c', '#263938', '#172827', '#3e5350'],
-  izin: ['#0b1f1a', '#24463b', '#17322b', '#416557'],
-  hava: ['#0d2022', '#29474a', '#183235', '#466164'],
-  atiksu: ['#0c211f', '#28504a', '#183733', '#456a62'],
-  atik: ['#1b1f17', '#4a4930', '#303326', '#6a6545'],
-  entegre: ['#191c20', '#3c4148', '#292e34', '#5d646c'],
+  kurulus: ['#111a18', '#22312d', '#192421', '#36463f'],
+  izin: ['#101b18', '#21352f', '#172621', '#385046'],
+  hava: ['#111c1b', '#243735', '#192725', '#3b504c'],
+  atiksu: ['#101c19', '#213832', '#172823', '#385248'],
+  atik: ['#171a15', '#33352a', '#24271e', '#4a4a37'],
+  entegre: ['#151817', '#303431', '#222624', '#464c48'],
 };
 
 function useShaderEffects() {
@@ -75,32 +75,32 @@ export default function FeatureShaderCards({
             <li key={area.id} style={areaStyle(area.id)}>
               <Link
                 href={`/mevzuat?alan=${area.id}`}
-                className="group soft-dark-surface relative isolate flex h-full min-h-64 overflow-hidden rounded-2xl p-6 text-white transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-white"
+                className="group soft-dark-surface relative isolate flex h-full min-h-64 overflow-hidden rounded-2xl p-6 text-white transition-colors duration-200 focus-visible:outline-white"
               >
                 <span
-                  className="absolute inset-0 bg-[radial-gradient(circle_at_85%_8%,color-mix(in_srgb,var(--area)_15%,transparent),transparent_50%),linear-gradient(145deg,#1b312b,#10211d)]"
+                  className="absolute inset-0 bg-[radial-gradient(circle_at_88%_5%,color-mix(in_srgb,var(--area)_7%,transparent),transparent_44%),linear-gradient(155deg,#14231f,#0b1613)]"
                   aria-hidden="true"
                 />
                 {shadersEnabled && (
-                  <span className="absolute inset-0 opacity-20" aria-hidden="true">
+                  <span className="absolute inset-0 opacity-[0.08]" aria-hidden="true">
                     <Warp
                       style={{ height: '100%', width: '100%' }}
                       proportion={0.34 + (index % 3) * 0.04}
-                      softness={0.98}
-                      distortion={0.05}
-                      swirl={0.16 + (index % 2) * 0.04}
+                      softness={1}
+                      distortion={0.025}
+                      swirl={0.08 + (index % 2) * 0.025}
                       swirlIterations={8}
                       shape={index % 2 === 0 ? 'checks' : 'stripes'}
                       shapeScale={0.09}
                       scale={1}
                       rotation={0}
-                      speed={0.14}
+                      speed={0.08}
                       colors={shaderColors[area.id]}
                     />
                   </span>
                 )}
                 <span
-                  className="absolute inset-0 bg-[linear-gradient(145deg,rgba(10,25,21,0.5),rgba(8,18,16,0.82)_78%)]"
+                  className="absolute inset-0 bg-[linear-gradient(145deg,rgba(9,21,18,0.68),rgba(7,15,13,0.88)_78%)]"
                   aria-hidden="true"
                 />
 
@@ -144,18 +144,18 @@ export default function FeatureShaderCards({
               {otherAreas.length} başlık
             </span>
           </div>
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-4 grid overflow-hidden border-y border-border sm:grid-cols-2 lg:grid-cols-3">
             {otherAreas.map((area) => {
               const Icon = categoryIcons[area.id] ?? Layers;
               return (
                 <li
                   key={area.id}
                   style={areaStyle(area.id)}
-                  className="contents"
+                  className="border-b border-border last:border-b-0 lg:border-r lg:[&:nth-child(3n)]:border-r-0 lg:[&:nth-last-child(-n+3)]:border-b-0"
                 >
                   <Link
                     href={`/mevzuat?alan=${area.id}`}
-                    className="soft-area-tile group flex min-h-24 items-center gap-3 rounded-xl px-4 py-4"
+                    className="area-index-link group flex min-h-24 items-center gap-3 px-3 py-4 sm:px-4"
                   >
                     <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-area/10 text-area">
                       <Icon className="size-4" aria-hidden="true" />

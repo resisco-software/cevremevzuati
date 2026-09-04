@@ -144,18 +144,18 @@ export default function FeatureShaderCards({
               {otherAreas.length} başlık
             </span>
           </div>
-          <ul className="mt-4 grid overflow-hidden border-y border-border sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {otherAreas.map((area) => {
               const Icon = categoryIcons[area.id] ?? Layers;
               return (
                 <li
                   key={area.id}
                   style={areaStyle(area.id)}
-                  className="border-b border-border last:border-b-0 lg:border-r lg:[&:nth-child(3n)]:border-r-0 lg:[&:nth-last-child(-n+3)]:border-b-0"
+                  className="contents"
                 >
                   <Link
                     href={`/mevzuat?alan=${area.id}`}
-                    className="area-index-link group flex min-h-24 items-center gap-3 px-3 py-4 sm:px-4"
+                    className="card card-link area-index-link group flex min-h-24 items-center gap-3 px-4 py-4"
                   >
                     <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-area/10 text-area">
                       <Icon className="size-4" aria-hidden="true" />

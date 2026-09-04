@@ -87,7 +87,7 @@ export default function ImprintPage() {
               </p>
             </div>
 
-            <div className="border-l-2 border-attention pl-5">
+            <div className="note-block note-attention">
               <h2 className="flex items-center gap-2.5 text-lg font-semibold">
                 <AlertTriangle
                   className="size-5 text-accent-foreground dark:text-accent"

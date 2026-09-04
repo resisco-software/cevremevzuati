@@ -10,6 +10,7 @@ import {
   NativeSelectOption,
 } from '@/components/ui/native-select';
 import { areaStyle } from '@/lib/area-theme';
+import { categoryIcons } from '@/lib/category-icons';
 import {
   categories,
   lastSourceCheck,
@@ -270,11 +271,14 @@ export function LegislationBrowser({
           <ul className="mt-5 grid gap-3">
             {shown.map((item) => {
               const areaId = item.categories[0] ?? 'izin';
+              const AreaIcon = categoryIcons[areaId] ?? Search;
               return (
                 <li key={item.slug} style={areaStyle(areaId)}>
-                  <div className="card area-edge p-5">
+                  <div className="card p-5">
                     <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                      <span className="area-dot" aria-hidden="true" />
+                      <span className="area-tint grid size-8 shrink-0 place-items-center rounded-lg">
+                        <AreaIcon className="size-4" aria-hidden="true" />
+                      </span>
                       <span className="text-sm text-muted-foreground">
                         {categoryLabel.get(areaId) ?? item.type} · {item.type}
                       </span>

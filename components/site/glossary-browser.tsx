@@ -191,7 +191,7 @@ export function GlossaryBrowser({
               <div className="min-w-0">
                 <blockquote
                   cite={entry.sourceUrl}
-                  className="border-l-2 border-seal pl-3 text-sm leading-6"
+                  className="text-sm leading-6 text-muted-foreground"
                 >
                   {entry.verbatim ? `“${entry.definition}”` : entry.definition}
                 </blockquote>

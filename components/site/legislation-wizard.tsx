@@ -1235,7 +1235,7 @@ export function LegislationWizard({
               </div>
 
               {missingAnswers.length > 0 ? (
-                <div className="mt-6 border-l-2 border-attention pl-5">
+                <div className="note-block note-attention mt-6 flex gap-3">
                   <TriangleAlert
                     className="mt-0.5 size-4 shrink-0 text-accent-foreground dark:text-accent"
                     aria-hidden="true"
@@ -1254,7 +1254,7 @@ export function LegislationWizard({
                   </div>
                 </div>
               ) : (
-                <div className="mt-6 border-l-2 border-seal pl-5">
+                <div className="note-block note-primary mt-6 flex gap-3">
                   <Info
                     className="mt-0.5 size-4 shrink-0 text-primary"
                     aria-hidden="true"

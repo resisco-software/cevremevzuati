@@ -20,6 +20,7 @@ import { SiteFooter } from '@/components/site/site-footer';
 import { SiteHeader } from '@/components/site/site-header';
 import FeatureShaderCards from '@/components/ui/feature-shader-cards';
 import { areaStyle } from '@/lib/area-theme';
+import { categoryIcons } from '@/lib/category-icons';
 import {
   categories,
   categoryRecordCount,
@@ -373,14 +374,17 @@ export default function HomePage() {
             <ul className="mt-9 grid gap-3 lg:grid-cols-2">
               {featured.map((item) => {
                 const areaId = item.categories[0] ?? 'izin';
+                const AreaIcon = categoryIcons[areaId] ?? FileSearch;
                 return (
                   <li key={item.slug} style={areaStyle(areaId)}>
                     <Link
                       href={`/mevzuat/${item.slug}`}
-                      className="card card-link area-edge flex h-full flex-col p-5"
+                      className="card card-link flex h-full flex-col p-5"
                     >
                       <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                        <span className="area-dot" aria-hidden="true" />
+                        <span className="area-tint grid size-8 shrink-0 place-items-center rounded-lg">
+                          <AreaIcon className="size-4" aria-hidden="true" />
+                        </span>
                         <span className="text-sm text-muted-foreground">
                           {item.type}
                         </span>

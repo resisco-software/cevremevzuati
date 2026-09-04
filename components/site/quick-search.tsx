@@ -6,6 +6,7 @@ import { useId, useMemo, useRef, useState } from 'react';
 import Link from '@/components/site/safe-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { categoryIcons } from '@/lib/category-icons';
 import {
   categories,
   legislation,
@@ -169,6 +170,7 @@ export function QuickSearch() {
               >
                 {shown.map((item, index) => {
                   const areaId = item.categories[0] ?? 'izin';
+                  const AreaIcon = categoryIcons[areaId] ?? Search;
                   return (
                     <li key={item.slug}>
                       <Link
@@ -176,12 +178,14 @@ export function QuickSearch() {
                         href={`/mevzuat/${item.slug}`}
                         style={areaStyle(areaId)}
                         onMouseEnter={() => setActive(index)}
-                        className={`card card-link area-edge px-4 py-3.5 ${
+                        className={`card card-link px-4 py-3.5 ${
                           active === index ? 'border-primary' : ''
                         }`}
                       >
                         <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                          <span className="area-dot" aria-hidden="true" />
+                          <span className="area-tint grid size-8 shrink-0 place-items-center rounded-lg">
+                            <AreaIcon className="size-4" aria-hidden="true" />
+                          </span>
                           <span className="text-sm text-muted-foreground">
                             {categoryLabel.get(areaId) ?? item.type}
                           </span>

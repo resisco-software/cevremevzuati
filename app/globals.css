@@ -246,14 +246,18 @@
 
 /** Sonuç kartı: tarama kolaylığı için; süs değil. */
 .card {
+  position: relative;
   background: color-mix(
     in srgb,
-    var(--area, var(--primary)) 4%,
+    var(--area, var(--primary)) 5%,
     var(--card)
   );
-  border: 1px solid var(--border);
+  border: 1px solid
+    color-mix(in srgb, var(--area, var(--primary)) 12%, var(--border));
   border-radius: var(--radius-xl);
-  box-shadow: 0 1px 1px rgb(25 29 31 / 0.025);
+  box-shadow:
+    0 1px 2px rgb(25 29 31 / 0.04),
+    0 10px 24px -22px rgb(25 55 48 / 0.2);
 }
 
 /** Kart olmayan bilgi grupları için aynı yüzeyin sade sürümü. */
@@ -268,12 +272,18 @@
   display: block;
   transition:
     border-color 140ms ease,
-    background-color 140ms ease;
+    background-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
 }
 
 .card-link:hover {
   border-color: color-mix(in srgb, var(--area, var(--primary)) 30%, var(--border));
-  background: color-mix(in srgb, var(--area, var(--primary)) 7%, var(--card));
+  background: color-mix(in srgb, var(--area, var(--primary)) 8%, var(--card));
+  box-shadow:
+    0 2px 4px rgb(25 29 31 / 0.05),
+    0 16px 30px -24px rgb(25 55 48 / 0.28);
+  transform: translateY(-1px);
 }
 
 /** Koyu vurgu kutuları: tek parça, mat bir yüzey. */
@@ -284,7 +294,7 @@
   box-shadow: 0 1px 2px rgb(4 12 10 / 0.18);
 }
 
-/** Konu dizini ayrı kartlar yerine tek bir editoryal liste gibi davranır. */
+/** Konu dizininde alan kimliği küçük ikon yüzeyinde kalır. */
 .area-index-link {
   background: color-mix(
     in srgb,
@@ -300,11 +310,6 @@
   background: color-mix(in srgb, var(--area, var(--primary)) 11%, var(--card));
 }
 
-/** Alan şeridi: kartın solunda o alanın kimlik rengi. */
-.area-edge {
-  border-left: 3px solid var(--area);
-}
-
 .area-dot {
   display: inline-block;
   width: 0.5rem;
@@ -315,8 +320,26 @@
 }
 
 .area-tint {
-  background: color-mix(in srgb, var(--area) 10%, transparent);
+  background: color-mix(in srgb, var(--area) 11%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--area) 13%, var(--border));
   color: var(--area);
+}
+
+/** Uyarı ve açıklamalar soldan çizgi çekmek yerine aynı dolu yüzeyi kullanır. */
+.note-block {
+  --note-color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--note-color) 16%, var(--border));
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--note-color) 6%, var(--card));
+  padding: 1rem 1.125rem;
+}
+
+.note-attention {
+  --note-color: var(--attention);
+}
+
+.note-primary {
+  --note-color: var(--primary);
 }
 
 /* ---------- etiket ve künye ---------- */
@@ -588,8 +611,15 @@ fieldset:has(> .chip-scroller) {
 /* ---------- alıntı ---------- */
 
 .quote {
-  border-left: 3px solid var(--area, var(--primary));
-  padding-left: 1.15rem;
+  border: 1px solid
+    color-mix(in srgb, var(--area, var(--primary)) 14%, var(--border));
+  border-radius: var(--radius-lg);
+  background: color-mix(
+    in srgb,
+    var(--area, var(--primary)) 5%,
+    var(--card)
+  );
+  padding: 1rem 1.125rem;
   font-size: var(--text-md);
   line-height: 1.65;
 }

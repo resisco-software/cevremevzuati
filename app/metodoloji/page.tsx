@@ -177,7 +177,7 @@ export default function MethodologyPage() {
                 </dt>
               </div>
             </dl>
-            <div className="mt-6 border-l-2 border-attention pl-5">
+            <div className="note-block note-attention mt-6">
               <h3 className="text-base font-semibold">Bilinen sınırlar</h3>
               <ul className="mt-3 grid gap-2 text-base leading-7 text-muted-foreground">
                 <li>

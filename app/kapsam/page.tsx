@@ -96,7 +96,7 @@ export default function ScopePage() {
                   <li
                     key={category.id}
                     style={areaStyle(category.id)}
-                    className="card area-edge flex flex-col p-6"
+                    className="card flex flex-col p-6"
                   >
                     <div className="flex items-start gap-3.5">
                       {Icon && (

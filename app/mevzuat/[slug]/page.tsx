@@ -223,7 +223,7 @@ export default async function LegislationDetailPage({
                     </div>
 
                     {guide.boundary && (
-                      <div className="card mt-7 border-l-2 border-l-attention p-5">
+                      <div className="note-block note-attention mt-7">
                         <h3 className="text-md font-semibold">
                           {guide.boundary.title}
                         </h3>
@@ -363,7 +363,7 @@ export default async function LegislationDetailPage({
                 </p>
 
                 {item.primaryAnnex && (
-                  <div className="card mt-6 border-l-2 border-l-primary p-5">
+                  <div className="note-block note-primary mt-6">
                     <h3 className="eyebrow">İlk kontrol</h3>
                     <p className="measure mt-2 text-md leading-8 font-medium">
                       {item.primaryAnnex}
@@ -462,7 +462,7 @@ export default async function LegislationDetailPage({
                     ))}
                   </ol>
                 ) : (
-                  <div className="mt-6 border-l-2 border-attention pl-5">
+                  <div className="note-block note-attention mt-6">
                     <p className="text-md font-semibold">
                       Bu kayıtta değişiklik zinciri henüz işlenmedi
                     </p>
